@@ -26,5 +26,10 @@
 		"webpack-cli": "^4.10.0",
 		"webpack-dev-middleware": "^5.3.3",
 		"webpack-dev-server": "^4.9.3"
+	},
+	"dependencies": {
+		"eslint": "^8.20.0",
+		"eslint-config-prettier": "^8.5.0",
+		"prettier": "^2.7.1"
 	}
 }
