@@ -4,6 +4,13 @@ function createPayment(req, res) {
   });
 }
 
+function getPayment(req, res) {
+  res.status(200).json({
+    result: "success",
+  });
+}
+
 module.exports = {
   createPayment,
+  getPayment,
 };
