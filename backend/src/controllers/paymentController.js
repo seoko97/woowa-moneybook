@@ -10,7 +10,14 @@ function getPayment(req, res) {
   });
 }
 
+function deletePayment(req, res) {
+  res.status(200).json({
+    result: "success",
+  });
+}
+
 module.exports = {
   createPayment,
   getPayment,
+  deletePayment,
 };
