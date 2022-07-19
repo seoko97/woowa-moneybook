@@ -10,7 +10,14 @@ function getHistory(req, res) {
   });
 }
 
+function updateHistory(req, res) {
+  res.status(200).json({
+    result: "success",
+  });
+}
+
 module.exports = {
   createHistory,
   getHistory,
+  updateHistory,
 };
