@@ -1,5 +1,5 @@
 const express = require('express');
-const asyncHandler = require('../asyncHandler');
+const asyncHandler = require('../utils/asyncHandler');
 const { historyController } = require('../controllers/history.controller');
 
 const historyRouter = express.Router();
