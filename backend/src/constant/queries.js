@@ -10,6 +10,8 @@ const QUERIES = {
   // [ 유저 id, 결제수단 id]
   CREATE_USER_PAYMENT:
     "INSERT INTO USER_PAYMENT_TB (userId, paymentId) VALUES (?, ?)",
+  // [ 유저 id, 결제수단 id ]
+  DELETE_PAYMENT: "DELETE FROM USER_PAYMENT_TB WHERE userId=? AND paymentId=?",
 };
 
 module.exports = QUERIES;
