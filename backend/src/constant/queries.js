@@ -2,6 +2,10 @@ const QUERIES = {
   // [ 유저 id, 일자, 수입/지출, 카테고리, 설명, 결제수단 id, 수량 ]
   CREATE_HISTORY:
     "INSERT INTO TRANSACTION_TB(userId, trxDate, direction, category, description, paymentId, amount) VALUES (?, ?, ?, ?, ?, ?, ?)",
+  // [ 유저 id, 년도, 달, 수입/지출, 카테고리]
+  READ_HISTORIES: `SELECT userId, DATE_FORMAT(trxDate, '%Y-%m-%d') as date, direction, category, description, paymentId, amount  
+    FROM TRANSACTION_TB 
+    WHERE userId=? AND YEAR(trxDate)=? AND MONTH(trxDate)=? AND direction LIKE ? AND category LIKE ? ORDER BY trxDate`,
   // [ 유저 id ]
   READ_PAYMENTS:
     "SELECT PAY.title, PAY.id AS paymentId FROM PAYMENT_TB AS PAY JOIN USER_PAYMENT_TB AS USER_PAY ON PAY.id = USER_PAY.paymentId WHERE USER_PAY.userId = ?",
