@@ -5,6 +5,8 @@ const QUERIES = {
   // [ 유저 id ]
   READ_PAYMENTS:
     "SELECT PAY.title, PAY.id AS paymentId FROM PAYMENT_TB AS PAY JOIN USER_PAYMENT_TB AS USER_PAY ON PAY.id = USER_PAY.paymentId WHERE USER_PAY.userId = ?",
+  // [ 결제수단 이름 ]
+  CREATE_PAYMENT: "INSERT INTO PAYMENT_TB (title) VALUES (?)",
 };
 
 module.exports = QUERIES;
