@@ -6,7 +6,13 @@ class HistoryService {
 
   // 필수: { userId, year, month }
   // 선택: { direction, category }
-  async getHistories({ userId, year, month, direction = "%", category = "%" }) {
+  async getHistoryList({
+    userId,
+    year,
+    month,
+    direction = "%",
+    category = "%",
+  }) {
     const connection = await pool.getConnection();
     try {
       // [ 유저 id, 년도, 달, 수입/지출, 카테고리]
