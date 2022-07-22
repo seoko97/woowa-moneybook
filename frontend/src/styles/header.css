@@ -1,0 +1,55 @@
+.header {
+  width: 100%;
+  font-family: "Do Hyeon", sans-serif;
+  background-color: var(--primary1);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header > .template {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px 30px;
+}
+
+.header--logo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 24px;
+}
+
+.header--date-indicator {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 14px;
+}
+
+.header--nav {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  column-gap: 14px;
+}
+
+.header svg {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.date-indicator--date {
+  min-width: 50px;
+}
+
+.date-indicator--date > * {
+  text-align: center;
+}

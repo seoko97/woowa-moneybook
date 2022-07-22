@@ -37,12 +37,6 @@ const { getState, initState, notify, setState, subscribe, unsubscribe } = (funct
     bundle._observers.forEach((cb) => cb());
   }
 
-  function useState(key) {
-    if (!globalState.has(key)) return;
-
-    return [getState(key), setState(key)];
-  }
-
   return {
     initState,
     subscribe,
@@ -50,7 +44,6 @@ const { getState, initState, notify, setState, subscribe, unsubscribe } = (funct
     notify,
     getState,
     setState,
-    useState,
   };
 })();
 
