@@ -17,7 +17,12 @@ class HistoryController {
       direction,
       category,
     });
-    res.status(200).json({ ok, error, trxList: trxListConvertMap(trxList) });
+    res.status(200).json({
+      ok,
+      totalLength: trxList && trxList.length,
+      error,
+      trxList: trxListConvertMap(trxList),
+    });
   };
 
   createHistory = async (req, res) => {
