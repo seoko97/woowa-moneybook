@@ -15,7 +15,7 @@ const QUERIES = {
   CREATE_PAYMENT: "INSERT INTO PAYMENT_TB (title) VALUES (?)",
   // [ 유저 id, 결제수단 id]
   CREATE_USER_PAYMENT:
-    "INSERT INTO USER_PAYMENT_TB (userId, paymentId) VALUES (?, ?)",
+    "INSERT IGNORE INTO USER_PAYMENT_TB (userId, paymentId) VALUES (?, ?)",
   // [ 유저 id, 결제수단 id ]
   DELETE_PAYMENT: "DELETE FROM USER_PAYMENT_TB WHERE userId=? AND paymentId=?",
   // [ 유저 id, 년도, 카테고리 ]
