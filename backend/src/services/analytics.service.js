@@ -7,11 +7,6 @@ const pool = require("../db");
  * @property {number} total
  */
 
-/**
- * @typedef {Object} GetTotalExpendituresReturn
- * @property {TotalExpenditure[]} totalExpenditures
- * @property {boolean} ok
- */
 class AnalyticsService {
   /**
    * @async
@@ -19,9 +14,9 @@ class AnalyticsService {
    * @param {number} userId
    * @param {number} year
    * @param {string} category
-   * @return {GetTotalExpendituresReturn}
+   * @return {Promise<{totalExpenditureList: TotalExpenditure[], ok: true} | {ok: false, error:Error}>}
    */
-  async getTotalExpenditures({ userId, year, category }) {
+  async getTotalExpenditureList({ userId, year, category }) {
     const connection = await pool.getConnection();
     try {
       // [ 유저 id, 년도, 카테고리 ]
