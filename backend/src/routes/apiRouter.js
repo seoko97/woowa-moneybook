@@ -1,6 +1,6 @@
 const express = require("express");
-const historyRouter = require("./historyRouter");
-const paymentRouter = require("./paymentRouter");
+const historyRouter = require("./history.router");
+const paymentRouter = require("./payment.router");
 const analyticsRouter = require("./analyticsRouter");
 const detailRouter = require("./detailRouter");
 
