@@ -2,6 +2,7 @@ const {
   READ_PAYMENTS,
   DELETE_PAYMENT,
   CREATE_USER_PAYMENT,
+  CREATE_PAYMENT,
 } = require("../constant/queries");
 const pool = require("../db");
 
@@ -59,8 +60,8 @@ class PaymentService {
    * @param {number} userId
    * @param {number} paymentId
    * @return {Promise<{ok: boolean, error: Error|undefined}>}
+   * @description USER_PAYMENT_TB에서 관계를 맺어주는 레코드를 생성하는 함수
    */
-  // USER_PAYMENT_MAP_TB에서 관계를 맺어주는 레코드를 생성하는 함수
   async joinUserPayment({ userId, paymentId }) {
     const connection = await pool.getConnection();
     try {
@@ -68,6 +69,34 @@ class PaymentService {
       await connection.query(CREATE_USER_PAYMENT, [userId, paymentId]);
       await connection.commit();
       return { ok: true };
+    } catch (error) {
+      await connection.rollback();
+      return { ok: false, error };
+    } finally {
+      await connection.release();
+    }
+  }
+
+  /**
+   * @async
+   * @function createPayment
+   * @param {string} title
+   * @return {Promise<{paymentItem: {id: number, title: string}, ok: true}|{ok: false, error:Error}>}
+   * @description PAYMENT_TB에 title을 가지는 새로운 레코드 생성해주는 함수
+   */
+  async createPayment({ title }) {
+    const connection = await pool.getConnection();
+    try {
+      // PAYMENT_TB에 동일한 이름이 없다면 새로 생성
+      // [ 결제수단 이름 ]
+      const [row] = await connection.query(CREATE_PAYMENT, [title]);
+      await connection.commit();
+
+      const paymentItem = { id: row.insertId, title };
+      return {
+        ok: true,
+        paymentItem,
+      };
     } catch (error) {
       await connection.rollback();
       return { ok: false, error };
