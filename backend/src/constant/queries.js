@@ -19,7 +19,7 @@ const QUERIES = {
   // [ 유저 id, 결제수단 id ]
   DELETE_PAYMENT: "DELETE FROM USER_PAYMENT_TB WHERE userId=? AND paymentId=?",
   // [ 유저 id, 년도, 카테고리 ]
-  READ_DETAIL: `SELECT MONTH (trxDate) AS 'month', SUM (amount) AS 'sum'
+  READ_DETAIL: `SELECT MONTH (trxDate) AS 'month', CAST(SUM (amount) AS UNSIGNED) AS 'total'
          FROM TRANSACTION_TB
          WHERE userId=? AND YEAR (trxDate)=? AND category=? AND direction='out'
          GROUP BY MONTH (trxDate)
