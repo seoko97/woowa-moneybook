@@ -1,0 +1,44 @@
+:root {
+  --black: #1e2222;
+  --white: #fcfcfc;
+
+  --gray-100: #626666;
+  --gray-200: #8d9393;
+  --gray-300: #c1c5c5;
+  --gray-400: #ccd3d4;
+  --gray-500: #f5f5f5;
+
+  --primary1: #2ac1bc;
+  --primary2: #a0e1e0;
+  --primary3: #219a95;
+
+  --color-error: #f45452;
+
+  --category0: #6ed5eb;
+  --category1: #4cb8b8;
+  --category2: #94d3cc;
+  --category3: #4ca1de;
+  --category4: #d092e2;
+  --category5: #817dce;
+  --category6: #4a6cc3;
+  --category7: #b9d58c;
+  --category8: #e6d267;
+  --category9: #e2b765;
+
+  --z-index-sidebar: 500;
+  --z-index-modal: 1000;
+
+  --shadow-todo: 0px 1px 30px rgba(224, 224, 224, 0.3);
+  --shadow-sidebar: 0px 0px 4px rgba(204, 204, 204, 0.5), 0px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+.template {
+  width: 900px;
+}
