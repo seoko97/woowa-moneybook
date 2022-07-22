@@ -1,5 +1,6 @@
 const { READ_DETAIL } = require("../constant/queries");
 const pool = require("../db");
+const { readDB } = require("../utils/dbHandler");
 
 /**
  * @typedef {Object} TotalExpenditure
@@ -17,21 +18,12 @@ class AnalyticsService {
    * @return {Promise<{totalExpenditureList: TotalExpenditure[], ok: true} | {ok: false, error:Error}>}
    */
   async getTotalExpenditureList({ userId, year, category }) {
-    const connection = await pool.getConnection();
-    try {
-      // [ 유저 id, 년도, 카테고리 ]
-      const [detail] = await connection.query(READ_DETAIL, [
-        userId,
-        year,
-        category,
-      ]);
-      return { ok: true, detail };
-    } catch (error) {
-      await connection.rollback();
-      return { ok: false, error };
-    } finally {
-      await connection.release();
-    }
+    const { ok, result, error } = await readDB(READ_DETAIL, [
+      userId,
+      year,
+      category,
+    ]);
+    return { ok, error, totalExpenditureList: result };
   }
 }
 
