@@ -1,4 +1,8 @@
-const { READ_PAYMENTS } = require("../constant/queries");
+const {
+  READ_PAYMENTS,
+  DELETE_PAYMENT,
+  CREATE_USER_PAYMENT,
+} = require("../constant/queries");
 const pool = require("../db");
 
 /**
@@ -40,6 +44,29 @@ class PaymentService {
     try {
       // [ 유저 id, 결제수단 id ]
       await connection.query(DELETE_PAYMENT, [userId, paymentId]);
+      return { ok: true };
+    } catch (error) {
+      await connection.rollback();
+      return { ok: false, error };
+    } finally {
+      await connection.release();
+    }
+  }
+
+  /**
+   * @async
+   * @function joinUserPayment
+   * @param {number} userId
+   * @param {number} paymentId
+   * @return {Promise<{ok: boolean, error: Error|undefined}>}
+   */
+  // USER_PAYMENT_MAP_TB에서 관계를 맺어주는 레코드를 생성하는 함수
+  async joinUserPayment({ userId, paymentId }) {
+    const connection = await pool.getConnection();
+    try {
+      // [ 유저 id, 결제수단 id]
+      await connection.query(CREATE_USER_PAYMENT, [userId, paymentId]);
+      await connection.commit();
       return { ok: true };
     } catch (error) {
       await connection.rollback();
