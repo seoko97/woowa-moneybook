@@ -15,6 +15,16 @@ class PaymentController {
     const result = await this.#paymentService.getPaymentList(data);
     res.status(200).json(result);
   };
+
+  /**
+   * @param {number} req.body.userId - userId
+   * @param {number} req.body.paymentId - paymentId
+   */
+  deletePayment = async (req, res) => {
+    const data = req.body;
+    const result = await this.#paymentService.deletePayment(data);
+    res.status(200).json(result);
+  };
 }
 const paymentController = new PaymentController(paymentService);
 
