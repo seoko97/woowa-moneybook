@@ -18,7 +18,7 @@ class PaymentService {
    * @async
    * @function getPaymentList
    * @param {number} id - userId
-   * @return {Promise<{ok: false, error:Error}|{paymentList: PaymentItem[], ok: true}>}
+   * @return {Promise<{paymentList: PaymentItem[], ok: true}|{ok: false, error:Error}>}
    */
   async getPaymentList({ id }) {
     const connection = await pool.getConnection();
@@ -52,6 +52,41 @@ class PaymentService {
       return { ok: false, error };
     } finally {
       await connection.release();
+    }
+  }
+
+  /**
+   * @param {number} userId
+   * @param {string} title
+   * @return {Promise<{paymentItem: PaymentItem, ok: true}|{ok: false, error: Error}>}
+   * @description
+   */
+  // 유저의 결제수단을 추가하는 함수
+  // title을 가지는 결제수단이 없다면 PAYMENT_TB에 추가
+  // USER_PAYMENT_TB에 유저와 결제수단을 연결지어준다
+  async createUserPayment({ userId, title }) {
+    try {
+      // PAYMENT_TB에 동일한 이름을 가진 레코드가 있는지 확인
+      let { ok, paymentItem, error } = await this.getPaymentByTitle({ title });
+      if (error) throw error;
+
+      // PAYMENT_TB에 없다면 새로 생성해준다
+      if (!ok) {
+        ({ paymentItem, error } = await this.createPayment({ title }));
+        if (error) throw error;
+      }
+
+      // USER_PAYMENT_MAP_TB에 새로운 레코드 생성
+      // user와 payment를 연결지어준다.
+      ({ error } = await this.joinUserPayment({
+        userId,
+        paymentId: paymentItem.paymentId,
+      }));
+      if (error) throw error;
+
+      return { ok: true, paymentItem };
+    } catch (error) {
+      return { ok: false, error };
     }
   }
 
