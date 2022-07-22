@@ -34,7 +34,8 @@ class PaymentService {
    * @return {Promise<{ok: boolean, error: Error|undefined}>}
    */
   async deletePayment({ userId, paymentId }) {
-    return await writeDB(DELETE_PAYMENT, [userId, paymentId]);
+    const { ok, error } = await writeDB(DELETE_PAYMENT, [userId, paymentId]);
+    return { ok, error };
   }
 
   /**
@@ -62,7 +63,7 @@ class PaymentService {
       // user와 payment를 연결지어준다.
       ({ error } = await this.joinUserPayment({
         userId,
-        paymentId: paymentItem.paymentId,
+        paymentId: paymentItem.id,
       }));
       if (error) throw error;
 
