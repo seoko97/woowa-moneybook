@@ -5,7 +5,6 @@ const {
   CREATE_PAYMENT,
   READ_PAYMENT_BY_TITLE,
 } = require("../constant/queries");
-const pool = require("../db");
 const { readDB, writeDB } = require("../utils/dbHandler");
 
 /**
@@ -18,11 +17,11 @@ class PaymentService {
   /**
    * @async
    * @function getPaymentList
-   * @param {number} id - userId
+   * @param {number} userId - userId
    * @return {Promise<{paymentList: PaymentItem[], ok: true}|{ok: false, error:Error}>}
    */
-  async getPaymentList({ id }) {
-    const { ok, error, result } = await readDB(READ_PAYMENTS, [id]);
+  async getPaymentList({ userId }) {
+    const { ok, error, result } = await readDB(READ_PAYMENTS, [userId]);
     return { ok, error, paymentList: result };
   }
 

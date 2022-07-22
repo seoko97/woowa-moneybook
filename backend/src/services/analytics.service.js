@@ -1,5 +1,4 @@
 const { READ_DETAIL } = require("../constant/queries");
-const pool = require("../db");
 const { readDB } = require("../utils/dbHandler");
 
 /**

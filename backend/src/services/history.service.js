@@ -1,5 +1,4 @@
 const { CREATE_HISTORY, READ_HISTORIES } = require("../constant/queries");
-const pool = require("../db");
 const { readDB, writeDB } = require("../utils/dbHandler");
 
 class HistoryService {
