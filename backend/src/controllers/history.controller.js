@@ -8,10 +8,15 @@ class HistoryController {
   }
 
   getHistoryList = async (req, res) => {
-    const data = req.body;
-    const { ok, error, trxList } = await this.#historyService.getHistoryList(
-      data
-    );
+    // const data = req.body;
+    const { userId, year, month, direction, category } = req.query;
+    const { ok, error, trxList } = await this.#historyService.getHistoryList({
+      userId: Number(userId),
+      year: Number(year),
+      month: Number(month),
+      direction,
+      category,
+    });
     res.status(200).json({ ok, error, trxList: trxListConvertMap(trxList) });
   };
 

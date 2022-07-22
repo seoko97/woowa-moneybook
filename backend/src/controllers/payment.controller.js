@@ -7,12 +7,14 @@ class PaymentController {
   }
 
   /**
-   * @param {number} req.body.id - userId
+   * @param {number} req.query.id - userId
    * @return {Promise<{paymentList: PaymentItem[], ok: true}|{ok: false, error:Error}>}
    */
   getPaymentList = async (req, res) => {
-    const data = req.body;
-    const result = await this.#paymentService.getPaymentList(data);
+    const { userId } = req.query;
+    const result = await this.#paymentService.getPaymentList({
+      userId: Number(userId),
+    });
     res.status(200).json(result);
   };
 

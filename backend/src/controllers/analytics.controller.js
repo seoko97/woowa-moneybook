@@ -7,14 +7,18 @@ class AnalyticsController {
   }
 
   /**
-   * @param {number} req.body.id - userId
-   * @param {number} req.body.year
-   * @param {string} req.body.category
+   * @param {number} req.query.id - userId
+   * @param {number} req.query.year
+   * @param {string} req.query.category
    * @return {Promise<{totalExpenditureList: TotalExpenditure[], ok: true} | {ok: false, error:Error}>}
    */
   getTotalExpenditureList = async (req, res) => {
-    const data = req.body;
-    const result = await this.#analyticsService.getTotalExpenditureList(data);
+    const { userId, year, category } = req.query;
+    const result = await this.#analyticsService.getTotalExpenditureList({
+      userId: Number(userId),
+      year: Number(year),
+      category,
+    });
     res.status(200).json(result);
   };
 }
