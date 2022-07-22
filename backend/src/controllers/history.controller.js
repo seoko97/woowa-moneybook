@@ -1,4 +1,5 @@
 const historyService = require("../services/history.service");
+const trxListConvertMap = require("../utils/trxListConvertMap");
 
 class HistoryController {
   #historyService;
@@ -8,8 +9,10 @@ class HistoryController {
 
   getHistoryList = async (req, res) => {
     const data = req.body;
-    const result = await this.#historyService.getHistoryList(data);
-    res.status(201).json(result);
+    const { ok, error, trxList } = await this.#historyService.getHistoryList(
+      data
+    );
+    res.status(200).json({ ok, error, trxList: trxListConvertMap(trxList) });
   };
 
   createHistory = async (req, res) => {
