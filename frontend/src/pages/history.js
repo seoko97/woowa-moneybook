@@ -1,26 +1,31 @@
+import Component from "../core/component";
 import { getState, subscribe } from "../core/store";
 import { dateState } from "../store/dateState";
+import { createElement, h } from "../utils/domHandler";
 
-class HistoryPage {
-  $target;
+class HistoryPage extends Component {
   constructor() {
-    this.$target = document.createElement("main");
+    super();
 
     subscribe(dateState, this.render.bind(this));
 
     this.render();
+
+    return this.$target;
   }
 
   render() {
     const { month } = getState(dateState);
 
-    this.$target.innerHTML = `
-      <div>HistoryPage</div>
-      <div>${month}</div>
-    `;
-  }
-  getElement() {
-    return this.$target;
+    const $target = createElement(
+      h("main", null, h("div", null, "HistoryPage"), h("div", null, `${month}`))
+    );
+
+    if (!this.$target) {
+      this.$target = $target;
+    } else {
+      this.reRender($target);
+    }
   }
 }
 
