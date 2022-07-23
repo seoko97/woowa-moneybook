@@ -1,8 +1,5 @@
 export default class Component {
-  $target;
-  constructor(tagname) {
-    this.$target = document.createElement(tagname);
-  }
+  constructor() {}
 
   setEvent() {}
 
@@ -16,6 +13,13 @@ export default class Component {
   }
 
   render() {}
+
+  reRender($newTarget) {
+    const $parentNode = this.$target.parentNode;
+    $parentNode.replaceChild($newTarget, this.$target);
+    this.$target = $newTarget;
+    this.setEvent();
+  }
 
   getElement() {
     return this.$target;

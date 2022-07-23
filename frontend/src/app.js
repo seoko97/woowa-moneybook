@@ -4,7 +4,7 @@ import CalendarPage from "./pages/calendar";
 
 import Header from "./components/Header";
 
-import { createCustomEvent } from "./utils/customEvent";
+import { createCustomEvent } from "./utils/customEventHandler";
 import Router from "./routes";
 
 class App {
@@ -13,7 +13,9 @@ class App {
   constructor({ $app }) {
     this.$app = $app;
     this.init();
+  }
 
+  setEvent() {
     createCustomEvent("locationChange", window, this.render.bind(this));
     window.addEventListener("popstate", this.render.bind(this));
   }
@@ -28,14 +30,16 @@ class App {
 
     this.router = new Router({ routes });
     this.render();
+    this.setEvent();
   }
   render() {
-    const $page = this.router.getView();
-    const $header = new Header();
-
     this.$app.innerHTML = ``;
-    this.$app.appendChild($header.getElement());
-    this.$app.appendChild($page.getElement());
+
+    const $Page = this.router.getView();
+    const $Header = new Header();
+
+    this.$app.append($Header);
+    this.$app.append($Page);
   }
 }
 

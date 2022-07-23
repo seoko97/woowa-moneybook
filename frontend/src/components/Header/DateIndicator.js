@@ -1,13 +1,14 @@
 import Component from "../../core/component";
 import LeftIcon from "../../../public/leftIcon.svg";
 import RightIcon from "../../../public/rightIcon.svg";
+import Svg from "../../core/svg";
 import { dateState } from "../../store/dateState";
 import { getState, setState, subscribe } from "../../core/store";
+import { createElement, h } from "../../utils/domHandler";
 
 export default class DateIndicator extends Component {
   constructor() {
-    super("div");
-    this.$target.classList.add("header--date-indicator");
+    super();
 
     subscribe(dateState, this.render.bind(this));
     this.setState = setState(dateState);
@@ -38,14 +39,26 @@ export default class DateIndicator extends Component {
   render() {
     const date = getState(dateState);
 
-    this.$target.innerHTML = /*html*/ `
-      <button class="date-indicator--left">${LeftIcon}</button>
-      <div class="date-indicator--date">
-        <h1>${date.month}월</h1>
-        <h3>${date.year}</h3>
-      </div>
-      <button class="date-indicator-right">${RightIcon}</button>
-    `;
+    const $newTarget = createElement(
+      h(
+        "div",
+        { class: "header--date-indicator" },
+        new Svg("button", { class: "date-indicator--left" }, LeftIcon),
+        h(
+          "div",
+          { class: "date-indicator--date" },
+          h("h1", null, `${date.month}월`),
+          h("h3", null, `${date.year}`)
+        ),
+        new Svg("button", { class: "date-indicator--right" }, RightIcon)
+      )
+    );
+
+    if (!this.$target) {
+      this.$target = $newTarget;
+    } else {
+      this.reRender($newTarget);
+    }
   }
 
   getTemplate() {
