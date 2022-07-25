@@ -6,6 +6,9 @@ const QUERIES = {
   READ_HISTORIES: `SELECT DATE_FORMAT(trxDate, '%Y-%m-%d') as date, direction, category, description, paymentId, amount  
     FROM TRANSACTION_TB 
     WHERE userId=? AND YEAR(trxDate)=? AND MONTH(trxDate)=? AND direction LIKE ? AND category LIKE ? ORDER BY trxDate`,
+  READ_EACH_CATEGORY_HISTORIES: ``,
+  UPDATE_HISTORY: ``,
+  DELETE_HISTORY: ``,
   // [ 유저 id ]
   READ_PAYMENTS:
     "SELECT PAY.title, PAY.id FROM PAYMENT_TB AS PAY JOIN USER_PAYMENT_TB AS USER_PAY ON PAY.id = USER_PAY.paymentId WHERE USER_PAY.userId = ?",
