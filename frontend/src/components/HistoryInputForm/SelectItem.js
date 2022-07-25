@@ -2,6 +2,8 @@ import Svg from "../../core/svg";
 import Component from "../../core/component";
 import DownArrowIcon from "../../../public/downArrowIcon.svg";
 import { createElement, h } from "../../utils/domHandler";
+import { getState, subscribe } from "../../core/store";
+import { paymentListState } from "../../store/paymentState";
 
 class SelectItem extends Component {
   constructor({ props, title, children, defaultValue }) {
@@ -19,25 +21,28 @@ class SelectItem extends Component {
   }
   setEvent() {
     this.addEvent("click", ".form__item__select", this.onShowDropDown.bind(this));
-    this.addEvent("click", ".overlay", this.detectOutsidClick.bind(this));
+    this.addEvent("click", ".overlay", this.detectOutsideClick.bind(this));
   }
 
   onShowDropDown() {
-    this.children.classList.toggle("active");
+    this.component.classList.toggle("active");
     this.$target.querySelector(".overlay").classList.toggle("active");
   }
 
-  detectOutsidClick(e) {
+  detectOutsideClick(e) {
+    const $payments = this.component;
     const $clickNode = e.target.closest(".form__item__select");
-    const checkSibling = $clickNode === this.children.previousSibling;
+    const checkSibling = $clickNode === $payments.previousSibling;
 
-    if (!checkSibling && this.children !== null && !this.children.contains(e.target)) {
-      this.children.classList.remove("active");
-      e.target.classList.toggle("active");
+    if (!checkSibling && $payments !== null && !$payments.contains(e.target)) {
+      $payments.classList.remove("active");
+      e.target.classList.remove("active");
     }
   }
 
   render() {
+    this.component = new this.children();
+
     const $target = createElement(
       h(
         "div",
@@ -50,7 +55,7 @@ class SelectItem extends Component {
           new Svg("span", { class: "icon" }, DownArrowIcon)
         ),
         h("div", { class: "overlay" }, ""),
-        this.children
+        this.component
       )
     );
 
