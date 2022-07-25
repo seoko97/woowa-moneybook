@@ -7,11 +7,3 @@ export const dateState = initState({
     month: new Date().getMonth() + 1,
   },
 });
-
-export const dateState2 = initState({
-  key: "dateState",
-  defaultValue: {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-  },
-});
