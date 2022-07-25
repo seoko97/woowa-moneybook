@@ -1,4 +1,7 @@
-const { READ_DETAIL } = require("../constant/queries");
+const {
+  READ_DETAIL,
+  READ_EACH_CATEGORY_HISTORIES,
+} = require("../constant/queries");
 const { readDB } = require("../utils/dbHandler");
 
 /**
@@ -23,6 +26,17 @@ class AnalyticsService {
       category,
     ]);
     return { ok, error, totalExpenditureList: result };
+  }
+
+  async getEachCategoryExpenditure(data) {
+    // [ 유저 id, 년도, 달 ]
+    const { userId, year, month } = data;
+    const { ok, result, error } = await readDB(READ_EACH_CATEGORY_HISTORIES, [
+      userId,
+      year,
+      month,
+    ]);
+    return { ok, error, eachCategoryExpenditure: result };
   }
 }
 
