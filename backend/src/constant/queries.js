@@ -8,7 +8,8 @@ const QUERIES = {
     WHERE userId=? AND YEAR(trxDate)=? AND MONTH(trxDate)=? AND direction LIKE ? AND category LIKE ? ORDER BY trxDate`,
   READ_EACH_CATEGORY_HISTORIES: ``,
   UPDATE_HISTORY: ``,
-  DELETE_HISTORY: ``,
+  // [ 트랜잭션 id ]
+  DELETE_HISTORY: "DELETE FROM TRANSACTION_TB WHERE id=?",
   // [ 유저 id ]
   READ_PAYMENTS:
     "SELECT PAY.title, PAY.id FROM PAYMENT_TB AS PAY JOIN USER_PAYMENT_TB AS USER_PAY ON PAY.id = USER_PAY.paymentId WHERE USER_PAY.userId = ?",
