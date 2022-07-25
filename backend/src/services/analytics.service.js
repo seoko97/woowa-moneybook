@@ -10,6 +10,12 @@ const { readDB } = require("../utils/dbHandler");
  * @property {number} total
  */
 
+/**
+ * @typedef {Object} EachCategoryExpenditure
+ * @property {string} category
+ * @property {number} total
+ */
+
 class AnalyticsService {
   /**
    * @async
@@ -28,6 +34,15 @@ class AnalyticsService {
     return { ok, error, totalExpenditureList: result };
   }
 
+  /**
+   * @async
+   * @function getEachCategoryExpenditure
+   * @param {number} data.userId
+   * @param {number} data.year
+   * @param {string} data.month
+   * @return {Promise<{eachCategoryExpenditure: EachCategoryExpenditure[], ok: true}
+   * | {ok: false, error:Error}>}
+   */
   async getEachCategoryExpenditure(data) {
     // [ 유저 id, 년도, 달 ]
     const { userId, year, month } = data;
