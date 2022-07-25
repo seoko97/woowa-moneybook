@@ -20,20 +20,22 @@ class PaymentList extends DropDown {
   }
 
   setEvent() {
-    this.addEvent("click", ".ul--li", (e) => {
-      const $categoryItem = e.target.closest(".ul--li");
-      const id = parseInt($categoryItem.dataset.id);
+    this.addEvent("click", ".ul--li", this.onClickPaymentListItem.bind(this));
+  }
 
-      const selectedItem = this.data.find((item) => item.id === id);
+  onClickPaymentListItem(e) {
+    const $categoryItem = e.target.closest(".ul--li");
+    const id = parseInt($categoryItem.dataset.id);
 
-      if (!selectedItem) return;
+    const selectedItem = this.data.find((item) => item.id === id);
 
-      const newState = { ...getState(historyState) };
-      newState.payment = selectedItem;
+    if (!selectedItem) return;
 
-      this.setHistoryState(newState);
-      this.$target.classList.toggle("active");
-    });
+    const newState = { ...getState(historyState) };
+    newState.payment = selectedItem;
+
+    this.setHistoryState(newState);
+    this.$target.classList.toggle("active");
   }
 
   render() {
@@ -44,7 +46,7 @@ class PaymentList extends DropDown {
         this.data.map(({ title, id }) =>
           h(
             "li",
-            { class: "ul--li", ["data-id"]: String(id) },
+            { class: "ul--li", "data-id": String(id) },
             h(
               "p",
               { class: "ul--li__desc" },
