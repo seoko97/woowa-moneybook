@@ -1,4 +1,4 @@
-const { getState, initState, notify, setState, subscribe, unsubscribe } = (function () {
+export const { getState, initState, setState, subscribe, unsubscribe } = (function () {
   const globalState = new Map();
 
   function initState({ key, defaultValue }) {
@@ -44,10 +44,7 @@ const { getState, initState, notify, setState, subscribe, unsubscribe } = (funct
     initState,
     subscribe,
     unsubscribe,
-    notify,
     getState,
     setState,
   };
 })();
-
-export { getState, initState, notify, setState, subscribe, unsubscribe };
