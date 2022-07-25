@@ -19,7 +19,7 @@ class SelectItem extends Component {
   }
   setEvent() {
     this.addEvent("click", ".form__item__select", this.onShowDropDown.bind(this));
-    this.addEvent("click", ".overlay", this.detectOutsidClick.bind(this));
+    this.addEvent("click", ".overlay", this.detectOutsideClick.bind(this));
   }
 
   onShowDropDown() {
@@ -27,7 +27,7 @@ class SelectItem extends Component {
     this.$target.querySelector(".overlay").classList.toggle("active");
   }
 
-  detectOutsidClick(e) {
+  detectOutsideClick(e) {
     const $clickNode = e.target.closest(".form__item__select");
     const checkSibling = $clickNode === this.children.previousSibling;
 
