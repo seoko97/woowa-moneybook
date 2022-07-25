@@ -122,6 +122,33 @@ export default class LineGraph extends Component {
       return h("circle", { cx: x, cy: y, r: "1.5", fill: CATEGORY_COLORS[category] });
     });
 
+    const $lines = Array.from({ length: 11 }).map((_, i) => {
+      const [startX, startY] = pointsCoord[i];
+      const [endX, endY] = pointsCoord[i + 1];
+      const dx = (endX - startX) * (width / viewBoxWidth);
+      const dy = (endY - startY) * (height / viewBoxHeight);
+      const length = (dx ** 2 + dy ** 2) ** 0.5 * 0.35;
+      const speed = duration * 0.1;
+      return h(
+        "path",
+        {
+          d: `M ${startX} ${startY} L ${endX} ${endY}`,
+          stroke: CATEGORY_COLORS[category],
+          "stroke-width": 0.5,
+          ["stroke-dasharray"]: `${length}`,
+          ["stroke-dashoffset"]: `${length}`,
+        },
+        h("animate", {
+          attributeName: "stroke-dashoffset",
+          begin: `${speed * i}`,
+          dur: `${speed}`,
+          from: `${length}`,
+          to: "0",
+          fill: "freeze",
+        })
+      );
+    });
+
     const lineGraph = createElement(
       h(
         "svg",
@@ -134,7 +161,8 @@ export default class LineGraph extends Component {
         },
         $border,
         ...$divideLines,
-        ...$points
+        ...$points,
+        $lines
       )
     );
 
