@@ -2,6 +2,7 @@ import Component from "../../core/component";
 import { createElement, h } from "../../utils/domHandler";
 import Svg from "../../core/svg";
 import "./style.css";
+import { CATEGORY_COLORS } from "../../constants/category";
 
 export default class LineGraph extends Component {
   constructor() {
@@ -116,6 +117,11 @@ export default class LineGraph extends Component {
     });
     const pointsCoord = this.makePointsCoord({ viewBoxWidth });
 
+    const category = "culture";
+    const $points = pointsCoord.map(([x, y]) => {
+      return h("circle", { cx: x, cy: y, r: "1.5", fill: CATEGORY_COLORS[category] });
+    });
+
     const lineGraph = createElement(
       h(
         "svg",
@@ -127,7 +133,8 @@ export default class LineGraph extends Component {
           height: height,
         },
         $border,
-        ...$divideLines
+        ...$divideLines,
+        ...$points
       )
     );
 
