@@ -1,13 +1,11 @@
 import Component from "../core/component";
-import { getState, subscribe } from "../core/store";
-import { dateState } from "../store/dateState";
+import HistoryInputForm from "../components/HistoryInputForm";
 import { createElement, h } from "../utils/domHandler";
+import "../styles/main.css";
 
 class HistoryPage extends Component {
   constructor() {
     super();
-
-    subscribe(dateState, this.render.bind(this));
 
     this.render();
 
@@ -15,10 +13,12 @@ class HistoryPage extends Component {
   }
 
   render() {
-    const { month } = getState(dateState);
-
     const $target = createElement(
-      h("main", null, h("div", null, "HistoryPage"), h("div", null, `${month}`))
+      h(
+        "main",
+        { class: "main" },
+        h("div", { class: "template" }, new HistoryInputForm(), h("div", null, "list"))
+      )
     );
 
     if (!this.$target) {
