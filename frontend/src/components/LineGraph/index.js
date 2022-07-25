@@ -82,6 +82,18 @@ export default class LineGraph extends Component {
     return [...horizontal, ...vertical];
   }
 
+  makePointsCoord({ viewBoxWidth }) {
+    const rand = (min, max) => {
+      return Math.floor(Math.random() * (max - min)) + min;
+    };
+    return Array.from({ length: 12 })
+      .map((_, i) => viewBoxWidth * (i / 11))
+      .map((x) => {
+        const y = `${rand(5, 95)}`;
+        return [x, y];
+      });
+  }
+
   render() {
     const viewBoxWidth = 200;
     const viewBoxHeight = 100;
@@ -102,16 +114,21 @@ export default class LineGraph extends Component {
       divideLineColor,
       duration,
     });
+    const pointsCoord = this.makePointsCoord({ viewBoxWidth });
+
     const lineGraph = createElement(
-      h("svg", {
-        viewBox: `0 0 ${viewBoxWidth} ${viewBoxHeight}`,
-        xmlns: "http://www.w3.org/2000/svg",
-        overflow: "visible",
-        width: width,
-        height: height,
-      }),
-      $border,
-      ...$divideLines
+      h(
+        "svg",
+        {
+          viewBox: `0 0 ${viewBoxWidth} ${viewBoxHeight}`,
+          xmlns: "http://www.w3.org/2000/svg",
+          overflow: "visible",
+          width: width,
+          height: height,
+        },
+        $border,
+        ...$divideLines
+      )
     );
 
     this.$target = new Svg("div", { class: "line-graph-container" }, lineGraph);
