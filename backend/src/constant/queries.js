@@ -7,7 +7,8 @@ const QUERIES = {
     FROM TRANSACTION_TB 
     WHERE userId=? AND YEAR(trxDate)=? AND MONTH(trxDate)=? AND direction LIKE ? AND category LIKE ? ORDER BY trxDate`,
   READ_EACH_CATEGORY_HISTORIES: ``,
-  UPDATE_HISTORY: ``,
+  UPDATE_HISTORY: `UPDATE TRANSACTION_TB SET trxDate=?, direction=?, category=?,
+                description=?, paymentId=?, amount=? WHERE id=?`,
   // [ 트랜잭션 id ]
   DELETE_HISTORY: "DELETE FROM TRANSACTION_TB WHERE id=?",
   // [ 유저 id ]
