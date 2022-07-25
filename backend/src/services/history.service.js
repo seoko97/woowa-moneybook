@@ -1,4 +1,9 @@
-const { CREATE_HISTORY, READ_HISTORIES } = require("../constant/queries");
+const {
+  CREATE_HISTORY,
+  READ_HISTORIES,
+  UPDATE_HISTORY,
+  DELETE_HISTORY,
+} = require("../constant/queries");
 const { readDB, writeDB } = require("../utils/dbHandler");
 
 class HistoryService {
@@ -39,6 +44,35 @@ class HistoryService {
       paymentId,
       amount,
     ]);
+    return { ok, error };
+  }
+
+  async updateHistory(data) {
+    const {
+      userId,
+      date,
+      direction,
+      category,
+      description,
+      paymentId,
+      amount,
+    } = data;
+    const { ok, error } = await writeDB(UPDATE_HISTORY, [
+      userId,
+      date,
+      direction,
+      category,
+      description,
+      paymentId,
+      amount,
+    ]);
+    return { ok, error };
+  }
+
+  async deleteHistory(data) {
+    const { id } = data;
+    // [ 트랜잭션 id ]
+    const { ok, error } = await writeDB(DELETE_HISTORY, [id]);
     return { ok, error };
   }
 }
