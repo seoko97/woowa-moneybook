@@ -3,15 +3,18 @@ import { createElement, h } from "../../utils/domHandler";
 import CloseIcon from "../../../public/closeIcon.svg";
 import Svg from "../../core/svg";
 import { historyState } from "../../store/historyState";
+import { isOpenModalState } from "../../store/isOpenModalState";
 import { getState, setState } from "../../core/store";
+import { paymentListState } from "../../store/paymentState";
 
 class PaymentList extends DropDown {
-  constructor({ data }) {
+  data = [];
+  constructor() {
     super();
 
-    this.data = data;
     this.component = "PaymentList";
     this.setHistoryState = setState(historyState);
+    this.setIsOpenModalState = setState(isOpenModalState);
 
     this.render();
     this.setEvent();
@@ -20,23 +23,46 @@ class PaymentList extends DropDown {
   }
 
   setEvent() {
-    this.addEvent("click", ".ul--li", (e) => {
-      const $categoryItem = e.target.closest(".ul--li");
-      const id = parseInt($categoryItem.dataset.id);
+    this.addEvent("click", ".ul--li", this.onClickPaymentItem.bind(this));
+  }
 
-      const selectedItem = this.data.find((item) => item.id === id);
+  onClickPaymentItem(e) {
+    const $categoryItem = e.target.closest(".ul--li");
 
-      if (!selectedItem) return;
+    if ($categoryItem.classList.contains("create")) {
+      this.onOpenModal();
+      return;
+    }
 
-      const newState = { ...getState(historyState) };
-      newState.payment = selectedItem;
+    const id = parseInt($categoryItem.dataset.id);
+    const selectedItem = this.data.find((item) => item.id === id);
+    const $deleteButton = e.target.closest(".delete");
 
-      this.setHistoryState(newState);
-      this.$target.classList.toggle("active");
+    if (!selectedItem) return;
+
+    if ($deleteButton) {
+      this.onOpenModal(selectedItem);
+      return;
+    }
+
+    const newState = { ...getState(historyState) };
+    newState.payment = selectedItem;
+
+    this.setHistoryState(newState);
+  }
+
+  onOpenModal(selectedItem = null) {
+    const modalState = getState(isOpenModalState);
+    this.setIsOpenModalState({
+      ...modalState,
+      isOpen: true,
+      payment: selectedItem,
     });
   }
 
   render() {
+    this.data = getState(paymentListState);
+
     const $target = createElement(
       h(
         "ul",
@@ -46,14 +72,14 @@ class PaymentList extends DropDown {
             "li",
             { class: "ul--li", ["data-id"]: String(id) },
             h(
-              "p",
+              "div",
               { class: "ul--li__desc" },
-              title,
+              h("p", null, title),
               new Svg("span", { class: "icon delete" }, CloseIcon)
             )
           )
         ),
-        h("li", { class: "ul--li" }, h("p", { class: "ul--li__desc" }, "추가하기"))
+        h("li", { class: "ul--li create" }, h("p", { class: "ul--li__desc" }, "추가하기"))
       )
     );
 
