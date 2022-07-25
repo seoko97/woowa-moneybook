@@ -1,0 +1,5 @@
+.line-graph-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
