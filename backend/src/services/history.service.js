@@ -48,23 +48,17 @@ class HistoryService {
   }
 
   async updateHistory(data) {
-    const {
-      userId,
-      date,
-      direction,
-      category,
-      description,
-      paymentId,
-      amount,
-    } = data;
+    // [ 일자, 수입/지출, 카테고리, 설명, 결제수단 id, 수량, 내역 id ]
+    const { trxDate, direction, category, description, paymentId, amount, id } =
+      data;
     const { ok, error } = await writeDB(UPDATE_HISTORY, [
-      userId,
-      date,
+      trxDate,
       direction,
       category,
       description,
       paymentId,
       amount,
+      id,
     ]);
     return { ok, error };
   }
