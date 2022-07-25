@@ -6,5 +6,7 @@ const historyRouter = express.Router();
 
 historyRouter.get("/", asyncHandler(historyController.getHistoryList));
 historyRouter.post("/", asyncHandler(historyController.createHistory));
+historyRouter.patch("/", asyncHandler(historyController.updateHistory));
+historyRouter.delete("/", asyncHandler(historyController.deleteHistory));
 
 module.exports = historyRouter;
