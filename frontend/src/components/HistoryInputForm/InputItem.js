@@ -1,6 +1,6 @@
 import Component from "../../core/component";
 import { createElement, h } from "../../utils/domHandler";
-import DirectiomItem from "./DirectionItem";
+import DirectionItem from "./DirectionItem";
 
 class InputItem extends Component {
   constructor({ props }) {
@@ -14,8 +14,9 @@ class InputItem extends Component {
   }
 
   render() {
-    const text = this.props.name === "amount" ? "원" : "";
-    const $direction = this.props.name === "amount" ? new DirectiomItem() : "";
+    const isAmount = this.props.name === "amount";
+    const text = isAmount ? "원" : "";
+    const $direction = isAmount ? new DirectionItem() : "";
 
     const $target = createElement(
       h(
