@@ -22,7 +22,7 @@ export default class LineGraph extends Component {
       d: `M 0 0 H ${viewBoxWidth} V ${viewBoxHeight} H 0 Z`,
       fill: "transparent",
       stroke: borderColor,
-      ["stroke-width"]: "0.3",
+      "stroke-width": "0.3",
     });
   }
 
@@ -42,9 +42,9 @@ export default class LineGraph extends Component {
             viewBoxHeight * ((horizontalUnit - i) / (horizontalUnit + 1))
           } H ${viewBoxWidth}`,
           stroke: divideLineColor,
-          ["stroke-width"]: "0.3",
-          ["stroke-dashoffset"]: `${viewBoxWidth}`,
-          ["stroke-dasharray"]: `${viewBoxWidth}`,
+          "stroke-width": "0.3",
+          "stroke-dashoffset": `${viewBoxWidth}`,
+          "stroke-dasharray": `${viewBoxWidth}`,
         },
         duration &&
           h("animate", {
@@ -66,9 +66,9 @@ export default class LineGraph extends Component {
         {
           d: `M ${viewBoxWidth * ((i + 1) / (verticalUnit + 1))} ${viewBoxHeight} V 0`,
           stroke: divideLineColor,
-          ["stroke-width"]: "0.3",
-          ["stroke-dashoffset"]: `${viewBoxHeight}`,
-          ["stroke-dasharray"]: `${viewBoxHeight}`,
+          "stroke-width": "0.3",
+          "stroke-dashoffset": `${viewBoxHeight}`,
+          "stroke-dasharray": `${viewBoxHeight}`,
         },
         duration &&
           h("animate", {
@@ -87,16 +87,56 @@ export default class LineGraph extends Component {
     return [...horizontal, ...vertical];
   }
 
-  makePointsCoord({ viewBoxWidth }) {
-    const rand = (min, max) => {
-      return Math.floor(Math.random() * (max - min)) + min;
-    };
-    return Array.from({ length: 6 })
-      .map((_, i) => viewBoxWidth * (i / 5))
-      .map((x) => {
-        const y = `${rand(5, 95)}`;
-        return [x, y];
-      });
+  makePoints({ pointsCoord, category }) {
+    return pointsCoord.map(([x, y]) => {
+      return h("circle", { cx: x, cy: y, r: "1.5", fill: CATEGORY_COLORS[category] });
+    });
+  }
+
+  makeTexts({ data, textPos, pointsCoord }) {
+    return data.map(({ total }, i) => {
+      const [anchor, dy] = textPos[i];
+      return h(
+        "text",
+        {
+          x: pointsCoord[i][0],
+          y: pointsCoord[i][1],
+          "text-anchor": anchor,
+          "font-size": "6",
+          dy: dy,
+        },
+        `${total.toLocaleString()}`
+      );
+    });
+  }
+
+  makeLines({ pointsCoord, width, height, viewBoxWidth, viewBoxHeight, duration, category }) {
+    return Array.from({ length: 5 }).map((_, i) => {
+      const [startX, startY] = pointsCoord[i];
+      const [endX, endY] = pointsCoord[i + 1];
+      const dx = (endX - startX) * (width / viewBoxWidth);
+      const dy = (endY - startY) * (height / viewBoxHeight);
+      const length = (dx ** 2 + dy ** 2) ** 0.5 * 0.35;
+      const speed = duration * 0.1;
+      return h(
+        "path",
+        {
+          d: `M ${startX} ${startY} L ${endX} ${endY}`,
+          stroke: CATEGORY_COLORS[category],
+          "stroke-width": 0.5,
+          "stroke-dasharray": `${length}`,
+          "stroke-dashoffset": `${length}`,
+        },
+        h("animate", {
+          attributeName: "stroke-dashoffset",
+          begin: `${speed * i}`,
+          dur: `${speed}`,
+          from: `${length}`,
+          to: "0",
+          fill: "freeze",
+        })
+      );
+    });
   }
 
   rand(min, max) {
@@ -105,7 +145,7 @@ export default class LineGraph extends Component {
 
   render() {
     const tmpData = [
-      // { month: 10, total: this.rand(1, 100) * 10000 },
+      { month: 10, total: this.rand(1, 100) * 10000 },
       { month: 11, total: this.rand(1, 100) * 10000 },
       { month: 12, total: this.rand(1, 100) * 10000 },
       { month: 1, total: this.rand(1, 100) * 10000 },
@@ -142,52 +182,19 @@ export default class LineGraph extends Component {
       divideLineColor,
       duration,
     });
-    const $texts = data.map(({ total }, i) => {
-      const [anchor, dy] = textPos[i];
-      return h(
-        "text",
-        {
-          x: pointsCoord[i][0],
-          y: pointsCoord[i][1],
-          "text-anchor": anchor,
-          "font-size": "6",
-          dy: dy,
-        },
-        `${total.toLocaleString()}`
-      );
-    });
-    // const pointsCoord = this.makePointsCoord({ viewBoxWidth });
+    const $texts = this.makeTexts({ data, textPos, pointsCoord });
 
     const category = "쇼핑/뷰티";
-    const $points = pointsCoord.map(([x, y]) => {
-      return h("circle", { cx: x, cy: y, r: "1.5", fill: CATEGORY_COLORS[category] });
-    });
+    const $points = this.makePoints({ pointsCoord, category });
 
-    const $lines = Array.from({ length: 5 }).map((_, i) => {
-      const [startX, startY] = pointsCoord[i];
-      const [endX, endY] = pointsCoord[i + 1];
-      const dx = (endX - startX) * (width / viewBoxWidth);
-      const dy = (endY - startY) * (height / viewBoxHeight);
-      const length = (dx ** 2 + dy ** 2) ** 0.5 * 0.35;
-      const speed = duration * 0.1;
-      return h(
-        "path",
-        {
-          d: `M ${startX} ${startY} L ${endX} ${endY}`,
-          stroke: CATEGORY_COLORS[category],
-          "stroke-width": 0.5,
-          ["stroke-dasharray"]: `${length}`,
-          ["stroke-dashoffset"]: `${length}`,
-        },
-        h("animate", {
-          attributeName: "stroke-dashoffset",
-          begin: `${speed * i}`,
-          dur: `${speed}`,
-          from: `${length}`,
-          to: "0",
-          fill: "freeze",
-        })
-      );
+    const $lines = this.makeLines({
+      pointsCoord,
+      width,
+      height,
+      viewBoxWidth,
+      viewBoxHeight,
+      duration,
+      category,
     });
 
     const lineGraph = createElement(
@@ -201,10 +208,10 @@ export default class LineGraph extends Component {
           height: height,
         },
         $border,
-        ...$divideLines,
-        ...$points,
-        $lines,
-        ...$texts
+        $divideLines,
+        $points,
+        $texts,
+        $lines
       )
     );
 
