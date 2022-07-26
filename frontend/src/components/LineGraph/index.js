@@ -10,10 +10,16 @@ import {
   movePointsOffset,
 } from "../../utils/lineGraphUtils";
 import { MONTH_UNIT } from "../../constants/lineGraph";
+import { getState, subscribe } from "../../core/store";
+import { analyticsState } from "../../store/analyticsState";
 
 export default class LineGraph extends Component {
   constructor() {
     super();
+
+    this.component = "LineGraph";
+    subscribe(analyticsState, this.component, this.render.bind(this));
+
     this.render();
     return this.$target;
   }
@@ -103,7 +109,7 @@ export default class LineGraph extends Component {
           x: pointsCoord[i][0],
           y: pointsCoord[i][1],
           "text-anchor": anchor,
-          "font-size": "5",
+          "font-size": "4.5",
           "font-weight": "700",
           dy: dy,
         },
@@ -146,28 +152,34 @@ export default class LineGraph extends Component {
   }
 
   render() {
-    let $target = h("div", null);
+    let $target;
+    const { selectedCategory } = getState(analyticsState);
+
+    // 보여주지 않아도 되는 상황
+    if (!selectedCategory) {
+      $target = createElement(h("div", null));
+    }
     // 보여줘야 하는 상황이라면
-    if (true) {
+    else {
       const tmpData = [
-        { month: 8, total: this.rand(1, 100) * 10000 },
-        { month: 9, total: this.rand(1, 100) * 10000 },
-        { month: 10, total: this.rand(1, 100) * 10000 },
-        { month: 11, total: this.rand(1, 100) * 10000 },
-        { month: 12, total: this.rand(1, 100) * 10000 },
-        { month: 1, total: this.rand(1, 100) * 10000 },
-        { month: 2, total: this.rand(1, 100) * 10000 },
-        { month: 3, total: this.rand(1, 100) * 10000 },
-        { month: 4, total: this.rand(1, 100) * 10000 },
-        { month: 5, total: this.rand(1, 100) * 10000 },
-        { month: 6, total: this.rand(1, 100) * 10000 },
-        { month: 7, total: this.rand(1, 100) * 10000 },
+        { month: 8, total: this.rand(0, 100) * 10000 },
+        { month: 9, total: this.rand(0, 100) * 10000 },
+        { month: 10, total: this.rand(0, 100) * 10000 },
+        { month: 11, total: this.rand(0, 100) * 10000 },
+        { month: 12, total: this.rand(0, 100) * 10000 },
+        { month: 1, total: this.rand(0, 100) * 10000 },
+        { month: 2, total: this.rand(0, 100) * 10000 },
+        { month: 3, total: this.rand(0, 100) * 10000 },
+        { month: 4, total: this.rand(0, 100) * 10000 },
+        { month: 5, total: this.rand(0, 100) * 10000 },
+        { month: 6, total: this.rand(0, 100) * 10000 },
+        { month: 7, total: this.rand(0, 100) * 10000 },
       ];
       const data = makeFullDataArray({ data: tmpData, month: 7 });
       const viewBoxWidth = 200;
       const viewBoxHeight = 100;
-      const width = 600;
-      const height = 400;
+      const width = 700;
+      const height = 350;
       const borderColor = "grey";
       const horizontalUnit = 6;
       const verticalUnit = MONTH_UNIT - 2;
@@ -195,7 +207,7 @@ export default class LineGraph extends Component {
       });
       const $texts = this.makeTexts({ data, textPos, pointsCoord });
 
-      const category = "쇼핑/뷰티";
+      const { selectedCategory: category } = getState(analyticsState);
       const $points = this.makePoints({ pointsCoord, category });
 
       const $lines = this.makeLines({
