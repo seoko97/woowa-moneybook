@@ -1,3 +1,3 @@
-const MONTH_UNIT = 6;
+const MONTH_UNIT = 12;
 
 export { MONTH_UNIT };
