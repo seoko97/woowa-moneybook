@@ -11,12 +11,12 @@ const getCategoryDataPath = ({ startX, startY, endX, endY, isLargeArcFlag }) => 
 };
 
 const getTotalAmount = (data) => {
-  return data.reduce((total, { amount }) => total + amount, 0);
+  return data.reduce((total, { total: amount }) => total + amount, 0);
 };
 
 const getTotalPercent = (data) => {
   const total = getTotalAmount(data);
-  return data.map(({ amount }) => amount / total);
+  return data.map(({ total: amount }) => amount / total);
 };
 
 const getDoughnutChartPaths = (totalPercent) => {
@@ -31,4 +31,4 @@ const getDoughnutChartPaths = (totalPercent) => {
   });
 };
 
-export { getDoughnutChartPaths, getTotalPercent };
+export { getDoughnutChartPaths, getTotalPercent, getTotalAmount };
