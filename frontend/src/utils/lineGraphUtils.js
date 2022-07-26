@@ -18,9 +18,9 @@ const makeFullDataArray = ({ data, month: curMonth }) => {
 const makeBoundary = ({ data, gapUnit = 5 }) => {
   let max = -1,
     min = Infinity;
-  data.for(({ amount }) => {
-    if (max < amount) max = amount;
-    if (amount < min) min = amount;
+  data.forEach(({ total }) => {
+    if (max < total) max = total;
+    if (total < min) min = total;
   });
   let lowerBoundary = 0;
   let upperBoundary = 0;
@@ -34,6 +34,7 @@ const makeBoundary = ({ data, gapUnit = 5 }) => {
   // 차이가 있는 경우 min을 밑에서 1번째, max를 위에서 1번째로
   else if (diff !== 0) {
     lowerBoundary = min - gap;
+    if (lowerBoundary < 0) lowerBoundary = min - lowerBoundary / 100;
     upperBoundary = max + gap;
     return [lowerBoundary, upperBoundary];
   }
@@ -43,4 +44,13 @@ const makeBoundary = ({ data, gapUnit = 5 }) => {
   }
 };
 
-export { makeFullDataArray, makeBoundary };
+const getCoordinates = ({ data, lowerBoundary, upperBoundary, viewBoxWidth, viewBoxHeight }) => {
+  return data.map(({ total }, i) => {
+    const x = viewBoxWidth * (i / (data.length - 1));
+    const y =
+      viewBoxHeight - ((total - lowerBoundary) / (upperBoundary - lowerBoundary)) * viewBoxHeight;
+    return [x, y];
+  });
+};
+
+export { makeFullDataArray, makeBoundary, getCoordinates };
