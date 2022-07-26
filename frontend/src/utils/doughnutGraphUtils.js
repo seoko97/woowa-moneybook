@@ -9,3 +9,7 @@ const getCoordinatesForPercent = (percent) => {
 const getCategoryDataPath = ({ startX, startY, endX, endY, isLargeArcFlag }) => {
   return `M ${startX} ${startY} A ${RADIUS} ${RADIUS} 0 ${isLargeArcFlag} 1 ${endX} ${endY} L 0 0`;
 };
+
+const getTotalAmount = (data) => {
+  return data.reduce((total, { amount }) => total + amount, 0);
+};
