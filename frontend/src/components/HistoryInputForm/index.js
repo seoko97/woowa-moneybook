@@ -5,13 +5,14 @@ import CategoryList from "../DropDown/CategoryList";
 import Button from "../Button";
 
 import Component from "../../core/component";
-import { CATEGORY, PAYMENT } from "../../dummy";
 import { getState, setState, subscribe } from "../../core/store";
 
 import { historyState } from "../../store/historyState";
 
 import { createElement, h } from "../../utils/domHandler";
 import PaymentList from "../DropDown/PaymentList";
+import Modal from "../Modal";
+import { checkFormValidation } from "../../utils/checkFormValidation";
 
 class HistoryInputForm extends Component {
   constructor() {
@@ -72,7 +73,7 @@ class HistoryInputForm extends Component {
   }
 
   getNewStateByInput(stateName, value) {
-    const newState = { ...getState(historyState) };
+    const newState = { ...this.state };
 
     if (newState[stateName] === undefined) {
       return;
@@ -84,42 +85,50 @@ class HistoryInputForm extends Component {
   }
 
   render() {
-    const { id, description, trxDate, direction, category, payment, amount } =
-      getState(historyState);
+    this.state = getState(historyState);
+
+    const { id, ...data } = this.state;
+    const isValid = checkFormValidation(data);
 
     const $target = createElement(
       h(
         "form",
         { class: "main--form" },
-
-        new DateItem({ name: "trxDate", defaultDate: trxDate }),
+        new DateItem({ name: "trxDate", defaultDate: data.trxDate }),
         new SelectItem({
           title: "분류",
-          defaultValue: category,
-          children: new CategoryList({ data: CATEGORY }),
+          defaultValue: data.category,
+          children: CategoryList,
         }),
         new InputItem({
           props: {
             class: "form__item__input",
             placeholder: "입력하세요",
             name: "description",
-            value: description,
+            value: data.description,
           },
         }),
         new SelectItem({
           title: "결제수단",
-          defaultValue: payment.title,
-          children: new PaymentList({ data: PAYMENT }),
+          defaultValue: data.payment?.title || "",
+          children: PaymentList,
         }),
         new InputItem({
           props: {
             class: "form__item__input",
             placeholder: "입력하세요",
             name: "amount",
-            value: amount,
+            value: data.amount,
           },
         }),
-        new Button()
+        new Button({
+          valid: isValid,
+          props: {
+            class: `button ${isValid ? "valid" : ""}`,
+            disabled: !isValid,
+          },
+        }),
+        new Modal()
       )
     );
 

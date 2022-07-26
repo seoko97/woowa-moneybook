@@ -1,7 +1,6 @@
 const CATEGORY = ["생활", "식비", "교통", "쇼핑/뷰티", "의료/건강", "문화/여가", "미분류"];
-const INCOME = ["지출", "수입"];
 
-const PAYMENT = [
+const PAYMENTS = [
   {
     id: 0,
     title: "현금",
@@ -16,4 +15,4 @@ const PAYMENT = [
   },
 ];
 
-export { PAYMENT, CATEGORY };
+export { PAYMENTS, CATEGORY };

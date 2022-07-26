@@ -1,13 +1,14 @@
 import DropDown from ".";
 import { getState, setState } from "../../core/store";
+import { CATEGORY } from "../../dummy";
 import { historyState } from "../../store/historyState";
 import { createElement, h } from "../../utils/domHandler";
 
 class CategoryList extends DropDown {
-  constructor({ data }) {
+  constructor() {
     super();
 
-    this.data = data;
+    this.data = CATEGORY;
     this.component = "CategoryList";
     this.setHistoryState = setState(historyState);
 

@@ -7,10 +7,7 @@ const HISTOTY_INITSTATE = {
   trxDate: dateHandler(new Date()),
   direction: "out",
   category: "",
-  payment: {
-    id: null,
-    title: "",
-  },
+  payment: null,
   amount: 0,
 };
 
