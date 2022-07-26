@@ -1,5 +1,5 @@
 import Component from "../../core/component";
-import { getState } from "../../core/store";
+import { getState, setState } from "../../core/store";
 import { doughnutState } from "../../store/doughnutState";
 import { createElement, h } from "../../utils/domHandler";
 import { CATEGORY_COLORS } from "../../constants/category";
@@ -12,10 +12,13 @@ import {
   INITIAL_DASH_OFFSET,
   STROKE_WIDTH,
 } from "../../constants/doughnutChart";
+import { analyticsState } from "../../store/analyticsState";
 
 export default class DoughnutChart extends Component {
   constructor() {
     super();
+
+    this.setAnalyticsState = setState(analyticsState);
 
     this.render();
     this.setEvent();
@@ -31,7 +34,11 @@ export default class DoughnutChart extends Component {
     const { target } = e;
     const $part = target.closest(".doughnut--part");
     if (!$part) return;
-    console.log($part.id);
+    const curState = getState(analyticsState);
+    if (curState.selectedCategory === $part.id) return;
+    const newState = { ...curState };
+    newState.selectedCategory = $part.id;
+    this.setAnalyticsState(newState);
   };
 
   makeParts({ dataset, totalPercent, paths }) {
