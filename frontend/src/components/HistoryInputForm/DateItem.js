@@ -1,6 +1,6 @@
 import Component from "../../core/component";
 import { createElement, h } from "../../utils/domHandler";
-import { dateHandler } from "../../utils/dateHandler";
+import { changeDateByString } from "../../utils/dateHandler";
 
 class DateItem extends Component {
   constructor({ defaultDate, name }) {
@@ -38,7 +38,7 @@ class DateItem extends Component {
           h("input", {
             type: "date",
             name,
-            max: dateHandler(new Date()),
+            max: changeDateByString(new Date()),
             value: defaultDate,
           })
         )
