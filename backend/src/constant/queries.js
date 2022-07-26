@@ -7,6 +7,15 @@ const QUERIES = {
     FROM TRANSACTION_TB 
     JOIN PAYMENT_TB AS P_TB ON P_TB.id=paymentId
     WHERE userId=? AND YEAR(trxDate)=? AND MONTH(trxDate)=? AND direction LIKE ? AND category LIKE ? ORDER BY trxDate DESC`,
+  // [ 유저 id, 년도, 달 ]
+  READ_EACH_CATEGORY_HISTORIES: `SELECT category, CAST(SUM(amount) AS UNSIGNED) AS 'total'
+    FROM TRANSACTION_TB WHERE userId=? AND YEAR(trxDate)=? AND MONTH(trxDate)=?
+    AND direction='out' GROUP BY category ORDER BY SUM(amount) DESC`,
+  // [ 일자, 수입/지출, 카테고리, 설명, 결제수단 id, 수량, 내역 id ]
+  UPDATE_HISTORY: `UPDATE TRANSACTION_TB SET trxDate=?, direction=?, category=?,
+                description=?, paymentId=?, amount=? WHERE id=?`,
+  // [ 트랜잭션 id ]
+  DELETE_HISTORY: "DELETE FROM TRANSACTION_TB WHERE id=?",
   // [ 유저 id ]
   READ_PAYMENTS:
     "SELECT PAY.title, PAY.id FROM PAYMENT_TB AS PAY JOIN USER_PAYMENT_TB AS USER_PAY ON PAY.id = USER_PAY.paymentId WHERE USER_PAY.userId = ?",

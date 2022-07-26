@@ -42,3 +42,56 @@ body,
 .template {
   width: 900px;
 }
+
+svg > path {
+  transition: stroke 0.3s;
+}
+
+.button {
+  border: 1px solid var(--primary1);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.button:not(:disabled):hover {
+  opacity: 0.9;
+}
+
+.button:disabled {
+  cursor: default;
+}
+
+.button.valid {
+  background-color: var(--primary1);
+}
+
+.button.valid svg path {
+  stroke: var(--white);
+}
+
+.button svg {
+  width: 50%;
+}
+
+.button svg > path {
+  stroke: var(--primary1);
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+}
+
+.overlay.active {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}

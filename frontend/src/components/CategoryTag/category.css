@@ -1,0 +1,12 @@
+.ul__item__category {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 2px 17px;
+  color: var(--white);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 22px;
+  white-space: nowrap;
+}
