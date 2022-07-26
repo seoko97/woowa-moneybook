@@ -9,6 +9,7 @@ import {
   makeFullDataArray,
   movePointsOffset,
 } from "../../utils/lineGraphUtils";
+import { MONTH_UNIT } from "../../constants/lineGraph";
 
 export default class LineGraph extends Component {
   constructor() {
@@ -102,7 +103,8 @@ export default class LineGraph extends Component {
           x: pointsCoord[i][0],
           y: pointsCoord[i][1],
           "text-anchor": anchor,
-          "font-size": "6",
+          "font-size": "5",
+          "font-weight": "700",
           dy: dy,
         },
         `${total.toLocaleString()}`
@@ -111,7 +113,7 @@ export default class LineGraph extends Component {
   }
 
   makeLines({ pointsCoord, width, height, viewBoxWidth, viewBoxHeight, duration, category }) {
-    return Array.from({ length: 5 }).map((_, i) => {
+    return Array.from({ length: MONTH_UNIT - 1 }).map((_, i) => {
       const [startX, startY] = pointsCoord[i];
       const [endX, endY] = pointsCoord[i + 1];
       const dx = (endX - startX) * (width / viewBoxWidth);
@@ -144,77 +146,100 @@ export default class LineGraph extends Component {
   }
 
   render() {
-    const tmpData = [
-      { month: 10, total: this.rand(1, 100) * 10000 },
-      { month: 11, total: this.rand(1, 100) * 10000 },
-      { month: 12, total: this.rand(1, 100) * 10000 },
-      { month: 1, total: this.rand(1, 100) * 10000 },
-      { month: 2, total: this.rand(1, 100) * 10000 },
-      { month: 3, total: this.rand(1, 100) * 10000 },
-    ];
-    const data = makeFullDataArray({ data: tmpData, month: 3 });
-    const viewBoxWidth = 200;
-    const viewBoxHeight = 100;
-    const width = 600;
-    const height = 400;
-    const borderColor = "grey";
-    const horizontalUnit = 6;
-    const verticalUnit = 4;
-    const divideLineColor = "rgba(0, 0, 0, 0.2)";
-    const duration = 2;
+    let $target = h("div", null);
+    // 보여줘야 하는 상황이라면
+    if (true) {
+      const tmpData = [
+        { month: 8, total: this.rand(1, 100) * 10000 },
+        { month: 9, total: this.rand(1, 100) * 10000 },
+        { month: 10, total: this.rand(1, 100) * 10000 },
+        { month: 11, total: this.rand(1, 100) * 10000 },
+        { month: 12, total: this.rand(1, 100) * 10000 },
+        { month: 1, total: this.rand(1, 100) * 10000 },
+        { month: 2, total: this.rand(1, 100) * 10000 },
+        { month: 3, total: this.rand(1, 100) * 10000 },
+        { month: 4, total: this.rand(1, 100) * 10000 },
+        { month: 5, total: this.rand(1, 100) * 10000 },
+        { month: 6, total: this.rand(1, 100) * 10000 },
+        { month: 7, total: this.rand(1, 100) * 10000 },
+      ];
+      const data = makeFullDataArray({ data: tmpData, month: 7 });
+      const viewBoxWidth = 200;
+      const viewBoxHeight = 100;
+      const width = 600;
+      const height = 400;
+      const borderColor = "grey";
+      const horizontalUnit = 6;
+      const verticalUnit = MONTH_UNIT - 2;
+      const divideLineColor = "rgba(0, 0, 0, 0.2)";
+      const duration = 2;
 
-    const [lowerBoundary, upperBoundary] = makeBoundary({ data, gapUnit: 6 });
-    const pointsCoord = getCoordinates({
-      data,
-      viewBoxWidth,
-      viewBoxHeight,
-      lowerBoundary,
-      upperBoundary,
-    });
-    const textPos = movePointsOffset(pointsCoord, viewBoxHeight);
+      const [lowerBoundary, upperBoundary] = makeBoundary({ data, gapUnit: 6 });
+      const pointsCoord = getCoordinates({
+        data,
+        viewBoxWidth,
+        viewBoxHeight,
+        lowerBoundary,
+        upperBoundary,
+      });
+      const textPos = movePointsOffset(pointsCoord, viewBoxHeight);
 
-    const $border = this.makeBorder({ viewBoxWidth, viewBoxHeight, borderColor });
-    const $divideLines = this.makeDivideLine({
-      viewBoxWidth,
-      viewBoxHeight,
-      horizontalUnit,
-      verticalUnit,
-      divideLineColor,
-      duration,
-    });
-    const $texts = this.makeTexts({ data, textPos, pointsCoord });
+      const $border = this.makeBorder({ viewBoxWidth, viewBoxHeight, borderColor });
+      const $divideLines = this.makeDivideLine({
+        viewBoxWidth,
+        viewBoxHeight,
+        horizontalUnit,
+        verticalUnit,
+        divideLineColor,
+        duration,
+      });
+      const $texts = this.makeTexts({ data, textPos, pointsCoord });
 
-    const category = "쇼핑/뷰티";
-    const $points = this.makePoints({ pointsCoord, category });
+      const category = "쇼핑/뷰티";
+      const $points = this.makePoints({ pointsCoord, category });
 
-    const $lines = this.makeLines({
-      pointsCoord,
-      width,
-      height,
-      viewBoxWidth,
-      viewBoxHeight,
-      duration,
-      category,
-    });
+      const $lines = this.makeLines({
+        pointsCoord,
+        width,
+        height,
+        viewBoxWidth,
+        viewBoxHeight,
+        duration,
+        category,
+      });
 
-    const lineGraph = createElement(
-      h(
-        "svg",
-        {
-          viewBox: `0 0 ${viewBoxWidth} ${viewBoxHeight}`,
-          xmlns: "http://www.w3.org/2000/svg",
-          overflow: "visible",
-          width: width,
-          height: height,
-        },
-        $border,
-        $divideLines,
-        $points,
-        $texts,
-        $lines
-      )
-    );
+      const lineGraph = createElement(
+        h(
+          "svg",
+          {
+            viewBox: `0 0 ${viewBoxWidth} ${viewBoxHeight}`,
+            xmlns: "http://www.w3.org/2000/svg",
+            overflow: "visible",
+            width: width,
+            height: height,
+          },
+          $border,
+          $divideLines,
+          $points,
+          $lines,
+          $texts
+        )
+      );
 
-    this.$target = new Svg("div", { class: "line-graph-container" }, lineGraph);
+      $target = createElement(
+        h(
+          "section",
+          { class: "line-graph--container" },
+          h("h2", { class: "line-graph--title" }, `${category} 소비 추이`),
+          new Svg("div", { class: "line-graph" }, lineGraph)
+        )
+      );
+    }
+
+    if (!this.$target) {
+      this.$target = $target;
+    } else {
+      this.reRender($target);
+    }
   }
 }
