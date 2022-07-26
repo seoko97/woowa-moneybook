@@ -1,5 +1,6 @@
 import Component from "../core/component";
 import HistoryInputForm from "../components/HistoryInputForm";
+import HistoryListSection from "../components/HistoryListSection";
 import { createElement, h } from "../utils/domHandler";
 import "../styles/main.css";
 
@@ -17,7 +18,7 @@ class HistoryPage extends Component {
       h(
         "main",
         { class: "main" },
-        h("div", { class: "template" }, new HistoryInputForm(), h("div", null, "list"))
+        h("div", { class: "template" }, new HistoryInputForm(), new HistoryListSection())
       )
     );
 
