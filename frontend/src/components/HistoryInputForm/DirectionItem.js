@@ -3,7 +3,7 @@ import { getState, setState } from "../../core/store";
 import { historyState } from "../../store/historyState";
 import { createElement, h } from "../../utils/domHandler";
 
-class DirectiomItem extends Component {
+class DirectionItem extends Component {
   constructor() {
     super();
 
@@ -43,4 +43,4 @@ class DirectiomItem extends Component {
   }
 }
 
-export default DirectiomItem;
+export default DirectionItem;

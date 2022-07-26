@@ -45,11 +45,7 @@ class CategoryList extends DropDown {
         "ul",
         { class: "ul" },
         this.data.map((item) =>
-          h(
-            "li",
-            { class: "ul--li", ["data-title"]: item },
-            h("p", { class: "ul--li__desc" }, item)
-          )
+          h("li", { class: "ul--li", "data-title": item }, h("p", { class: "ul--li__desc" }, item))
         )
       )
     );

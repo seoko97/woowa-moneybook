@@ -70,7 +70,7 @@ class PaymentList extends DropDown {
         this.data.map(({ title, id }) =>
           h(
             "li",
-            { class: "ul--li", ["data-id"]: String(id) },
+            { class: "ul--li", "data-id": String(id) },
             h(
               "div",
               { class: "ul--li__desc" },

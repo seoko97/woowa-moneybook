@@ -31,6 +31,7 @@ class SelectItem extends Component {
 
   detectOutsideClick(e) {
     const $payments = this.component;
+
     const $clickNode = e.target.closest(".form__item__select");
     const checkSibling = $clickNode === $payments.previousSibling;
 
