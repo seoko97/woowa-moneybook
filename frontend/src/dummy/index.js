@@ -3,16 +3,16 @@ const CATEGORY_BY_IN = ["월급", "용돈", "기타수입"];
 
 const PAYMENTS = [
   {
-    id: 0,
-    title: "현금",
-  },
-  {
     id: 1,
-    title: "신용카드",
+    title: "국민카드",
   },
   {
     id: 2,
-    title: "신카",
+    title: "현금",
+  },
+  {
+    id: 3,
+    title: "토스카드",
   },
 ];
 

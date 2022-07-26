@@ -13,6 +13,7 @@ import { createElement, h } from "../../utils/domHandler";
 import PaymentList from "../DropDown/PaymentList";
 import Modal from "../Modal";
 import { checkFormValidation } from "../../utils/checkFormValidation";
+import { requestCreateHistory } from "../../apis/history";
 
 class HistoryInputForm extends Component {
   constructor() {
@@ -33,9 +34,18 @@ class HistoryInputForm extends Component {
     this.addEvent("submit", ".main--form", this.onSubmit.bind(this));
   }
 
-  onSubmit(e) {
+  async onSubmit(e) {
     e.preventDefault();
-    const state = getState(historyState);
+    const { id, payment, ...data } = getState(historyState);
+
+    const bodyData = {
+      ...data,
+      paymentId: payment.id,
+      userId: 1,
+    };
+
+    const a = await requestCreateHistory(bodyData);
+    console.log(a);
   }
 
   onFocusOutInput(e) {
@@ -46,7 +56,10 @@ class HistoryInputForm extends Component {
       return;
     }
 
-    this.updateState(nodeName, e.target.value);
+    const value =
+      nodeName === "amount" ? parseInt(e.target.value.replaceAll(",", "")) : e.target.value;
+
+    this.updateState(nodeName, value);
   }
 
   onChangeInput(e) {
@@ -112,7 +125,7 @@ class HistoryInputForm extends Component {
           class: "form__item__input",
           placeholder: "입력하세요",
           name: "amount",
-          value: parseInt(data.amount).toLocaleString(),
+          value: data.amount ? parseInt(data.amount).toLocaleString() : "",
         },
       }),
       new Button({
