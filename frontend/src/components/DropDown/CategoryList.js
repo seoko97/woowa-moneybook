@@ -1,6 +1,6 @@
 import DropDown from ".";
 import { getState, setState } from "../../core/store";
-import { CATEGORY } from "../../dummy";
+import { CATEGORY_BY_IN, CATEGORY_BY_OUT } from "../../dummy";
 import { historyState } from "../../store/historyState";
 import { createElement, h } from "../../utils/domHandler";
 
@@ -8,7 +8,9 @@ class CategoryList extends DropDown {
   constructor() {
     super();
 
-    this.data = CATEGORY;
+    const { direction } = getState(historyState);
+
+    this.data = direction === "out" ? CATEGORY_BY_OUT : CATEGORY_BY_IN;
     this.component = "CategoryList";
     this.setHistoryState = setState(historyState);
 
