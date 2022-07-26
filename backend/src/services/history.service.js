@@ -28,7 +28,7 @@ class HistoryService {
 
   async createHistory({
     userId,
-    date,
+    trxDate,
     direction,
     category,
     description,
@@ -37,7 +37,7 @@ class HistoryService {
   }) {
     const { ok, error } = await writeDB(CREATE_HISTORY, [
       userId,
-      date,
+      trxDate,
       direction,
       category,
       description,
