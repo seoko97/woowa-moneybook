@@ -3,13 +3,17 @@ import { createElement, h } from "../../utils/domHandler";
 import Svg from "../../core/svg";
 import "./style.css";
 import { CATEGORY_COLORS } from "../../constants/category";
+import {
+  getCoordinates,
+  makeBoundary,
+  makeFullDataArray,
+  movePointsOffset,
+} from "../../utils/lineGraphUtils";
 
 export default class LineGraph extends Component {
   constructor() {
     super();
-
     this.render();
-
     return this.$target;
   }
 
@@ -87,24 +91,47 @@ export default class LineGraph extends Component {
     const rand = (min, max) => {
       return Math.floor(Math.random() * (max - min)) + min;
     };
-    return Array.from({ length: 12 })
-      .map((_, i) => viewBoxWidth * (i / 11))
+    return Array.from({ length: 6 })
+      .map((_, i) => viewBoxWidth * (i / 5))
       .map((x) => {
         const y = `${rand(5, 95)}`;
         return [x, y];
       });
   }
 
+  rand(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
   render() {
+    const tmpData = [
+      // { month: 10, total: this.rand(1, 100) * 10000 },
+      { month: 11, total: this.rand(1, 100) * 10000 },
+      { month: 12, total: this.rand(1, 100) * 10000 },
+      { month: 1, total: this.rand(1, 100) * 10000 },
+      { month: 2, total: this.rand(1, 100) * 10000 },
+      { month: 3, total: this.rand(1, 100) * 10000 },
+    ];
+    const data = makeFullDataArray({ data: tmpData, month: 3 });
     const viewBoxWidth = 200;
     const viewBoxHeight = 100;
     const width = 600;
     const height = 400;
     const borderColor = "grey";
-    const horizontalUnit = 10;
-    const verticalUnit = 12;
+    const horizontalUnit = 6;
+    const verticalUnit = 4;
     const divideLineColor = "rgba(0, 0, 0, 0.2)";
     const duration = 2;
+
+    const [lowerBoundary, upperBoundary] = makeBoundary({ data, gapUnit: 6 });
+    const pointsCoord = getCoordinates({
+      data,
+      viewBoxWidth,
+      viewBoxHeight,
+      lowerBoundary,
+      upperBoundary,
+    });
+    const textPos = movePointsOffset(pointsCoord, viewBoxHeight);
 
     const $border = this.makeBorder({ viewBoxWidth, viewBoxHeight, borderColor });
     const $divideLines = this.makeDivideLine({
@@ -115,14 +142,28 @@ export default class LineGraph extends Component {
       divideLineColor,
       duration,
     });
-    const pointsCoord = this.makePointsCoord({ viewBoxWidth });
+    const $texts = data.map(({ total }, i) => {
+      const [anchor, dy] = textPos[i];
+      return h(
+        "text",
+        {
+          x: pointsCoord[i][0],
+          y: pointsCoord[i][1],
+          "text-anchor": anchor,
+          "font-size": "6",
+          dy: dy,
+        },
+        `${total.toLocaleString()}`
+      );
+    });
+    // const pointsCoord = this.makePointsCoord({ viewBoxWidth });
 
-    const category = "culture";
+    const category = "쇼핑/뷰티";
     const $points = pointsCoord.map(([x, y]) => {
       return h("circle", { cx: x, cy: y, r: "1.5", fill: CATEGORY_COLORS[category] });
     });
 
-    const $lines = Array.from({ length: 11 }).map((_, i) => {
+    const $lines = Array.from({ length: 5 }).map((_, i) => {
       const [startX, startY] = pointsCoord[i];
       const [endX, endY] = pointsCoord[i + 1];
       const dx = (endX - startX) * (width / viewBoxWidth);
@@ -162,7 +203,8 @@ export default class LineGraph extends Component {
         $border,
         ...$divideLines,
         ...$points,
-        $lines
+        $lines,
+        ...$texts
       )
     );
 
