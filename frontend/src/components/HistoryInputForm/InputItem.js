@@ -14,8 +14,9 @@ class InputItem extends Component {
   }
 
   render() {
-    const text = this.props.name === "amount" ? "원" : "";
-    const $direction = this.props.name === "amount" ? new DirectionItem() : "";
+    const isAmount = this.props.name === "amount";
+    const text = isAmount ? "원" : "";
+    const $direction = isAmount ? new DirectionItem() : "";
 
     const $target = createElement(
       h(

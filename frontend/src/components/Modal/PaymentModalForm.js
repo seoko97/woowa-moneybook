@@ -32,6 +32,11 @@ class PaymentModalForm extends Component {
     e.preventDefault();
 
     const $input = e.target.querySelector(".modal__inner__input");
+
+    if (!$input.value) {
+      return;
+    }
+
     const newModalState = { ...this.modalState };
     const newPaymentListState = [...this.paymentListState];
 

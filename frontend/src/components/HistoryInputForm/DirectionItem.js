@@ -31,6 +31,7 @@ class DirectionItem extends Component {
     const checkDirection = this.state.direction === "out";
 
     newState.direction = checkDirection ? "in" : "out";
+    newState.category = "";
 
     this.setState(newState);
   }
