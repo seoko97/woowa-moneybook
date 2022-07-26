@@ -23,5 +23,3 @@ export const historyListState = initState({
     historyList: [],
   },
 });
-
-export { CATEGORY_KOR, CATEGORY_COLORS };

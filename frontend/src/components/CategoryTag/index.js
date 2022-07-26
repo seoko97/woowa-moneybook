@@ -1,6 +1,6 @@
 import Component from "../../core/component";
 import { createElement, h } from "../../utils/domHandler";
-import { CATEGORY_COLORS } from "../../store/historyState";
+import { CATEGORY_COLORS } from "../../constants/category";
 import "./category.css";
 
 class CategoryTag extends Component {
