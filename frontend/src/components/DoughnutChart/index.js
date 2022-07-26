@@ -19,9 +19,21 @@ export default class DoughnutChart extends Component {
     super();
 
     this.render();
+    this.setEvent();
 
     return this.$target;
   }
+
+  setEvent() {
+    this.addEvent("click", "svg", this.onClickPart);
+  }
+
+  onClickPart = (e) => {
+    const { target } = e;
+    const $part = target.closest(".doughnut--part");
+    if (!$part) return;
+    console.log($part.id);
+  };
 
   makeParts({ dataset, totalPercent, paths }) {
     let accDuration = 0;
@@ -44,6 +56,7 @@ export default class DoughnutChart extends Component {
         "path",
         {
           class: "doughnut--part",
+          id: `${category}`,
           d: paths[i],
           fill: "transparent",
           stroke: CATEGORY_COLORS[category],
