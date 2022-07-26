@@ -12,7 +12,6 @@ import {
   INITIAL_DASH_OFFSET,
   STROKE_WIDTH,
 } from "../../constants/doughnutChart";
-import "./style.css";
 
 export default class DoughnutChart extends Component {
   constructor() {
