@@ -13,3 +13,10 @@ const getCategoryDataPath = ({ startX, startY, endX, endY, isLargeArcFlag }) => 
 const getTotalAmount = (data) => {
   return data.reduce((total, { amount }) => total + amount, 0);
 };
+
+const getTotalPercent = (data) => {
+  const total = getTotalAmount(data);
+  return data.map(({ amount }) => amount / total);
+};
+
+export { getTotalPercent };
