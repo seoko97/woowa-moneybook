@@ -2,6 +2,7 @@ import LineGraph from "../components/LineGraph";
 import { createElement, h } from "../utils/domHandler";
 import Component from "../core/component";
 import "../styles/analytics.css";
+import DoughnutChart from "../components/DoughnutChart";
 
 class AnalyticsPage extends Component {
   $target;
@@ -14,7 +15,11 @@ class AnalyticsPage extends Component {
 
   render() {
     this.$target = createElement(
-      h("main", { class: "main" }, h("div", { class: "template" }, new LineGraph()))
+      h(
+        "main",
+        { class: "main" },
+        h("div", { class: "template" }, new LineGraph(), new DoughnutChart())
+      )
     );
   }
 
