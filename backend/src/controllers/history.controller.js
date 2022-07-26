@@ -1,5 +1,4 @@
 const historyService = require("../services/history.service");
-const trxListConvertMap = require("../utils/trxListConvertMap");
 
 class HistoryController {
   #historyService;
@@ -21,7 +20,7 @@ class HistoryController {
       ok,
       totalLength: trxList && trxList.length,
       error,
-      trxList: trxListConvertMap(trxList),
+      trxList,
     });
   };
 
