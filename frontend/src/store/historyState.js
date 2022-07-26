@@ -1,10 +1,10 @@
 import { initState } from "../core/store";
-import { dateHandler } from "../utils/dateHandler";
+import { changeDateByString } from "../utils/dateHandler";
 
-const HISTOTY_INITSTATE = {
+const HISTORY_INITIAL_STATE = {
   id: null,
   description: "",
-  trxDate: dateHandler(new Date()),
+  trxDate: changeDateByString(new Date()),
   direction: "out",
   category: "",
   payment: null,
@@ -13,5 +13,15 @@ const HISTOTY_INITSTATE = {
 
 export const historyState = initState({
   key: "historyState",
-  defaultValue: HISTOTY_INITSTATE,
+  defaultValue: HISTORY_INITIAL_STATE,
 });
+
+export const historyListState = initState({
+  key: "historyListState",
+  defaultValue: {
+    isLoading: false,
+    historyList: [],
+  },
+});
+
+export { CATEGORY_KOR, CATEGORY_COLORS };
