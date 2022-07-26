@@ -3,20 +3,30 @@ import LeftIcon from "../../../public/leftIcon.svg";
 import RightIcon from "../../../public/rightIcon.svg";
 import Svg from "../../core/svg";
 import { dateState } from "../../store/dateState";
-import { getState, setState, subscribe } from "../../core/store";
+import { getState, setState, subscribe, unsubscribe } from "../../core/store";
 import { createElement, h } from "../../utils/domHandler";
+import { pathState } from "../../store/eventState";
 
 export default class DateIndicator extends Component {
   constructor() {
     super();
 
-    subscribe(dateState, this.render.bind(this));
+    this.component = "DateIndicator";
+
+    subscribe(dateState, this.component, this.render.bind(this));
+    subscribe(pathState, this.component, this.removeEvent.bind(this));
+
     this.setState = setState(dateState);
 
     this.render();
     this.setEvent();
 
     return this.$target;
+  }
+
+  removeEvent() {
+    unsubscribe(dateState, this.component);
+    unsubscribe(pathState, this.component);
   }
 
   setEvent() {
@@ -39,7 +49,7 @@ export default class DateIndicator extends Component {
   render() {
     const date = getState(dateState);
 
-    const $newTarget = createElement(
+    const $target = createElement(
       h(
         "div",
         { class: "header--date-indicator" },
@@ -55,13 +65,9 @@ export default class DateIndicator extends Component {
     );
 
     if (!this.$target) {
-      this.$target = $newTarget;
+      this.$target = $target;
     } else {
-      this.reRender($newTarget);
+      this.reRender($target);
     }
-  }
-
-  getTemplate() {
-    return this.$target.outerHTML;
   }
 }

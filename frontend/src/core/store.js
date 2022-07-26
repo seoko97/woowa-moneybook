@@ -1,22 +1,25 @@
-const { getState, initState, notify, setState, subscribe, unsubscribe } = (function () {
+export const { getState, initState, setState, subscribe, unsubscribe } = (function () {
   const globalState = new Map();
 
   function initState({ key, defaultValue }) {
     if (globalState.has(key)) return;
-    globalState.set(key, { _state: defaultValue, _observers: new Set() });
+    globalState.set(key, { _state: defaultValue, _observers: new Map() });
 
     return key;
   }
 
-  function subscribe(key, cb) {
+  function subscribe(key, component, cb) {
+    if (!globalState.has(key)) return;
+
     const bundle = globalState.get(key);
-    bundle._observers.add(cb);
+    bundle._observers.set(component, cb);
   }
 
-  function unsubscribe(key, observer) {
+  function unsubscribe(key, component) {
     if (!globalState.has(key)) return;
+
     const bundle = globalState.get(key);
-    bundle._observers.delete(observer);
+    bundle._observers.delete(component);
   }
 
   function getState(key) {
@@ -41,10 +44,7 @@ const { getState, initState, notify, setState, subscribe, unsubscribe } = (funct
     initState,
     subscribe,
     unsubscribe,
-    notify,
     getState,
     setState,
   };
 })();
-
-export { getState, initState, notify, setState, subscribe, unsubscribe };
