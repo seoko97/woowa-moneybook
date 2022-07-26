@@ -19,4 +19,16 @@ const getTotalPercent = (data) => {
   return data.map(({ amount }) => amount / total);
 };
 
-export { getTotalPercent };
+const getDoughnutChartPaths = (totalPercent) => {
+  let accumulatedPercent = 0;
+  return totalPercent.map((percent) => {
+    const [startX, startY] = getCoordinatesForPercent(accumulatedPercent, RADIUS);
+    accumulatedPercent += percent;
+    const [endX, endY] = getCoordinatesForPercent(accumulatedPercent, RADIUS);
+    const isLargeArcFlag = percent > 0.5 ? 1 : 0;
+
+    return getCategoryDataPath({ startX, startY, endX, endY, isLargeArcFlag });
+  });
+};
+
+export { getDoughnutChartPaths, getTotalPercent };
