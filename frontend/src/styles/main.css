@@ -85,11 +85,11 @@
 
 .form__item--section {
   position: relative;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  text-overflow: ellipsis;
 }
 
 .form__item__input {
@@ -108,11 +108,13 @@ input[type="date"] {
 }
 
 .main--form__item > .ul {
+  opacity: 0;
+  visibility: hidden;
   position: absolute;
   top: 80px;
   left: 0px;
   width: 100%;
-  display: none;
+  display: flex;
   flex-direction: column;
   background-color: var(--white);
   border: 1px solid #ccd3d3;
@@ -120,10 +122,14 @@ input[type="date"] {
   border-radius: 10px;
   font-size: 16px;
   z-index: 11;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
 }
 
-.ul.active {
-  display: flex;
+.main--form__item > .ul.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .ul > .ul--li {
@@ -158,12 +164,16 @@ input[type="date"] {
 
 .ul--li__desc {
   width: 100%;
-}
-.ul--li__desc {
   padding: 16px 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+}
+
+.ul--li__desc > p {
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .ul > .ul--li .icon {

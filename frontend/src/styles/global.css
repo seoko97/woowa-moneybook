@@ -51,6 +51,23 @@ svg > path {
   border: 1px solid var(--primary1);
   border-radius: 10px;
   cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.button:not(:disabled):hover {
+  opacity: 0.9;
+}
+
+.button:disabled {
+  cursor: default;
+}
+
+.button.valid {
+  background-color: var(--primary1);
+}
+
+.button.valid svg path {
+  stroke: var(--white);
 }
 
 .button svg {
@@ -73,4 +90,8 @@ svg > path {
 
 .overlay.active {
   display: block;
+}
+
+.hidden {
+  display: none;
 }
