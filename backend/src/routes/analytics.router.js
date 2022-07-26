@@ -9,4 +9,9 @@ detailRouter.get(
   asyncHandler(analyticsController.getTotalExpenditureList)
 );
 
+detailRouter.get(
+  "/ranking",
+  asyncHandler(analyticsController.getEachCategoryExpenditure)
+);
+
 module.exports = detailRouter;

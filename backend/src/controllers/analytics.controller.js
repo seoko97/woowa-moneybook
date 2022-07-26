@@ -21,6 +21,16 @@ class AnalyticsController {
     });
     res.status(200).json(result);
   };
+
+  getEachCategoryExpenditure = async (req, res) => {
+    const { userId, year, month } = req.query;
+    const result = await this.#analyticsService.getEachCategoryExpenditure({
+      userId: Number(userId),
+      year: Number(year),
+      month: Number(month),
+    });
+    res.status(200).json(result);
+  };
 }
 const analyticsController = new AnalyticsController(analyticsService);
 
