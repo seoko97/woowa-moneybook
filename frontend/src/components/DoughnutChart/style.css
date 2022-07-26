@@ -1,0 +1,19 @@
+.doughnut-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 300px;
+}
+
+.doughnut {
+    transform: rotate(-90deg);
+}
+
+.doughnut--part {
+    transition: transform 0.3s;
+}
+
+.doughnut--part:hover {
+    transform: scale(1.2);
+}
