@@ -6,9 +6,13 @@
   position: relative;
   top: -32px;
   font-family: "Noto Sans KR";
+  margin-bottom: 60px;
 }
 
 .main--form {
+  position: sticky;
+  top: 12px;
+  z-index: 9;
   width: 100%;
   display: flex;
   align-items: center;
@@ -94,7 +98,11 @@
 
 .form__item__input {
   border: 0;
-  max-width: 145px;
+  max-width: 130px;
+}
+
+.form__item__input[name="amount"] {
+  text-align: right;
 }
 
 .form__item__date {
