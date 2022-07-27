@@ -28,13 +28,13 @@ class Modal extends Component {
     this.setState({ ...this.state, isOpen: false, data: null });
   }
 
-  validateIsOpen({ isOpen, component }) {
+  getChildrenByIsOpen({ isOpen, component }) {
     return isOpen ? [h("div", { class: "overlay active" }), new component()] : "";
   }
 
   render() {
     const { isOpen, component } = getState(isOpenModalState);
-    const $inner = this.validateIsOpen({ isOpen, component });
+    const $inner = this.getChildrenByIsOpen({ isOpen, component });
 
     const $target = createElement(h("div", { class: `modal ${isOpen && "active"}` }, $inner));
 

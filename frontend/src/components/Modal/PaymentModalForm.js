@@ -6,6 +6,7 @@ import { createElement, h } from "../../utils/domHandler";
 import "../../styles/modal.css";
 import { historyState } from "../../store/historyState";
 import { requestCreatePayment, requestDeletePayment } from "../../apis/payment";
+import { MODAL_INITIAL_STATE } from "../../constants/modal";
 
 class PaymentModalForm extends Component {
   constructor() {
@@ -53,11 +54,7 @@ class PaymentModalForm extends Component {
     }
 
     this.setPaymentListState(newPaymentListState);
-    this.setModalState({
-      ...this.modalState,
-      isOpen: false,
-      data: null,
-    });
+    this.setModalState(MODAL_INITIAL_STATE);
     this.setHistoryState({
       ...this.historyState,
       payment: null,

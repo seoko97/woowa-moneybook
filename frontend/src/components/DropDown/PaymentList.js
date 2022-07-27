@@ -6,6 +6,7 @@ import { historyState } from "../../store/historyState";
 import { isOpenModalState } from "../../store/isOpenModalState";
 import { getState, setState } from "../../core/store";
 import { paymentListState } from "../../store/paymentState";
+import PaymentModalForm from "../Modal/PaymentModalForm";
 
 class PaymentList extends DropDown {
   data = [];
@@ -52,13 +53,12 @@ class PaymentList extends DropDown {
   }
 
   onOpenModal(selectedItem = null) {
-    const modalState = getState(isOpenModalState);
     this.setIsOpenModalState({
-      ...modalState,
       isOpen: true,
       data: {
         payment: selectedItem,
       },
+      component: PaymentModalForm,
     });
   }
 
