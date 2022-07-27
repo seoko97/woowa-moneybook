@@ -18,7 +18,7 @@ const QUERIES = {
     FROM TRANSACTION_TB AS TRAN_TB
     JOIN PAYMENT_TB AS P_TB ON P_TB.id=paymentId
     WHERE userId=? AND \`category\`=? AND ? <= trxDate AND trxDate < ?
-    ORDER BY trxDate DESC, TRAN_TB.updatedAt DESC`,
+    ORDER BY trxDate DESC, TRAN_TB.updatedAt`,
   // [ 유저 id, 년도, 달 ]
   READ_EACH_CATEGORY_HISTORIES: `SELECT category, CAST(SUM(amount) AS UNSIGNED) AS 'total'
     FROM TRANSACTION_TB WHERE userId=? AND YEAR(trxDate)=? AND MONTH(trxDate)=?
