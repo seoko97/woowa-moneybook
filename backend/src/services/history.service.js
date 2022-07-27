@@ -3,11 +3,24 @@ const {
   READ_HISTORIES,
   UPDATE_HISTORY,
   DELETE_HISTORY,
+  READ_PAYMENT_BY_TITLE,
+  READ_HISTORY_BY_ID,
 } = require("../constant/queries");
 const { readDB, writeDB } = require("../utils/dbHandler");
 
 class HistoryService {
   constructor() {}
+
+  async getHistoryById(id) {
+    // [ 트랜잭션 id ]
+    const { error, result } = await readDB(READ_HISTORY_BY_ID, [id]);
+    const retJson = { error, ok: false };
+    if (result && result.length !== 0) {
+      retJson.ok = true;
+      retJson.paymentItem = result[0];
+    }
+    return retJson;
+  }
 
   async getHistoryList({
     userId,
