@@ -5,7 +5,7 @@ import { createElement, h } from "../../utils/domHandler";
 import "./style.css";
 import CategoryRankingList from "./CategoryRankingList";
 import { getState, subscribe } from "../../core/store";
-import { analyticsListState } from "../../store/analyticsState";
+import { analyticsRankingState } from "../../store/analyticsState";
 import Spinner from "../Spinner";
 
 export default class DoughnutChartBox extends Component {
@@ -13,7 +13,7 @@ export default class DoughnutChartBox extends Component {
     super();
 
     this.component = "doughnutChartBox";
-    subscribe(analyticsListState, this.component, this.render.bind(this));
+    subscribe(analyticsRankingState, this.component, this.render.bind(this));
 
     this.render();
     this.setEvent();
@@ -22,7 +22,7 @@ export default class DoughnutChartBox extends Component {
   }
 
   getChildrenByIsLoading() {
-    const { isLoading } = getState(analyticsListState);
+    const { isLoading } = getState(analyticsRankingState);
 
     if (isLoading) {
       return new Spinner();

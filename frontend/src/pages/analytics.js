@@ -5,8 +5,8 @@ import "../styles/analytics.css";
 import DoughnutChartBox from "../components/DoughnutChart";
 import { getState, setState, subscribe } from "../core/store";
 import { dateState } from "../store/dateState";
-import { analyticsListState, analyticsState } from "../store/analyticsState";
-import { ANALYTICS_INITIAL_STATE, ANALYTICS_LIST_INITIAL_STATE } from "../constants/analytics";
+import { analyticsRankingState, analyticsState } from "../store/analyticsState";
+import { ANALYTICS_INITIAL_STATE, ANALYTICS_RANKING_INITIAL_STATE } from "../constants/analytics";
 import { requestGetCategoryRanking } from "../apis/analytics";
 
 class AnalyticsPage extends Component {
@@ -14,7 +14,7 @@ class AnalyticsPage extends Component {
   constructor() {
     super();
     this.render();
-    this.setAnalyticsListState = setState(analyticsListState);
+    this.setAnalyticsListState = setState(analyticsRankingState);
     this.setAnalyticsState = setState(analyticsState);
     subscribe(dateState, "AnalyticsPage", this.useDebounceByGetData.bind(this));
 
@@ -25,8 +25,8 @@ class AnalyticsPage extends Component {
 
   useDebounceByGetData() {
     this.setAnalyticsState(ANALYTICS_INITIAL_STATE);
-    this.setAnalyticsListState(ANALYTICS_LIST_INITIAL_STATE);
-    const { isLoading } = getState(analyticsListState);
+    this.setAnalyticsListState(ANALYTICS_RANKING_INITIAL_STATE);
+    const { isLoading } = getState(analyticsRankingState);
 
     if (!isLoading) {
       this.render();
