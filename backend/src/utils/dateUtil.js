@@ -1,4 +1,4 @@
-const dateUtil = (year, month) => {
+const getStartEndDay = (year, month) => {
   let startYear, startMonth;
   let endYear, endMonth;
   if (month === 12) {
@@ -22,4 +22,4 @@ const dateUtil = (year, month) => {
   return [startDay, endDay];
 };
 
-export default dateUtil;
+export default getStartEndDay;
