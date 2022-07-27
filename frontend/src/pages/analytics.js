@@ -8,6 +8,7 @@ import { dateState } from "../store/dateState";
 import { analyticsRankingState, analyticsState } from "../store/analyticsState";
 import { ANALYTICS_INITIAL_STATE, ANALYTICS_RANKING_INITIAL_STATE } from "../constants/analytics";
 import { requestGetCategoryRanking } from "../apis/analytics";
+import AnalyticsListSection from "../components/AnalyticsListSection";
 
 class AnalyticsPage extends Component {
   timer;
@@ -53,7 +54,13 @@ class AnalyticsPage extends Component {
       h(
         "main",
         { class: "main" },
-        h("div", { class: "template" }, new DoughnutChartBox(), new LineGraph())
+        h(
+          "div",
+          { class: "template" },
+          new DoughnutChartBox(),
+          new LineGraph(),
+          new AnalyticsListSection()
+        )
       )
     );
 
