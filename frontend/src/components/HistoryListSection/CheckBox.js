@@ -31,8 +31,8 @@ class CheckBox extends Component {
         h(
           "span",
           { class: "amount" },
-          `${type === "in" ? "수입" : "지출"} `,
-          parseInt(totalAmount).toLocaleString()
+          `${type === "_in" ? "수입" : "지출"} `,
+          totalAmount.toLocaleString()
         )
       )
     );
