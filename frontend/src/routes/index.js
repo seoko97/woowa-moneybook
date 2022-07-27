@@ -1,4 +1,4 @@
-import { setState } from "../core/store";
+import { clear, setState } from "../core/store";
 import { pathState } from "../store/eventState";
 
 export default class Router {
@@ -18,6 +18,7 @@ export default class Router {
 
   getView() {
     const setPath = setState(pathState);
+    clear();
 
     const potentialMatches = this.getPotentialMatches();
 
