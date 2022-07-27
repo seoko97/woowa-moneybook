@@ -22,4 +22,4 @@ const getStartEndDay = (year, month) => {
   return [startDay, endDay];
 };
 
-export default getStartEndDay;
+module.exports = getStartEndDay;
