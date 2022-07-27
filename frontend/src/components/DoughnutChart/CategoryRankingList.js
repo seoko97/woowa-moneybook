@@ -6,6 +6,7 @@ import { getState } from "../../core/store";
 import { getTotalAmount, getTotalPercent } from "../../utils/doughnutGraphUtils";
 import CategoryTag from "../CategoryTag";
 import { analyticsRankingState } from "../../store/analyticsState";
+import { dateState } from "../../store/dateState";
 
 export default class CategoryRankingList extends Component {
   constructor() {
@@ -16,10 +17,11 @@ export default class CategoryRankingList extends Component {
   }
 
   makeTitle(data) {
+    const { year, month } = getState(dateState);
     return h(
       "h2",
       { class: "category-list--title" },
-      `이번 달 지출 금액 ${getTotalAmount(data).toLocaleString()}`
+      `${year}년 ${month}월 지출 금액 ${getTotalAmount(data).toLocaleString()}`
     );
   }
 
