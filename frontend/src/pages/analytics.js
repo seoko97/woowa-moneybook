@@ -3,28 +3,29 @@ import { createElement, h } from "../utils/domHandler";
 import Component from "../core/component";
 import "../styles/analytics.css";
 import DoughnutChartBox from "../components/DoughnutChart";
-import { getState, subscribe } from "../core/store";
+import { getState, setState, subscribe } from "../core/store";
 import { dateState } from "../store/dateState";
-import { historyListState } from "../store/historyState";
-import { HISTORY_LIST_INITIAL_STATE } from "../constants/history";
 import { requestGetHistories } from "../apis/history";
+import { analyticsListState, analyticsState } from "../store/analyticsState";
+import { ANALYTICS_INITIAL_STATE, ANALYTICS_LIST_INITIAL_STATE } from "../constants/analytics";
 
 class AnalyticsPage extends Component {
   timer;
   constructor() {
     super();
     this.render();
-
+    this.setAnalyticsListState = setState(analyticsListState);
+    this.setAnalyticsState = setState(analyticsState);
     subscribe(dateState, "AnalyticsPage", this.useDebounceByGetData.bind(this));
 
     return this.$target;
   }
 
   useDebounceByGetData() {
-    const { isLoading } = getState(historyListState);
+    this.setAnalyticsState(ANALYTICS_INITIAL_STATE);
+    const { isLoading } = getState(analyticsListState);
 
     if (!isLoading) {
-      this.setHistoryListState(HISTORY_LIST_INITIAL_STATE);
       this.render();
     }
 
@@ -36,6 +37,7 @@ class AnalyticsPage extends Component {
   }
 
   async getHistoryListData() {
+    this.setAnalyticsListState(ANALYTICS_LIST_INITIAL_STATE);
     const date = getState(dateState);
 
     const { trxList, totalLength } = await requestGetHistories(date);
