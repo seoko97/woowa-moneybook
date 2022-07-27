@@ -33,9 +33,13 @@ export default class DoughnutChart extends Component {
   onClickPart = (e) => {
     const { target } = e;
     const $part = target.closest(".doughnut--part");
-    if (!$part) return;
+    if (!$part) {
+      return;
+    }
     const curState = getState(analyticsState);
-    if (curState.selectedCategory === $part.id) return;
+    if (curState.selectedCategory === $part.id) {
+      return;
+    }
     const newState = { ...curState };
     newState.selectedCategory = $part.id;
     this.setAnalyticsState(newState);
