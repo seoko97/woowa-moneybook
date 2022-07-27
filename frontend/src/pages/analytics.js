@@ -5,9 +5,9 @@ import "../styles/analytics.css";
 import DoughnutChartBox from "../components/DoughnutChart";
 import { getState, setState, subscribe } from "../core/store";
 import { dateState } from "../store/dateState";
-import { requestGetHistories } from "../apis/history";
 import { analyticsListState, analyticsState } from "../store/analyticsState";
 import { ANALYTICS_INITIAL_STATE, ANALYTICS_LIST_INITIAL_STATE } from "../constants/analytics";
+import { requestGetCategoryRanking } from "../apis/analytics";
 
 class AnalyticsPage extends Component {
   timer;
@@ -18,11 +18,14 @@ class AnalyticsPage extends Component {
     this.setAnalyticsState = setState(analyticsState);
     subscribe(dateState, "AnalyticsPage", this.useDebounceByGetData.bind(this));
 
+    this.useDebounceByGetData();
+
     return this.$target;
   }
 
   useDebounceByGetData() {
     this.setAnalyticsState(ANALYTICS_INITIAL_STATE);
+    this.setAnalyticsListState(ANALYTICS_LIST_INITIAL_STATE);
     const { isLoading } = getState(analyticsListState);
 
     if (!isLoading) {
@@ -33,16 +36,15 @@ class AnalyticsPage extends Component {
       clearTimeout(this.timer);
     }
 
-    this.timer = setTimeout(this.getHistoryListData.bind(this), 500);
+    this.timer = setTimeout(this.getAnalyticsListData.bind(this), 500);
   }
 
-  async getHistoryListData() {
-    this.setAnalyticsListState(ANALYTICS_LIST_INITIAL_STATE);
+  async getAnalyticsListData() {
+    this.setAnalyticsListState(ANALYTICS_INITIAL_STATE);
     const date = getState(dateState);
+    const { eachCategoryExpenditure: analyticsList } = await requestGetCategoryRanking(date);
 
-    const { trxList, totalLength } = await requestGetHistories(date);
-
-    this.setHistoryListState({ isLoading: false, totalLength, historyList: trxList });
+    this.setAnalyticsListState({ isLoading: false, analyticsList });
     this.render();
   }
 
