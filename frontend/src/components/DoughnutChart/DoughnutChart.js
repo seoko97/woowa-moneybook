@@ -10,6 +10,7 @@ import {
   ANIMATION_SPEED,
   INITIAL_DASH_OFFSET,
   STROKE_WIDTH,
+  DASHARRAY_2ND_VALUE_FOR_ANI,
 } from "../../constants/doughnutChart";
 import { analyticsRankingState, analyticsState } from "../../store/analyticsState";
 
@@ -42,14 +43,19 @@ export default class DoughnutChart extends Component {
     const newState = { ...curState };
     newState.selectedCategory = $part.id;
     this.setAnalyticsState(newState);
+
+    const location = document.querySelector(".line-graph--container")?.offsetTop;
+    console.log(location);
+    if (location) {
+      window.scrollTo({ top: location, behavior: "smooth" });
+    }
   };
 
   makeParts({ data, totalPercent, paths }) {
     let accDuration = 0;
     return data.map(({ category }, i) => {
       const targetRad = 2 * Math.PI * totalPercent[i] * RADIUS;
-      const targetRestRad = 2 * Math.PI * (1 - totalPercent[i]) * RADIUS;
-      const dasharray = `${targetRad} ${targetRestRad}`;
+      const dasharray = `${targetRad} ${DASHARRAY_2ND_VALUE_FOR_ANI}`;
       const duration = ANIMATION_DURATION * (100 / ANIMATION_SPEED) * totalPercent[i];
 
       const animate = h("animate", {
