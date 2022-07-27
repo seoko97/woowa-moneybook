@@ -9,8 +9,6 @@ const ANALYTICS_INITIAL_STATE = {
 
 const ANALYTICS_LIST_INITIAL_STATE = {
   isLoading: true,
-  month: new Date().getMonth() + 1,
-  year: new Date().getFullYear(),
   analyticsList: [],
 };
 
