@@ -88,7 +88,7 @@ const decideLabelPos = (grad1, grad2) => {
 };
 
 // 가격 텍스트의 align 위치와 dy 오프셋을 구해주는 함수
-const movePointsOffset = (pointsCoord, VIEW_BOX_HEIGHT) => {
+const movePointsOffset = (pointsCoord) => {
   const position = { up: OFFSET_UP, down: OFFSET_DOWN };
   const ret = [];
   let grad;
