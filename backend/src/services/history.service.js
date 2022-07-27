@@ -3,7 +3,6 @@ const {
   READ_HISTORIES,
   UPDATE_HISTORY,
   DELETE_HISTORY,
-  READ_PAYMENT_BY_TITLE,
   READ_HISTORY_BY_ID,
 } = require("../constant/queries");
 const { readDB, writeDB } = require("../utils/dbHandler");
@@ -48,7 +47,7 @@ class HistoryService {
     paymentId,
     amount,
   }) {
-    const { ok, error } = await writeDB(CREATE_HISTORY, [
+    let { ok, error, result } = await writeDB(CREATE_HISTORY, [
       userId,
       trxDate,
       direction,
@@ -57,14 +56,32 @@ class HistoryService {
       paymentId,
       amount,
     ]);
+    // insertId
+    console.log(result);
     return { ok, error };
+  }
+
+  async handleWriteHistory(data) {
+    const { isCreate, ...queryData } = data;
+    let result, ok, error, id;
+    if (isCreate) {
+      ({ result, ok, error } = await this.createHistory(queryData));
+      id = result.insertId;
+    } else {
+      ({ result, ok, error } = await this.updateHistory(queryData));
+      id = queryData.id;
+    }
+    if (ok) {
+      ({ result, ok, error } = await this.getHistoryById(id));
+    }
+    return { result, ok, error };
   }
 
   async updateHistory(data) {
     // [ 일자, 수입/지출, 카테고리, 설명, 결제수단 id, 수량, 내역 id ]
     const { trxDate, direction, category, description, paymentId, amount, id } =
       data;
-    const { ok, error } = await writeDB(UPDATE_HISTORY, [
+    const { ok, error, result } = await writeDB(UPDATE_HISTORY, [
       trxDate,
       direction,
       category,
@@ -73,6 +90,7 @@ class HistoryService {
       amount,
       id,
     ]);
+    console.log(result);
     return { ok, error };
   }
 
