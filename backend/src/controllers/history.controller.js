@@ -26,12 +26,15 @@ class HistoryController {
 
   createHistory = async (req, res) => {
     const data = req.body;
-    const result = await this.#historyService.createHistory(data);
+    const result = await this.#historyService.handleWriteHistory({
+      ...data,
+      isCreate: true,
+    });
     res.status(201).json(result);
   };
 
   updateHistory = async (req, res) => {
-    const result = await this.#historyService.updateHistory(req.body);
+    const result = await this.#historyService.handleWriteHistory(req.body);
     res.status(200).json(result);
   };
 

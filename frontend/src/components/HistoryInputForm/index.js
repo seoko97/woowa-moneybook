@@ -3,22 +3,28 @@ import SelectItem from "./SelectItem";
 import InputItem from "./InputItem";
 import CategoryList from "../DropDown/CategoryList";
 import Button from "../Button";
+import CloseIcon from "../../../public/closeIcon.svg";
 
 import Component from "../../core/component";
 import { getState, setState, subscribe } from "../../core/store";
 
-import { historyState } from "../../store/historyState";
+import { historyListState, historyState } from "../../store/historyState";
+import { dateState } from "../../store/dateState";
+import { HISTORY_INITIAL_STATE } from "../../constants/history";
 
 import { createElement, h } from "../../utils/domHandler";
 import PaymentList from "../DropDown/PaymentList";
 import Modal from "../Modal";
 import { checkFormValidation } from "../../utils/checkFormValidation";
+import { requestCreateHistory, requestUpdateHistory } from "../../apis/history";
+import { changeParsedDateByYM } from "../../utils/dateHandler";
 
 class HistoryInputForm extends Component {
   constructor() {
     super();
 
-    this.setState = setState(historyState);
+    this.setHistoryState = setState(historyState);
+    this.setHistoryListState = setState(historyListState);
     subscribe(historyState, "HistoryInputForm", this.render.bind(this));
 
     this.render();
@@ -31,11 +37,54 @@ class HistoryInputForm extends Component {
     this.addEvent("input", ".main--form", this.onChangeInput.bind(this));
     this.addEvent("focusout", ".form__item__input", this.onFocusOutInput.bind(this));
     this.addEvent("submit", ".main--form", this.onSubmit.bind(this));
+    this.addEvent("click", ".button.close", this.onClickCloseButton.bind(this));
   }
 
-  onSubmit(e) {
+  onClickCloseButton() {
+    this.setHistoryState(HISTORY_INITIAL_STATE);
+  }
+
+  async onSubmit(e) {
     e.preventDefault();
-    const state = getState(historyState);
+    const { id, payment, ...data } = getState(historyState);
+
+    const isValid = checkFormValidation({ payment, ...data });
+
+    if (!isValid) {
+      return;
+    }
+
+    const bodyData = {
+      ...data,
+      paymentId: payment.id,
+    };
+
+    const { newHistory } = await (id
+      ? requestUpdateHistory({ id, ...bodyData })
+      : requestCreateHistory(bodyData));
+
+    const { year, month } = getState(dateState);
+    const itemYM = changeParsedDateByYM(newHistory.trxDate);
+
+    if (itemYM.year !== year && itemYM.month !== month) {
+      this.setHistoryState(HISTORY_INITIAL_STATE);
+      return;
+    }
+
+    const _historyListState = getState(historyListState);
+    const newHistoryList = _historyListState.historyList.filter(
+      (_history) => _history.id !== parseInt(id ?? -1)
+    );
+
+    newHistoryList.unshift(newHistory);
+    newHistoryList.sort((c, b) => {
+      if (c.trxDate > b.trxDate) return -1;
+      else if (b.trxDate > c.trxDate) return 1;
+      return 0;
+    });
+
+    this.setHistoryListState({ ..._historyListState, historyList: newHistoryList });
+    this.setHistoryState(HISTORY_INITIAL_STATE);
   }
 
   onFocusOutInput(e) {
@@ -46,7 +95,10 @@ class HistoryInputForm extends Component {
       return;
     }
 
-    this.updateState(nodeName, e.target.value);
+    const value =
+      nodeName === "amount" ? parseInt(e.target.value.replaceAll(",", "")) : e.target.value;
+
+    this.updateState(nodeName, value);
   }
 
   onChangeInput(e) {
@@ -78,10 +130,10 @@ class HistoryInputForm extends Component {
 
     newState[stateName] = value;
 
-    this.setState(newState);
+    this.setHistoryState(newState);
   }
 
-  render() {
+  getChildrenComponent() {
     this.state = getState(historyState);
 
     const { id, ...data } = this.state;
@@ -112,7 +164,7 @@ class HistoryInputForm extends Component {
           class: "form__item__input",
           placeholder: "입력하세요",
           name: "amount",
-          value: parseInt(data.amount).toLocaleString(),
+          value: data.amount ? parseInt(data.amount).toLocaleString() : "",
         },
       }),
       new Button({
@@ -120,11 +172,25 @@ class HistoryInputForm extends Component {
         props: {
           class: `button ${isValid ? "valid" : ""}`,
           disabled: !isValid,
+          type: "submit",
         },
       }),
+      id
+        ? new Button({
+            props: {
+              class: `button close`,
+              type: "button",
+            },
+            $icon: CloseIcon,
+          })
+        : "",
       new Modal(),
     ];
+    return $children;
+  }
 
+  render() {
+    const $children = this.getChildrenComponent();
     const $target = createElement(h("form", { class: "main--form" }, $children));
 
     if (!this.$target) {

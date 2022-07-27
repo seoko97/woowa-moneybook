@@ -9,7 +9,6 @@ class HistoryItem extends Component {
     this.item = item;
 
     this.render();
-    this.setEvent();
 
     return this.$target;
   }
@@ -34,7 +33,7 @@ class HistoryItem extends Component {
           h(
             "span",
             { class: "ul__item__amount" },
-            `${direction === "out" && "-"}${parseInt(amount).toLocaleString()}원`
+            `${direction === "out" ? "-" : ""}${parseInt(amount).toLocaleString()}원`
           )
         )
       )

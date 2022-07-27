@@ -4,11 +4,12 @@ import CheckIcon from "../../../public/checkIcon.svg";
 import { createElement, h } from "../../utils/domHandler";
 
 class Button extends Component {
-  constructor({ valid, props }) {
+  constructor({ valid, props, $icon }) {
     super();
 
     this.valid = valid;
     this.props = props;
+    this.$icon = $icon;
 
     this.render();
     this.setEvent();
@@ -18,7 +19,7 @@ class Button extends Component {
 
   render() {
     const $target = createElement(
-      h("button", this.props, new Svg("span", { class: "icon" }, CheckIcon))
+      h("button", this.props, new Svg("div", { class: "icon" }, this.$icon ?? CheckIcon))
     );
     this.$target = $target;
   }

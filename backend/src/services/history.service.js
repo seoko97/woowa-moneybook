@@ -3,11 +3,23 @@ const {
   READ_HISTORIES,
   UPDATE_HISTORY,
   DELETE_HISTORY,
+  READ_HISTORY_BY_ID,
 } = require("../constant/queries");
 const { readDB, writeDB } = require("../utils/dbHandler");
 
 class HistoryService {
   constructor() {}
+
+  async getHistoryById(id) {
+    // [ 트랜잭션 id ]
+    const { error, result } = await readDB(READ_HISTORY_BY_ID, [id]);
+    const retJson = { error, ok: false };
+    if (result && result.length !== 0) {
+      retJson.ok = true;
+      retJson.result = result[0];
+    }
+    return retJson;
+  }
 
   async getHistoryList({
     userId,
@@ -28,23 +40,39 @@ class HistoryService {
 
   async createHistory({
     userId,
-    date,
+    trxDate,
     direction,
     category,
     description,
     paymentId,
     amount,
   }) {
-    const { ok, error } = await writeDB(CREATE_HISTORY, [
+    let { ok, error, result } = await writeDB(CREATE_HISTORY, [
       userId,
-      date,
+      trxDate,
       direction,
       category,
       description,
       paymentId,
       amount,
     ]);
-    return { ok, error };
+    return { ok, error, result };
+  }
+
+  async handleWriteHistory(data) {
+    const { isCreate, ...queryData } = data;
+    let result, ok, error, id;
+    if (isCreate) {
+      ({ result, ok, error } = await this.createHistory(queryData));
+      id = result.insertId;
+    } else {
+      ({ result, ok, error } = await this.updateHistory(queryData));
+      id = queryData.id;
+    }
+    if (ok) {
+      ({ result, ok, error } = await this.getHistoryById(id));
+    }
+    return { newHistory: result, ok, error };
   }
 
   async updateHistory(data) {

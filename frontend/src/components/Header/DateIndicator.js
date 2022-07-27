@@ -6,6 +6,7 @@ import { dateState } from "../../store/dateState";
 import { getState, setState, subscribe, unsubscribe } from "../../core/store";
 import { createElement, h } from "../../utils/domHandler";
 import { pathState } from "../../store/eventState";
+import { changeDate } from "../../utils/dateHandler";
 
 export default class DateIndicator extends Component {
   constructor() {
@@ -38,11 +39,12 @@ export default class DateIndicator extends Component {
 
       if ($button.classList.contains("date-indicator--left")) {
         newDate.month -= 1;
-        this.setState(newDate);
       } else {
         newDate.month += 1;
-        this.setState(newDate);
       }
+
+      const resultDate = changeDate(newDate);
+      this.setState(resultDate);
     });
   }
 

@@ -14,7 +14,7 @@ const createElement = (nodeData) => {
   const $el = document.createElement(type);
 
   Object.entries(props || {})
-    .filter(([_, value]) => value)
+    .filter(([, value]) => value)
     .forEach(([attr, value]) => $el.setAttribute(attr, value));
 
   const childrens = children.map(createElement);

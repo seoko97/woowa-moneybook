@@ -30,8 +30,13 @@
   margin-left: 10px;
 }
 
-.main--form > .button.success {
-  background-color: var(--primary1);
+.main--form > .button.close {
+  border: 1px solid var(--color-error);
+  background-color: var(--color-error);
+}
+
+.main--form > .button.close .icon path {
+  stroke: var(--white);
 }
 
 .main--form > .button.success .icon path {
@@ -40,10 +45,11 @@
 
 .main--form__item {
   flex: 1;
+  min-height: 55px;
   padding: 0 16px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   row-gap: 12px;
   position: relative;
   user-select: none;
@@ -77,7 +83,7 @@
   text-align: center;
 }
 
-.main--form__item .icon > svg {
+.main--form__item .icon {
   width: 10px;
   height: 10px;
   cursor: pointer;
@@ -99,6 +105,10 @@
 .form__item__input {
   border: 0;
   max-width: 130px;
+}
+
+input {
+  background-color: var(--white);
 }
 
 .form__item__input[name="amount"] {
@@ -185,6 +195,8 @@ input[type="date"] {
 }
 
 .ul > .ul--li .icon {
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;

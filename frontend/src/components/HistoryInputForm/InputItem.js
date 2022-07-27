@@ -13,16 +13,23 @@ class InputItem extends Component {
     return this.$target;
   }
 
-  render() {
+  checkIsAmount() {
     const isAmount = this.props.name === "amount";
     const text = isAmount ? "원" : "";
+    const heading = isAmount ? "금액" : "내용";
     const $direction = isAmount ? new DirectionItem() : "";
+
+    return { text, $direction, heading };
+  }
+
+  render() {
+    const { $direction, heading, text } = this.checkIsAmount();
 
     const $target = createElement(
       h(
         "div",
         { class: "main--form__item" },
-        h("h3", { class: "form__item__title" }, "내용"),
+        h("h3", { class: "form__item__title" }, heading),
         h("div", { class: "form__item--section" }, $direction, h("input", this.props, ""), text)
       )
     );

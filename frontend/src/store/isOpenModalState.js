@@ -1,11 +1,7 @@
-import PaymentModalForm from "../components/Modal/PaymentModalForm";
 import { initState } from "../core/store";
+import { MODAL_INITIAL_STATE } from "../constants/modal";
 
 export const isOpenModalState = initState({
   key: "isOpenModalState",
-  defaultValue: {
-    isOpen: false,
-    payment: null,
-    component: PaymentModalForm,
-  },
+  defaultValue: MODAL_INITIAL_STATE,
 });

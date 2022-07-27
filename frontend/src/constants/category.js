@@ -1,3 +1,7 @@
+import AnalyticsIcon from "../../public/analyticsIcon.svg";
+import CalendarIcon from "../../public/calendarIcon.svg";
+import HistoryIcon from "../../public/historyIcon.svg";
+
 const CATEGORY_COLORS = {
   생활: "#4a6cc3",
   식비: "#4ca1de",
@@ -11,4 +15,10 @@ const CATEGORY_COLORS = {
   기타수입: "#e2b765",
 };
 
-export { CATEGORY_COLORS };
+const PAGE_INFO = [
+  { href: "/", $icon: HistoryIcon },
+  { href: "/calendar", $icon: CalendarIcon },
+  { href: "/analytics", $icon: AnalyticsIcon },
+];
+
+export { CATEGORY_COLORS, PAGE_INFO };

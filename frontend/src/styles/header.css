@@ -57,6 +57,10 @@
   stroke: #ffffff;
 }
 
+.header--nav > .focus svg > path {
+  stroke: var(--white);
+}
+
 .date-indicator--date {
   min-width: 50px;
 }

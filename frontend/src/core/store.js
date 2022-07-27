@@ -1,4 +1,4 @@
-export const { getState, initState, setState, subscribe, unsubscribe } = (function () {
+export const { getState, initState, setState, subscribe, unsubscribe, clear } = (function () {
   const globalState = new Map();
 
   function initState({ key, defaultValue }) {
@@ -40,11 +40,16 @@ export const { getState, initState, setState, subscribe, unsubscribe } = (functi
     bundle._observers.forEach((cb) => cb());
   }
 
+  function clear() {
+    globalState.forEach(({ _observers }) => _observers.clear());
+  }
+
   return {
     initState,
     subscribe,
     unsubscribe,
     getState,
     setState,
+    clear,
   };
 })();
