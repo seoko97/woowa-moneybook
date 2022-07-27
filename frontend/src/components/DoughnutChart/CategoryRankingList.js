@@ -3,9 +3,9 @@ import Component from "../../core/component";
 import { createElement, h } from "../../utils/domHandler";
 import "./style.css";
 import { getState } from "../../core/store";
-import { doughnutState } from "../../store/doughnutState";
 import { getTotalAmount, getTotalPercent } from "../../utils/doughnutGraphUtils";
 import CategoryTag from "../CategoryTag";
+import { analyticsRankingState } from "../../store/analyticsState";
 
 export default class CategoryRankingList extends Component {
   constructor() {
@@ -37,7 +37,7 @@ export default class CategoryRankingList extends Component {
   }
 
   render() {
-    const data = getState(doughnutState);
+    const { analyticsList: data } = getState(analyticsRankingState);
     const $categoryList = this.makeCategoryList(data);
     const $title = this.makeTitle(data);
     const $target = createElement(h("ul", { class: "category-list" }, $title, $categoryList));
