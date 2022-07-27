@@ -1,8 +1,16 @@
-import { MONTH_UNIT } from "../constants/lineGraph";
+import {
+  LIMIT_DOWN_TO_UP,
+  MIN_BOUNDARY,
+  MONTH_UNIT,
+  OFFSET_DOWN,
+  OFFSET_UP,
+  VIEW_BOX_HEIGHT,
+  VIEW_BOX_WIDTH,
+} from "../constants/lineGraph";
 
 // 6개월치 데이터에 존재하는 달이 6개 미만인 경우 6개로 만들어주는 함수
 const makeFullDataArray = ({ data, month: curMonth }) => {
-  if (data.length === 6) return data;
+  if (data.length === MONTH_UNIT) return data;
   const month2idx = {};
   let idx = 0;
   const ret = Array.from({ length: MONTH_UNIT }, (_, i) => {
@@ -28,7 +36,7 @@ const makeBoundary = ({ data, gapUnit = 5 }) => {
   // 최소값이 0 인경우 -> 가장 밑의 선을 0으로
   if (min === 0) {
     lowerBoundary = 0;
-    upperBoundary = Math.max(max + gap, 10000);
+    upperBoundary = Math.max(max + gap, MIN_BOUNDARY);
   }
   // 차이가 있는 경우 min을 밑에서 1번째, max를 위에서 1번째로
   else if (diff !== 0) {
@@ -37,17 +45,18 @@ const makeBoundary = ({ data, gapUnit = 5 }) => {
   }
   // 차이가 없는 경우 값을 가운데로
   else {
-    lowerBoundary = min - 10000;
-    upperBoundary = max + 10000;
+    lowerBoundary = min - MIN_BOUNDARY;
+    upperBoundary = max + MIN_BOUNDARY;
   }
   return [lowerBoundary, upperBoundary];
 };
 
-const getCoordinates = ({ data, lowerBoundary, upperBoundary, viewBoxWidth, viewBoxHeight }) => {
+const getCoordinates = ({ data, lowerBoundary, upperBoundary }) => {
   return data.map(({ total }, i) => {
-    const x = viewBoxWidth * (i / (data.length - 1));
+    const x = VIEW_BOX_WIDTH * (i / (data.length - 1));
     const y =
-      viewBoxHeight - ((total - lowerBoundary) / (upperBoundary - lowerBoundary)) * viewBoxHeight;
+      VIEW_BOX_HEIGHT -
+      ((total - lowerBoundary) / (upperBoundary - lowerBoundary)) * VIEW_BOX_HEIGHT;
     return [x, y];
   });
 };
@@ -79,8 +88,8 @@ const decideLabelPos = (grad1, grad2) => {
 };
 
 // 가격 텍스트의 align 위치와 dy 오프셋을 구해주는 함수
-const movePointsOffset = (pointsCoord, viewBoxHeight) => {
-  const position = { up: "7", down: "-2" };
+const movePointsOffset = (pointsCoord, VIEW_BOX_HEIGHT) => {
+  const position = { up: OFFSET_UP, down: OFFSET_DOWN };
   const ret = [];
   let grad;
   for (let i = 0; i < pointsCoord.length; i++) {
@@ -97,7 +106,7 @@ const movePointsOffset = (pointsCoord, viewBoxHeight) => {
     }
   }
   ret.forEach((_, i) => {
-    if (pointsCoord[i][1] > viewBoxHeight - 8) ret[i][1] = [position["down"]];
+    if (pointsCoord[i][1] > VIEW_BOX_HEIGHT - LIMIT_DOWN_TO_UP) ret[i][1] = [position["down"]];
   });
   return ret;
 };

@@ -9,54 +9,79 @@ import {
   makeFullDataArray,
   movePointsOffset,
 } from "../../utils/lineGraphUtils";
+import {
+  MONTH_UNIT,
+  BORDER_COLOR,
+  VIEW_BOX_HEIGHT,
+  MONTH_FONT_SIZE,
+  MONTH_LABEL_DY,
+  MONTH_TEXT_COLOR,
+  VALUE_TEXT_COLOR,
+  LINE_ANIMATION_SPEED,
+  HORIZONTAL_DIVIDE_LINE_SPEED,
+  VALUE_TEXT_SIZE,
+  VALUE_TEXT_WEIGHT,
+  LINE_LENGTH_COMPENSATION,
+  DURATION,
+  LINE_STROKE_WIDTH,
+  VIEW_BOX_WIDTH,
+  BORDER_STROKE_WIDTH,
+  KEY_SPLINES,
+  KEY_TIMES,
+  DEFAULT_POINT_RADIUS,
+  HEIGHT,
+  WIDTH,
+  VERTICAL_DIVIDE_LINE_SPEED,
+} from "../../constants/lineGraph";
+import { getState, subscribe } from "../../core/store";
+import { analyticsState } from "../../store/analyticsState";
 
 export default class LineGraph extends Component {
   constructor() {
     super();
+
+    this.component = "LineGraph";
+    subscribe(analyticsState, this.component, this.render.bind(this));
+
     this.render();
     return this.$target;
   }
 
-  makeBorder({ viewBoxWidth, viewBoxHeight, borderColor }) {
+  makeBorder() {
     return h("path", {
-      d: `M 0 0 H ${viewBoxWidth} V ${viewBoxHeight} H 0 Z`,
+      d: `M 0 0 H ${VIEW_BOX_WIDTH} V ${VIEW_BOX_HEIGHT} H 0 Z`,
       fill: "transparent",
-      stroke: borderColor,
-      "stroke-width": "0.3",
+      stroke: BORDER_COLOR,
+      "stroke-width": BORDER_STROKE_WIDTH,
     });
   }
 
-  makeDivideLine({
-    viewBoxWidth,
-    viewBoxHeight,
-    horizontalUnit,
-    verticalUnit,
-    divideLineColor,
-    duration,
-  }) {
+  makeDivideLine() {
+    const horizontalUnit = 6;
+    const verticalUnit = MONTH_UNIT - 2;
     const horizontal = Array.from({ length: horizontalUnit }).map((_, i) => {
       return h(
         "path",
         {
           d: `M 0 ${
-            viewBoxHeight * ((horizontalUnit - i) / (horizontalUnit + 1))
-          } H ${viewBoxWidth}`,
-          stroke: divideLineColor,
-          "stroke-width": "0.3",
-          "stroke-dashoffset": `${viewBoxWidth}`,
-          "stroke-dasharray": `${viewBoxWidth}`,
+            VIEW_BOX_HEIGHT * ((horizontalUnit - i) / (horizontalUnit + 1))
+          } H ${VIEW_BOX_WIDTH}`,
+          stroke: BORDER_COLOR,
+          "stroke-width": `${BORDER_STROKE_WIDTH}`,
+          "stroke-dashoffset": `${VIEW_BOX_WIDTH}`,
+          "stroke-dasharray": `${VIEW_BOX_WIDTH}`,
         },
-        duration &&
+        DURATION &&
           h("animate", {
             attributeName: "stroke-dashoffset",
-            begin: `${duration * i * 0.1}`,
-            dur: `${duration}`,
-            from: `${viewBoxWidth}`,
+            begin: `${DURATION * i * HORIZONTAL_DIVIDE_LINE_SPEED}`,
+            dur: `${DURATION}`,
+            from: `${VIEW_BOX_WIDTH}`,
             to: "0",
             fill: "freeze",
             calcMode: "spline",
-            keySplines: "0.1 0.8 0.2 1;0.1 0.8 0.2 1",
-            keyTimes: "0;0.5;1",
+            keySplines: KEY_SPLINES,
+            keyTimes: KEY_TIMES,
           })
       );
     });
@@ -64,23 +89,23 @@ export default class LineGraph extends Component {
       return h(
         "path",
         {
-          d: `M ${viewBoxWidth * ((i + 1) / (verticalUnit + 1))} ${viewBoxHeight} V 0`,
-          stroke: divideLineColor,
-          "stroke-width": "0.3",
-          "stroke-dashoffset": `${viewBoxHeight}`,
-          "stroke-dasharray": `${viewBoxHeight}`,
+          d: `M ${VIEW_BOX_WIDTH * ((i + 1) / (verticalUnit + 1))} ${VIEW_BOX_HEIGHT} V 0`,
+          stroke: BORDER_COLOR,
+          "stroke-width": `${BORDER_STROKE_WIDTH}`,
+          "stroke-dashoffset": `${VIEW_BOX_HEIGHT}`,
+          "stroke-dasharray": `${VIEW_BOX_HEIGHT}`,
         },
-        duration &&
+        DURATION &&
           h("animate", {
             attributeName: "stroke-dashoffset",
-            begin: `${duration * i * 0.05}`,
-            dur: `${duration}`,
-            from: `${viewBoxHeight}`,
+            begin: `${DURATION * i * VERTICAL_DIVIDE_LINE_SPEED}`,
+            dur: `${DURATION}`,
+            from: `${VIEW_BOX_HEIGHT}`,
             to: "0",
             fill: "freeze",
             calcMode: "spline",
-            keySplines: "0.1 0.8 0.2 1;0.1 0.8 0.2 1",
-            keyTimes: "0;0.5;1",
+            keySplines: KEY_SPLINES,
+            keyTimes: KEY_TIMES,
           })
       );
     });
@@ -89,7 +114,12 @@ export default class LineGraph extends Component {
 
   makePoints({ pointsCoord, category }) {
     return pointsCoord.map(([x, y]) => {
-      return h("circle", { cx: x, cy: y, r: "1.5", fill: CATEGORY_COLORS[category] });
+      return h("circle", {
+        cx: x,
+        cy: y,
+        r: `${DEFAULT_POINT_RADIUS}`,
+        fill: CATEGORY_COLORS[category],
+      });
     });
   }
 
@@ -102,7 +132,9 @@ export default class LineGraph extends Component {
           x: pointsCoord[i][0],
           y: pointsCoord[i][1],
           "text-anchor": anchor,
-          "font-size": "6",
+          "font-size": `${VALUE_TEXT_SIZE}`,
+          "font-weight": `${VALUE_TEXT_WEIGHT}`,
+          fill: VALUE_TEXT_COLOR,
           dy: dy,
         },
         `${total.toLocaleString()}`
@@ -110,20 +142,20 @@ export default class LineGraph extends Component {
     });
   }
 
-  makeLines({ pointsCoord, width, height, viewBoxWidth, viewBoxHeight, duration, category }) {
-    return Array.from({ length: 5 }).map((_, i) => {
+  makeLines({ pointsCoord, category }) {
+    return Array.from({ length: MONTH_UNIT - 1 }).map((_, i) => {
       const [startX, startY] = pointsCoord[i];
       const [endX, endY] = pointsCoord[i + 1];
-      const dx = (endX - startX) * (width / viewBoxWidth);
-      const dy = (endY - startY) * (height / viewBoxHeight);
-      const length = (dx ** 2 + dy ** 2) ** 0.5 * 0.35;
-      const speed = duration * 0.1;
+      const dx = (endX - startX) * (WIDTH / VIEW_BOX_WIDTH);
+      const dy = (endY - startY) * (HEIGHT / VIEW_BOX_HEIGHT);
+      const length = (dx ** 2 + dy ** 2) ** 0.5 * LINE_LENGTH_COMPENSATION;
+      const speed = DURATION * LINE_ANIMATION_SPEED;
       return h(
         "path",
         {
           d: `M ${startX} ${startY} L ${endX} ${endY}`,
           stroke: CATEGORY_COLORS[category],
-          "stroke-width": 0.5,
+          "stroke-width": LINE_STROKE_WIDTH,
           "stroke-dasharray": `${length}`,
           "stroke-dashoffset": `${length}`,
         },
@@ -139,82 +171,104 @@ export default class LineGraph extends Component {
     });
   }
 
+  makeMonthLabel({ pointsCoord, data }) {
+    return Array.from({ length: MONTH_UNIT }).map((_, i) => {
+      return h(
+        "text",
+        {
+          x: pointsCoord[i][0],
+          y: VIEW_BOX_HEIGHT,
+          "text-anchor": "middle",
+          "font-size": `${MONTH_FONT_SIZE}`,
+          dy: `${MONTH_LABEL_DY}`,
+          fill: MONTH_TEXT_COLOR,
+        },
+        `${data[i].month}`
+      );
+    });
+  }
+
   rand(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
   render() {
-    const tmpData = [
-      { month: 10, total: this.rand(1, 100) * 10000 },
-      { month: 11, total: this.rand(1, 100) * 10000 },
-      { month: 12, total: this.rand(1, 100) * 10000 },
-      { month: 1, total: this.rand(1, 100) * 10000 },
-      { month: 2, total: this.rand(1, 100) * 10000 },
-      { month: 3, total: this.rand(1, 100) * 10000 },
-    ];
-    const data = makeFullDataArray({ data: tmpData, month: 3 });
-    const viewBoxWidth = 200;
-    const viewBoxHeight = 100;
-    const width = 600;
-    const height = 400;
-    const borderColor = "grey";
-    const horizontalUnit = 6;
-    const verticalUnit = 4;
-    const divideLineColor = "rgba(0, 0, 0, 0.2)";
-    const duration = 2;
+    let $target;
+    const { selectedCategory } = getState(analyticsState);
 
-    const [lowerBoundary, upperBoundary] = makeBoundary({ data, gapUnit: 6 });
-    const pointsCoord = getCoordinates({
-      data,
-      viewBoxWidth,
-      viewBoxHeight,
-      lowerBoundary,
-      upperBoundary,
-    });
-    const textPos = movePointsOffset(pointsCoord, viewBoxHeight);
+    // 보여주지 않아도 되는 상황
+    if (!selectedCategory) {
+      $target = createElement(h("div", null));
+    }
+    // 보여줘야 하는 상황이라면
+    else {
+      const tmpData = [
+        { month: 8, total: this.rand(0, 100) * 10000 },
+        { month: 9, total: this.rand(0, 100) * 10000 },
+        { month: 10, total: this.rand(0, 100) * 10000 },
+        { month: 11, total: this.rand(0, 100) * 10000 },
+        { month: 12, total: this.rand(0, 100) * 10000 },
+        { month: 1, total: this.rand(0, 100) * 10000 },
+        { month: 2, total: this.rand(0, 100) * 10000 },
+        { month: 3, total: this.rand(0, 100) * 10000 },
+        { month: 4, total: this.rand(0, 100) * 10000 },
+        { month: 5, total: this.rand(0, 100) * 10000 },
+        { month: 6, total: this.rand(0, 100) * 10000 },
+        { month: 7, total: this.rand(0, 100) * 10000 },
+      ];
+      const data = makeFullDataArray({ data: tmpData, month: 7 });
 
-    const $border = this.makeBorder({ viewBoxWidth, viewBoxHeight, borderColor });
-    const $divideLines = this.makeDivideLine({
-      viewBoxWidth,
-      viewBoxHeight,
-      horizontalUnit,
-      verticalUnit,
-      divideLineColor,
-      duration,
-    });
-    const $texts = this.makeTexts({ data, textPos, pointsCoord });
+      const [lowerBoundary, upperBoundary] = makeBoundary({ data, gapUnit: 6 });
+      const pointsCoord = getCoordinates({
+        data,
+        lowerBoundary,
+        upperBoundary,
+      });
+      const textPos = movePointsOffset(pointsCoord);
 
-    const category = "쇼핑/뷰티";
-    const $points = this.makePoints({ pointsCoord, category });
+      const $border = this.makeBorder();
+      const $divideLines = this.makeDivideLine();
+      const $texts = this.makeTexts({ data, textPos, pointsCoord });
 
-    const $lines = this.makeLines({
-      pointsCoord,
-      width,
-      height,
-      viewBoxWidth,
-      viewBoxHeight,
-      duration,
-      category,
-    });
+      const { selectedCategory: category } = getState(analyticsState);
+      const $points = this.makePoints({ pointsCoord, category });
 
-    const lineGraph = createElement(
-      h(
-        "svg",
-        {
-          viewBox: `0 0 ${viewBoxWidth} ${viewBoxHeight}`,
-          xmlns: "http://www.w3.org/2000/svg",
-          overflow: "visible",
-          width: width,
-          height: height,
-        },
-        $border,
-        $divideLines,
-        $points,
-        $texts,
-        $lines
-      )
-    );
+      const $lines = this.makeLines({ pointsCoord, category });
+      const $monthLabels = this.makeMonthLabel({ pointsCoord, data });
 
-    this.$target = new Svg("div", { class: "line-graph-container" }, lineGraph);
+      const lineGraph = createElement(
+        h(
+          "svg",
+          {
+            viewBox: `0 0 ${VIEW_BOX_WIDTH} ${VIEW_BOX_HEIGHT}`,
+            xmlns: "http://www.w3.org/2000/svg",
+            overflow: "visible",
+            width: WIDTH,
+            height: HEIGHT,
+          },
+          $border,
+          $divideLines,
+          $points,
+          $lines,
+          $texts,
+          $monthLabels
+        )
+      );
+
+      $target = createElement(
+        h(
+          "section",
+          { class: "line-graph--container" },
+          h("h2", { class: "line-graph--title" }, `${category} 소비 추이`),
+          new Svg("div", { class: "line-graph" }, lineGraph)
+        )
+      );
+    }
+
+    if (!this.$target) {
+      this.$target = $target;
+    } else {
+      this.reRender($target);
+    }
   }
 }
