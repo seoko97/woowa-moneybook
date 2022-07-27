@@ -5,6 +5,7 @@ import { paymentListState } from "../../store/paymentState";
 import { createElement, h } from "../../utils/domHandler";
 import "../../styles/modal.css";
 import { historyState } from "../../store/historyState";
+import { requestCreatePayment, requestDeletePayment } from "../../apis/payment";
 
 class PaymentModalForm extends Component {
   constructor() {
@@ -40,23 +41,22 @@ class PaymentModalForm extends Component {
     const newModalState = { ...this.modalState };
     const newPaymentListState = [...this.paymentListState];
 
-    if (this.modalState.payment) {
-      // const data =  await 비동기함수;
-      const idx = newPaymentListState.findIndex(
-        (payment) => payment.id === newModalState.payment.id
-      );
+    if (newModalState.data.payment) {
+      const selectedPaymentId = newModalState.data.payment.id;
+      await requestDeletePayment({ paymentId: selectedPaymentId });
+      const idx = newPaymentListState.findIndex((payment) => payment.id === selectedPaymentId);
 
       newPaymentListState.splice(idx, 1);
     } else {
-      // const data =  await 비동기함수;
-      newPaymentListState.push({ id: 5, title: $input.value });
+      const { paymentItem } = await requestCreatePayment({ title: $input.value });
+      newPaymentListState.push(paymentItem);
     }
 
     this.setPaymentListState(newPaymentListState);
     this.setModalState({
       ...this.modalState,
       isOpen: false,
-      payment: null,
+      data: null,
     });
     this.setHistoryState({
       ...this.historyState,
@@ -65,7 +65,9 @@ class PaymentModalForm extends Component {
   }
 
   render() {
-    const { payment } = this.modalState;
+    const {
+      data: { payment },
+    } = this.modalState;
 
     this.$target = createElement(
       h(

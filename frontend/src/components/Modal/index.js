@@ -25,7 +25,7 @@ class Modal extends Component {
   }
 
   onCloseModal() {
-    this.setState({ ...this.state, isOpen: false, payment: null });
+    this.setState({ ...this.state, isOpen: false, data: null });
   }
 
   validateIsOpen({ isOpen, component }) {

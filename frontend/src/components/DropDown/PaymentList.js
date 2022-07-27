@@ -56,7 +56,9 @@ class PaymentList extends DropDown {
     this.setIsOpenModalState({
       ...modalState,
       isOpen: true,
-      payment: selectedItem,
+      data: {
+        payment: selectedItem,
+      },
     });
   }
 

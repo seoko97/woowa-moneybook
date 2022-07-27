@@ -5,7 +5,7 @@ export const isOpenModalState = initState({
   key: "isOpenModalState",
   defaultValue: {
     isOpen: false,
-    payment: null,
+    data: null,
     component: PaymentModalForm,
   },
 });
