@@ -1,4 +1,5 @@
 import { WEEKDAY } from "../constants/date";
+import { getSumByDirection } from "./getSumByDirection";
 
 const checkDate = (date) => (date >= 10 ? date : `0${date}`);
 
@@ -60,6 +61,39 @@ const changeDate = ({ month, year }) => {
   return { month, year };
 };
 
+// 'YYYY-MM-DD' 형태의 문자열을 YYYY, MM 으로 만들어주는 함수
+const getYearMonthFromStr = (date) => {
+  const [year, month] = date.split("-").map((v) => Number(v));
+  return [year, month];
+};
+
+const makeYearMonthToStr = (year, month) => {
+  return `${year}-${String(month).padStart(2, "0")}`;
+};
+
+const groupByMonth = (data) => {
+  const mappedData = mappingHistoryByDate(data);
+  const sum = [];
+  const tmpList = {};
+  mappedData.forEach(({ trxDate, trxList }) => {
+    const [year, month] = getYearMonthFromStr(trxDate);
+    if (sum.length === 0 || !(sum.at(-1).year === year && sum.at(-1).month === month)) {
+      sum.push({ year, month, total: 0 });
+    }
+    sum.at(-1).total += getSumByDirection(trxList).sum_out;
+    const yearMonStr = makeYearMonthToStr(year, month);
+    if (!tmpList[yearMonStr]) {
+      tmpList[yearMonStr] = [];
+    }
+    tmpList[yearMonStr].push(...trxList.reverse());
+  });
+  const analyticsTrxList = {};
+  Object.entries(tmpList).forEach(([key, val]) => {
+    analyticsTrxList[key] = val;
+  });
+  return [sum, analyticsTrxList];
+};
+
 export {
   changeDate,
   changeDateByString,
@@ -67,4 +101,5 @@ export {
   mappingHistoryByDate,
   parsingStringDate,
   changeParsedDateByYM,
+  groupByMonth,
 };
