@@ -1,6 +1,5 @@
 import Component from "../../core/component";
 import { getState, setState } from "../../core/store";
-import { doughnutState } from "../../store/doughnutState";
 import { createElement, h } from "../../utils/domHandler";
 import { CATEGORY_COLORS } from "../../constants/category";
 import Svg from "../../core/svg";
@@ -12,7 +11,7 @@ import {
   INITIAL_DASH_OFFSET,
   STROKE_WIDTH,
 } from "../../constants/doughnutChart";
-import { analyticsState } from "../../store/analyticsState";
+import { analyticsRankingState, analyticsState } from "../../store/analyticsState";
 
 export default class DoughnutChart extends Component {
   constructor() {
@@ -80,7 +79,7 @@ export default class DoughnutChart extends Component {
   }
 
   render() {
-    const data = getState(doughnutState);
+    const { analyticsList: data } = getState(analyticsRankingState);
     const totalPercent = getTotalPercent(data);
     const paths = getDoughnutChartPaths(totalPercent, RADIUS);
 

@@ -7,7 +7,7 @@ const analyticsState = initState({
 });
 
 const analyticsRankingState = initState({
-  key: "analyticsRankingListState",
+  key: "analyticsRankingState",
   defaultValue: ANALYTICS_RANKING_INITIAL_STATE,
 });
 
