@@ -4,7 +4,6 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    top: -20px;
     margin-bottom: 60px;
     z-index: 9;
     background-color: var(--white);
@@ -41,6 +40,7 @@
 }
 
 .category-list--title {
+    font-weight: 500;
     margin: 5px 0 15px;
     padding-left: 16px;
 }
