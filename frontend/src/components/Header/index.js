@@ -1,5 +1,5 @@
 import Component from "../../core/component";
-import { dispatchCutomEvent } from "../../utils/customEventHandler";
+import { dispatchCustomEvent } from "../../utils/customEventHandler";
 
 import DateIndicator from "./DateIndicator";
 import Navigation from "./Navigation";
@@ -31,7 +31,7 @@ export default class Header extends Component {
     if (href === location.pathname) return;
 
     history.pushState(null, null, href);
-    dispatchCutomEvent("locationChange", window);
+    dispatchCustomEvent("locationChange", window);
   }
 
   render() {

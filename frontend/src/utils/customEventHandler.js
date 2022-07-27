@@ -4,9 +4,9 @@ const createCustomEvent = (eventName, $element, cb) => {
 
 const removeCustomEvent = (eventName, $element, cb) => $element.removeEventListener(eventName, cb);
 
-const dispatchCutomEvent = (eventName, $element, options = {}) => {
+const dispatchCustomEvent = (eventName, $element, options = {}) => {
   const myEvent = new CustomEvent(eventName, { detail: { ...options } });
   $element.dispatchEvent(myEvent);
 };
 
-export { createCustomEvent, removeCustomEvent, dispatchCutomEvent };
+export { createCustomEvent, removeCustomEvent, dispatchCustomEvent };
