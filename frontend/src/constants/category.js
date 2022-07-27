@@ -21,4 +21,7 @@ const PAGE_INFO = [
   { href: "/analytics", $icon: AnalyticsIcon },
 ];
 
-export { CATEGORY_COLORS, PAGE_INFO };
+const CATEGORY_BY_OUT = ["생활", "식비", "교통", "쇼핑/뷰티", "의료/건강", "문화/여가", "미분류"];
+const CATEGORY_BY_IN = ["월급", "용돈", "기타수입"];
+
+export { CATEGORY_COLORS, PAGE_INFO, CATEGORY_BY_IN, CATEGORY_BY_OUT };
