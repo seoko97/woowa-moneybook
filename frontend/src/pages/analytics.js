@@ -14,7 +14,7 @@ class AnalyticsPage extends Component {
   constructor() {
     super();
     this.render();
-    this.setAnalyticsListState = setState(analyticsRankingState);
+    this.setAnalyticsRankingState = setState(analyticsRankingState);
     this.setAnalyticsState = setState(analyticsState);
     subscribe(dateState, "AnalyticsPage", this.useDebounceByGetData.bind(this));
 
@@ -25,7 +25,7 @@ class AnalyticsPage extends Component {
 
   useDebounceByGetData() {
     this.setAnalyticsState(ANALYTICS_INITIAL_STATE);
-    this.setAnalyticsListState(ANALYTICS_RANKING_INITIAL_STATE);
+    this.setAnalyticsRankingState(ANALYTICS_RANKING_INITIAL_STATE);
     const { isLoading } = getState(analyticsRankingState);
 
     if (!isLoading) {
@@ -40,11 +40,11 @@ class AnalyticsPage extends Component {
   }
 
   async getAnalyticsListData() {
-    this.setAnalyticsListState(ANALYTICS_INITIAL_STATE);
+    this.setAnalyticsRankingState(ANALYTICS_RANKING_INITIAL_STATE);
     const date = getState(dateState);
     const { eachCategoryExpenditure: analyticsList } = await requestGetCategoryRanking(date);
 
-    this.setAnalyticsListState({ isLoading: false, analyticsList });
+    this.setAnalyticsRankingState({ isLoading: false, analyticsList });
     this.render();
   }
 
