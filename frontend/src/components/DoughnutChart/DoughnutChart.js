@@ -41,9 +41,9 @@ export default class DoughnutChart extends Component {
     this.setAnalyticsState(newState);
   };
 
-  makeParts({ dataset, totalPercent, paths }) {
+  makeParts({ data, totalPercent, paths }) {
     let accDuration = 0;
-    return dataset.map(({ category }, i) => {
+    return data.map(({ category }, i) => {
       const targetRad = 2 * Math.PI * totalPercent[i] * RADIUS;
       const targetRestRad = 2 * Math.PI * (1 - totalPercent[i]) * RADIUS;
       const dasharray = `${targetRad} ${targetRestRad}`;
@@ -76,11 +76,11 @@ export default class DoughnutChart extends Component {
   }
 
   render() {
-    const { categoryExpenditureList: dataset } = getState(doughnutState);
-    const totalPercent = getTotalPercent(dataset);
+    const data = getState(doughnutState);
+    const totalPercent = getTotalPercent(data);
     const paths = getDoughnutChartPaths(totalPercent, RADIUS);
 
-    const $parts = this.makeParts({ dataset, totalPercent, paths });
+    const $parts = this.makeParts({ data, totalPercent, paths });
 
     const $doughnut = createElement(
       h(

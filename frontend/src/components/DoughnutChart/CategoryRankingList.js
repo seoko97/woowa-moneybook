@@ -37,7 +37,7 @@ export default class CategoryRankingList extends Component {
   }
 
   render() {
-    const { categoryExpenditureList: data } = getState(doughnutState);
+    const data = getState(doughnutState);
     const $categoryList = this.makeCategoryList(data);
     const $title = this.makeTitle(data);
     const $target = createElement(h("ul", { class: "category-list" }, $title, $categoryList));
