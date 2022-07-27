@@ -16,7 +16,7 @@ class HistoryService {
     const retJson = { error, ok: false };
     if (result && result.length !== 0) {
       retJson.ok = true;
-      retJson.paymentItem = result[0];
+      retJson.result = result[0];
     }
     return retJson;
   }
@@ -56,9 +56,7 @@ class HistoryService {
       paymentId,
       amount,
     ]);
-    // insertId
-    console.log(result);
-    return { ok, error };
+    return { ok, error, result };
   }
 
   async handleWriteHistory(data) {
@@ -70,18 +68,19 @@ class HistoryService {
     } else {
       ({ result, ok, error } = await this.updateHistory(queryData));
       id = queryData.id;
+      console.log(id);
     }
     if (ok) {
       ({ result, ok, error } = await this.getHistoryById(id));
     }
-    return { result, ok, error };
+    return { newHistory: result, ok, error };
   }
 
   async updateHistory(data) {
     // [ 일자, 수입/지출, 카테고리, 설명, 결제수단 id, 수량, 내역 id ]
     const { trxDate, direction, category, description, paymentId, amount, id } =
       data;
-    const { ok, error, result } = await writeDB(UPDATE_HISTORY, [
+    const { ok, error } = await writeDB(UPDATE_HISTORY, [
       trxDate,
       direction,
       category,
@@ -90,7 +89,6 @@ class HistoryService {
       amount,
       id,
     ]);
-    console.log(result);
     return { ok, error };
   }
 
