@@ -68,7 +68,6 @@ class HistoryService {
     } else {
       ({ result, ok, error } = await this.updateHistory(queryData));
       id = queryData.id;
-      console.log(id);
     }
     if (ok) {
       ({ result, ok, error } = await this.getHistoryById(id));
