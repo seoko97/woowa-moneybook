@@ -7,6 +7,7 @@ import { getTotalAmount, getTotalPercent } from "../../utils/doughnutGraphUtils"
 import CategoryTag from "../CategoryTag";
 import { analyticsRankingState } from "../../store/analyticsState";
 import { dateState } from "../../store/dateState";
+import { CATEGORY_COLORS } from "../../constants/category";
 
 export default class CategoryRankingList extends Component {
   constructor() {
@@ -25,12 +26,30 @@ export default class CategoryRankingList extends Component {
     );
   }
 
+  setEvent() {
+    this.addEvent("click", ".category-list", this.onMouseClick);
+  }
+
+  onMouseClick(e) {
+    const { target } = e;
+    const $li = target.closest(".category-list--li");
+    if (!$li) {
+      return;
+    }
+
+    for (const li of $li.parentNode.children) {
+      li.style.backgroundColor = null;
+    }
+    const category = $li.id;
+    $li.style.backgroundColor = `${CATEGORY_COLORS[category]}30`;
+  }
+
   makeCategoryList(data) {
     const totalPercent = getTotalPercent(data);
     return data.map(({ total, category: name }, i) => {
       return h(
         "li",
-        { class: "category-list--li" },
+        { class: "category-list--li", id: name },
         h("div", { class: "category-li--label" }, new CategoryTag({ name })),
         h("p", { class: "category-li--percent" }, `${Math.round(totalPercent[i] * 100)}%`),
         h("p", { class: "category-li--amount" }, total.toLocaleString())
