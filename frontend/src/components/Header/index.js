@@ -4,7 +4,7 @@ import { dispatchCustomEvent } from "../../utils/customEventHandler";
 import DateIndicator from "./DateIndicator";
 import Navigation from "./Navigation";
 import { createElement, h } from "../../utils/domHandler";
-import "../../styles/header.css";
+import "./header.css";
 
 export default class Header extends Component {
   constructor() {

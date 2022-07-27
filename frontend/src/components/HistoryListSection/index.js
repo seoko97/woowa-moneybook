@@ -8,8 +8,7 @@ import HistoryList from "./HistoryList";
 import HistoryListHeader from "./HistoryListHeader";
 import { getHistoryListByDirection } from "../../utils/getHistoryListByDirection";
 import { mappingHistoryByDate } from "../../utils/dateHandler";
-import "../../styles/history.css";
-
+import "./history.css";
 class HistoryListSection extends Component {
   constructor() {
     super();

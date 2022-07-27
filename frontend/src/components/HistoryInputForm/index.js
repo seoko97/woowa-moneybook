@@ -17,7 +17,8 @@ import PaymentList from "../DropDown/PaymentList";
 import Modal from "../Modal";
 import { checkFormValidation } from "../../utils/checkFormValidation";
 import { requestCreateHistory, requestUpdateHistory } from "../../apis/history";
-import { changeParsedDateByYM } from "../../utils/dateHandler";
+import { changeParsedDateByYMD } from "../../utils/dateHandler";
+import "./form.css";
 
 class HistoryInputForm extends Component {
   constructor() {
@@ -64,7 +65,7 @@ class HistoryInputForm extends Component {
       : requestCreateHistory(bodyData));
 
     const { year, month } = getState(dateState);
-    const itemYM = changeParsedDateByYM(newHistory.trxDate);
+    const itemYM = changeParsedDateByYMD(newHistory.trxDate);
 
     if (itemYM.year !== year && itemYM.month !== month) {
       this.setHistoryState(HISTORY_INITIAL_STATE);

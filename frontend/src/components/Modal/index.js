@@ -2,7 +2,7 @@ import Component from "../../core/component";
 import { getState, setState, subscribe } from "../../core/store";
 import { createElement, h } from "../../utils/domHandler";
 import { isOpenModalState } from "../../store/isOpenModalState";
-import "../../styles/modal.css";
+import "./modal.css";
 
 class Modal extends Component {
   constructor() {
