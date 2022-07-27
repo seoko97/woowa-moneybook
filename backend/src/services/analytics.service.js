@@ -1,8 +1,10 @@
 const {
   READ_DETAIL,
   READ_EACH_CATEGORY_HISTORIES,
+  READ_YEAR_HISTORIES_ABOUT_CATEGORY,
 } = require("../constant/queries");
 const { readDB } = require("../utils/dbHandler");
+const getStartEndDay = require("../utils/dateUtil");
 
 /**
  * @typedef {Object} TotalExpenditure
@@ -52,6 +54,16 @@ class AnalyticsService {
       month,
     ]);
     return { ok, error, eachCategoryExpenditure: result };
+  }
+
+  async getYearHistoriesAboutCategory(data) {
+    const { userId, category, year, month } = data;
+    const [startDay, endDay] = getStartEndDay(year, month);
+    const { ok, result, error } = await readDB(
+      READ_YEAR_HISTORIES_ABOUT_CATEGORY,
+      [userId, category, startDay, endDay]
+    );
+    return { ok, error, trxList: result };
   }
 }
 
