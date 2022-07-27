@@ -25,6 +25,7 @@ const MIN_BOUNDARY = 10000;
 const OFFSET_UP = "7";
 const OFFSET_DOWN = "-2";
 const LIMIT_DOWN_TO_UP = 8;
+const HORIZONTAL_LINE_UNIT = 6;
 
 export {
   WIDTH,
@@ -54,4 +55,5 @@ export {
   OFFSET_UP,
   OFFSET_DOWN,
   LIMIT_DOWN_TO_UP,
+  HORIZONTAL_LINE_UNIT,
 };

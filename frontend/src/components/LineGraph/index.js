@@ -32,6 +32,7 @@ import {
   HEIGHT,
   WIDTH,
   VERTICAL_DIVIDE_LINE_SPEED,
+  HORIZONTAL_LINE_UNIT,
 } from "../../constants/lineGraph";
 import { getState, subscribe } from "../../core/store";
 import { analyticsState } from "../../store/analyticsState";
@@ -57,7 +58,7 @@ export default class LineGraph extends Component {
   }
 
   makeDivideLine() {
-    const horizontalUnit = 6;
+    const horizontalUnit = HORIZONTAL_LINE_UNIT;
     const verticalUnit = MONTH_UNIT - 2;
     const horizontal = Array.from({ length: horizontalUnit }).map((_, i) => {
       return h(
