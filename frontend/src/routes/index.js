@@ -1,5 +1,4 @@
-import { clear, setState } from "../core/store";
-import { pathState } from "../store/eventState";
+import { clear } from "../core/store";
 
 export default class Router {
   #routes;
@@ -17,14 +16,11 @@ export default class Router {
   }
 
   getView() {
-    const setPath = setState(pathState);
     clear();
 
     const potentialMatches = this.getPotentialMatches();
 
     const match = potentialMatches.find((potentialMatch) => potentialMatch.isMatch);
-
-    setPath(match.route.path);
 
     if (!match) {
       const _404Page = potentialMatches.at(-1).route.view();
