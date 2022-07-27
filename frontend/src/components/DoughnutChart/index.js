@@ -22,10 +22,19 @@ export default class DoughnutChartBox extends Component {
   }
 
   getChildrenByIsLoading() {
-    const { isLoading } = getState(analyticsRankingState);
+    const { isLoading, analyticsList } = getState(analyticsRankingState);
 
     if (isLoading) {
       return new Spinner();
+    } else if (analyticsList.length === 0) {
+      return [
+        h(
+          "div",
+          { class: "empty" },
+          h("h1", { class: "empty-title" }, "휑"),
+          h("h2", { class: "empty-subtitle" }, "가계부가 텅~")
+        ),
+      ];
     } else {
       return [new DoughnutChart(), new CategoryRankingList()];
     }
@@ -35,17 +44,6 @@ export default class DoughnutChartBox extends Component {
     const $children = this.getChildrenByIsLoading();
 
     const $target = createElement(h("section", { class: "doughnut-box" }, $children));
-
-    // const $target = createElement(
-    //   h(
-    //     "div",
-    //     {
-    //       class: "doughnut-box",
-    //     },
-    //     new DoughnutChart(),
-    //     new CategoryRankingList()
-    //   )
-    // );
 
     if (!this.$target) {
       this.$target = $target;
