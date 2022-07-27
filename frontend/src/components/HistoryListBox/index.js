@@ -3,6 +3,7 @@ import HistoryItem from "./HistoryItem";
 import { getWeekDay } from "../../utils/dateHandler";
 import { createElement, h } from "../../utils/domHandler";
 import { parsingStringDate } from "../../utils/dateHandler";
+import { getSumByDirection } from "../../utils/getSumByDirection";
 
 class HistoryListBox extends Component {
   constructor({ data }) {
@@ -18,6 +19,7 @@ class HistoryListBox extends Component {
 
   render() {
     const { trxDate, trxList } = this.data;
+    const { sum_in, sum_out } = getSumByDirection(trxList);
 
     const weekDay = getWeekDay(trxDate);
 
@@ -38,8 +40,8 @@ class HistoryListBox extends Component {
           h(
             "div",
             { class: "box--header__direction etc" },
-            h("span", { class: "direction_in" }, `수입 ${parseInt(1000000).toLocaleString()}`),
-            h("span", { class: "direction_out" }, `지출 ${parseInt(1000000).toLocaleString()}`)
+            sum_in ? h("span", { class: "direction_in" }, `수입 ${sum_in.toLocaleString()}`) : "",
+            sum_out ? h("span", { class: "direction_out" }, `지출 ${sum_out.toLocaleString()}`) : ""
           )
         ),
 
