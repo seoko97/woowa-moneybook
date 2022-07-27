@@ -1,14 +1,19 @@
 import Component from "../../core/component";
-import { getState, setState, subscribe } from "../../core/store";
+import { setState, subscribe } from "../../core/store";
 import { checkedDirectionState } from "../../store/checkedDirectionState";
 import { createElement, h } from "../../utils/domHandler";
+import { getSumByDirection } from "../../utils/getSumByDirection";
 import CheckBox from "./CheckBox";
 
 class HistoryListHeader extends Component {
-  constructor() {
+  constructor({ historyList, checkedDirection, totalLength }) {
     super();
 
     this.setCheckedDirectionState = setState(checkedDirectionState);
+    this.historyList = historyList;
+    this.checkedDirection = checkedDirection;
+    this.totalLength = totalLength;
+
     subscribe(checkedDirectionState, "HistoryListHeader", this.render.bind(this));
 
     this.render();
@@ -33,20 +38,21 @@ class HistoryListHeader extends Component {
   }
 
   render() {
-    this.checkedDirection = getState(checkedDirectionState);
     const { _in, _out } = this.checkedDirection;
+
+    const { sum_in, sum_out } = getSumByDirection(this.historyList);
 
     const $target = createElement(
       h(
         "header",
         { class: "main--section--header" },
 
-        h("h3", { class: "header__list-count" }, `전체 내역 ${14}건`),
+        h("h3", { class: "header__list-count" }, `전체 내역 ${this.totalLength}건`),
         h(
           "section",
           { class: "header__checkbox-list" },
-          new CheckBox({ type: "_in", totalAmount: 2234823590, checked: _in }),
-          new CheckBox({ type: "_out", totalAmount: 3249238510, checked: _out })
+          new CheckBox({ type: "_in", totalAmount: sum_in, checked: _in }),
+          new CheckBox({ type: "_out", totalAmount: sum_out, checked: _out })
         )
       )
     );
