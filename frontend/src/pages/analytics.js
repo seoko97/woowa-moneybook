@@ -6,7 +6,7 @@ import DoughnutChartBox from "../components/DoughnutChart";
 import { getState, setState, subscribe } from "../core/store";
 import { dateState } from "../store/dateState";
 import { analyticsRankingState, analyticsState } from "../store/analyticsState";
-import { ANALYTICS_INITIAL_STATE, ANALYTICS_RANKING_INITIAL_STATE } from "../constants/analytics";
+import { ANALYTICS_RANKING_INITIAL_STATE } from "../constants/analytics";
 import { requestGetCategoryRanking } from "../apis/analytics";
 import AnalyticsListSection from "../components/AnalyticsListSection";
 
@@ -25,7 +25,9 @@ class AnalyticsPage extends Component {
   }
 
   useDebounceByGetData() {
-    this.setAnalyticsState(ANALYTICS_INITIAL_STATE);
+    const { year, month } = getState(dateState);
+    const newAnalyticsState = { selectedCategory: null, selectedMonth: month, selectedYear: year };
+    this.setAnalyticsState(newAnalyticsState);
     this.setAnalyticsRankingState(ANALYTICS_RANKING_INITIAL_STATE);
     const { isLoading } = getState(analyticsRankingState);
 
