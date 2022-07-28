@@ -85,9 +85,6 @@ export default class DoughnutChart extends Component {
     }
 
     const { selectedCategory } = getState(analyticsState);
-    // if (selectedCategory !== category) {
-    //   $part.style.backgroundColor = `${CATEGORY_COLORS[category]}30`;
-    // }
     const needChange = selectedCategory !== category;
     // this.setState로 할 경우 에러발생. 왜?
     const { analyticsTrxList, sum } = getState(analyticsTrxListState);
