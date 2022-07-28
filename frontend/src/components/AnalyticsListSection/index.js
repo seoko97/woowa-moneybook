@@ -4,7 +4,6 @@ import { createElement, h } from "../../utils/domHandler";
 import Spinner from "../Spinner";
 import HistoryList from "../HistoryListSection/HistoryList";
 import { makeYearMonthToStr, mappingHistoryByDate } from "../../utils/dateHandler";
-import "../../styles/history.css";
 import { analyticsState, analyticsTrxListState } from "../../store/analyticsState";
 import { DIRECTION_INITIAL_STATE } from "../../constants/direction";
 

@@ -128,7 +128,6 @@ export {
   getWeekDay,
   mappingHistoryByDate,
   parsingStringDate,
-  changeParsedDateByYM,
   groupByMonth,
   makeYearMonthToStr,
   changeParsedDateByYMD,

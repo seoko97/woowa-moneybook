@@ -1,9 +1,10 @@
+import { HOST } from "../constants/environment";
+
 const request = async (path, method, body) => {
   try {
-    const res = await fetch(`http://localhost:3065${path}`, {
+    const res = await fetch(`${HOST}${path}`, {
       method,
       body: JSON.stringify(body),
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

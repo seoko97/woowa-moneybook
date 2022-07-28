@@ -40,7 +40,7 @@ class CalendarFooter extends Component {
           h(
             "div",
             { class: "calendar__footer_text-box" },
-            h("span", null, "총 지출"),
+            h("span", null, "총계"),
             h("span", null, (_in - _out).toLocaleString())
           )
         )
