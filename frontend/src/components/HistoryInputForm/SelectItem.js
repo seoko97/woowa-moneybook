@@ -2,8 +2,6 @@ import Svg from "../../core/svg";
 import Component from "../../core/component";
 import DownArrowIcon from "../../../public/downArrowIcon.svg";
 import { createElement, h } from "../../utils/domHandler";
-import { getState, subscribe } from "../../core/store";
-import { paymentListState } from "../../store/paymentState";
 
 class SelectItem extends Component {
   constructor({ props, title, children, defaultValue }) {

@@ -18,12 +18,14 @@ import Modal from "../Modal";
 import { checkFormValidation } from "../../utils/checkFormValidation";
 import { requestCreateHistory, requestUpdateHistory } from "../../apis/history";
 import { changeParsedDateByYMD } from "../../utils/dateHandler";
+import { checkValidByDataToData } from "../../utils/checkValidByDataToData";
 import "./form.css";
 
 class HistoryInputForm extends Component {
   constructor() {
     super();
 
+    this.historyListState = getState(historyListState);
     this.setHistoryState = setState(historyState);
     this.setHistoryListState = setState(historyListState);
     subscribe(historyState, "HistoryInputForm", this.render.bind(this));
@@ -60,6 +62,12 @@ class HistoryInputForm extends Component {
       paymentId: payment.id,
     };
 
+    const isSame = this.checkSameData(id, payment, bodyData);
+
+    if (isSame) {
+      return;
+    }
+
     const { newHistory } = await (id
       ? requestUpdateHistory({ id, ...bodyData })
       : requestCreateHistory(bodyData));
@@ -86,6 +94,23 @@ class HistoryInputForm extends Component {
 
     this.setHistoryListState({ ..._historyListState, historyList: newHistoryList });
     this.setHistoryState(HISTORY_INITIAL_STATE);
+  }
+
+  checkSameData(id, payment, bodyData) {
+    if (!id) {
+      return false;
+    }
+    const { historyList } = this.historyListState;
+    const selectedItem = historyList.find((item) => item.id === id);
+    const currentItem = {
+      ...bodyData,
+      id,
+      payment: payment.title,
+    };
+
+    const isSame = checkValidByDataToData(selectedItem, currentItem);
+
+    return isSame;
   }
 
   onFocusOutInput(e) {
