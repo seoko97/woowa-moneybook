@@ -11,7 +11,9 @@ import { makeYearMonthToStr } from "./dateHandler";
 
 // 6개월치 데이터에 존재하는 달이 6개 미만인 경우 6개로 만들어주는 함수
 const makeFullDataArray = ({ data, month: curMonth, year: curYear }) => {
-  if (data.length === MONTH_UNIT) return data;
+  if (data.length === MONTH_UNIT) {
+    return data.reverse();
+  }
   const yearMonth2idx = {};
   let idx = MONTH_UNIT - 1;
   curMonth++;
