@@ -31,10 +31,6 @@
     transition: transform 0.3s;
 }
 
-.doughnut--part:hover {
-    transform: scale(1.2);
-}
-
 .category-list {
     flex: 1;
     width: 132px;
