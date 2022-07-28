@@ -1,15 +1,18 @@
 import Component from "../../core/component";
 import HistoryListBox from "../HistoryListBox";
+import HistoryItemModal from "../Modal/HistoryItemModal";
 import { historyListState, historyState } from "../../store/historyState";
+import { paymentListState } from "../../store/paymentState";
+import { isOpenModalState } from "../../store/isOpenModalState";
 import { createElement, h } from "../../utils/domHandler";
 import { getState, setState } from "../../core/store";
-import { paymentListState } from "../../store/paymentState";
 
 class HistoryList extends Component {
   constructor({ historyList, checkedDirection }) {
     super();
 
     this.setHistoryState = setState(historyState);
+    this.setModalState = setState(isOpenModalState);
     this.historyList = historyList;
     this.checkedDirection = checkedDirection;
 
@@ -44,7 +47,11 @@ class HistoryList extends Component {
 
     newHistoryItem.payment = payment;
 
-    this.setHistoryState(newHistoryItem);
+    this.setModalState({
+      isOpen: true,
+      data: { history: newHistoryItem },
+      component: HistoryItemModal,
+    });
   }
 
   render() {

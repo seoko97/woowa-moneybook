@@ -36,7 +36,7 @@ class Modal extends Component {
     const { isOpen, component } = getState(isOpenModalState);
     const $inner = this.getChildrenByIsOpen({ isOpen, component });
 
-    const $target = createElement(h("div", { class: `modal ${isOpen && "active"}` }, $inner));
+    const $target = createElement(h("div", { class: `modal ${isOpen ? "active" : ""}` }, $inner));
 
     if (!this.$target) {
       this.$target = $target;

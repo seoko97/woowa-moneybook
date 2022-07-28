@@ -7,6 +7,12 @@ const requestCreateHistory = async (body) => {
   return data;
 };
 
+const requestDeleteHistory = async (body) => {
+  const data = await request("/history", "DELETE", { ...body, userId: 1 });
+
+  return data;
+};
+
 const requestUpdateHistory = async (body) => {
   const data = await request("/history", "PATCH", { ...body, userId: 1 });
 
@@ -20,4 +26,4 @@ const requestGetHistories = async (query) => {
   return data;
 };
 
-export { requestCreateHistory, requestGetHistories, requestUpdateHistory };
+export { requestCreateHistory, requestGetHistories, requestUpdateHistory, requestDeleteHistory };
