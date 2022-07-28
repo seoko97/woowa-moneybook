@@ -29,6 +29,7 @@
 
 .doughnut--part {
     transition: transform 0.3s;
+    cursor: pointer;
 }
 
 .category-list {
@@ -48,6 +49,7 @@
     align-items: center;
     width: 100%;
     padding: 16px;
+    cursor: pointer;
 }
 
 .category-list--li:not(:last-of-type) {
