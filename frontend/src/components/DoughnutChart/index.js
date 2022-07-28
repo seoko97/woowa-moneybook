@@ -31,8 +31,8 @@ export default class DoughnutChartBox extends Component {
         h(
           "div",
           { class: "empty" },
-          h("h1", { class: "empty-title" }, "휑"),
-          h("h2", { class: "empty-subtitle" }, "가계부가 텅~")
+          h("h1", { class: "empty--title" }, "휑"),
+          h("h2", { class: "empty--subtitle" }, "가계부가 텅~")
         ),
       ];
     } else {

@@ -74,3 +74,18 @@
     flex: 2;
     text-align: right;
 }
+
+.empty {
+    text-align: center;
+}
+
+.empty--title {
+    font-family: "Do Hyeon", sans-serif;
+    font-weight: 500;
+    font-size: 200px;
+}
+
+.empty--subtitle {
+    font-weight: 700;
+    font-size: 30px;
+}
