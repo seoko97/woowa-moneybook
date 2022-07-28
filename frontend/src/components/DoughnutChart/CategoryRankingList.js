@@ -84,7 +84,9 @@ export default class CategoryRankingList extends Component {
     }
     const category = $li.dataset.category;
     const { selectedCategory } = getState(analyticsState);
-    const doughnutPart = document.querySelector(`[data-category='${category}']`);
+    const doughnutPart = document.querySelector(
+      `[class='doughnut--part'][data-category='${category}']`
+    );
     if (doughnutPart) {
       doughnutPart.style.transform = "scale(1.1)";
     }
@@ -101,7 +103,9 @@ export default class CategoryRankingList extends Component {
     }
     const category = $li.dataset.category;
     const { selectedCategory } = getState(analyticsState);
-    const doughnutPart = document.querySelector(`[data-category='${category}']`);
+    const doughnutPart = document.querySelector(
+      `[class='doughnut--part'][data-category='${category}']`
+    );
     if (doughnutPart) {
       doughnutPart.style.transform = "scale(1)";
     }
