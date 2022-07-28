@@ -7,4 +7,10 @@ const requestGetCategoryRanking = async (query) => {
   return data;
 };
 
-export { requestGetCategoryRanking };
+const requestGetCategoryYear = async (query) => {
+  const queryParams = getQueryParams(query);
+  const data = await request(`/analytics/year?${queryParams}`, "GET");
+  return data;
+};
+
+export { requestGetCategoryRanking, requestGetCategoryYear };
