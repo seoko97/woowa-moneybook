@@ -114,7 +114,7 @@ input[type="date"] {
   cursor: pointer;
 }
 
-.main--form__item > .ul {
+.ul {
   opacity: 0;
   visibility: hidden;
   position: absolute;
@@ -133,8 +133,9 @@ input[type="date"] {
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
 }
 
-.main--form__item > .ul.active {
+.ul.active {
   opacity: 1;
+  display: flex;
   visibility: visible;
   transform: translateY(0);
 }

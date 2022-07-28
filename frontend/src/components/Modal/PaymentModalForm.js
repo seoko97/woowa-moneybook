@@ -8,6 +8,8 @@ import { requestCreatePayment, requestDeletePayment } from "../../apis/payment";
 import { MODAL_INITIAL_STATE } from "../../constants/modal";
 
 class PaymentModalForm extends Component {
+  isError = false;
+
   constructor() {
     super();
 
@@ -26,13 +28,13 @@ class PaymentModalForm extends Component {
   }
 
   setEvent() {
-    this.addEvent("submit", ".modal__inner", this.onClickActionButton.bind(this));
+    this.addEvent("click", ".action-button", this.onClickActionButton.bind(this));
   }
 
   async onClickActionButton(e) {
     e.preventDefault();
 
-    const $input = e.target.querySelector(".modal__inner__input");
+    const $input = this.$target.querySelector(".modal__inner__input");
 
     if (!$input.value) {
       return;
@@ -48,6 +50,13 @@ class PaymentModalForm extends Component {
 
       newPaymentListState.splice(idx, 1);
     } else {
+      const isSelected = newPaymentListState.find((item) => item.title === $input.value);
+
+      if (isSelected) {
+        this.onChangeIsError();
+        return;
+      }
+
       const { paymentItem } = await requestCreatePayment({ title: $input.value });
       newPaymentListState.push(paymentItem);
     }
@@ -60,14 +69,19 @@ class PaymentModalForm extends Component {
     });
   }
 
+  onChangeIsError() {
+    this.isError = true;
+    this.render();
+  }
+
   render() {
     const {
       data: { payment },
     } = this.modalState;
 
-    this.$target = createElement(
+    const $target = createElement(
       h(
-        "form",
+        "div",
         { class: "modal__inner" },
         h(
           "p",
@@ -81,17 +95,28 @@ class PaymentModalForm extends Component {
           disabled: payment?.title ? true : false,
         }),
         h(
+          "p",
+          { class: "modal__inner__error" },
+          this.isError ? "이미 존재하는 결제수단입니다." : ""
+        ),
+        h(
           "div",
           { class: "modal__inner--button-form" },
-          h("button", { class: "close" }, "취소"),
+          h("button", { class: "close", type: "click" }, "취소"),
           h(
             "button",
-            { class: `${payment ? "delete" : "create"} action-button`, type: "submit" },
+            { class: `${payment ? "delete" : "create"} action-button`, type: "click" },
             payment ? "삭제" : "등록"
           )
         )
       )
     );
+
+    if (!this.$target) {
+      this.$target = $target;
+    } else {
+      this.reRender($target);
+    }
   }
 }
 
