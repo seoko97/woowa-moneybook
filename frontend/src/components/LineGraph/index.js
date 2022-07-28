@@ -32,9 +32,11 @@ import {
   HEIGHT,
   WIDTH,
   VERTICAL_DIVIDE_LINE_SPEED,
+  HORIZONTAL_LINE_UNIT,
 } from "../../constants/lineGraph";
 import { getState, subscribe } from "../../core/store";
-import { analyticsState } from "../../store/analyticsState";
+import { analyticsState, analyticsTrxListState } from "../../store/analyticsState";
+import { dateState } from "../../store/dateState";
 
 export default class LineGraph extends Component {
   constructor() {
@@ -57,7 +59,7 @@ export default class LineGraph extends Component {
   }
 
   makeDivideLine() {
-    const horizontalUnit = 6;
+    const horizontalUnit = HORIZONTAL_LINE_UNIT;
     const verticalUnit = MONTH_UNIT - 2;
     const horizontal = Array.from({ length: horizontalUnit }).map((_, i) => {
       return h(
@@ -124,7 +126,8 @@ export default class LineGraph extends Component {
   }
 
   makeTexts({ data, textPos, pointsCoord }) {
-    return data.map(({ total }, i) => {
+    const { selectedYear, selectedMonth, selectedCategory } = getState(analyticsState);
+    return data.map(({ year, month, total }, i) => {
       const [anchor, dy] = textPos[i];
       return h(
         "text",
@@ -134,7 +137,10 @@ export default class LineGraph extends Component {
           "text-anchor": anchor,
           "font-size": `${VALUE_TEXT_SIZE}`,
           "font-weight": `${VALUE_TEXT_WEIGHT}`,
-          fill: VALUE_TEXT_COLOR,
+          fill:
+            year === selectedYear && month === selectedMonth
+              ? CATEGORY_COLORS[selectedCategory]
+              : VALUE_TEXT_COLOR,
           dy: dy,
         },
         `${total.toLocaleString()}`
@@ -188,10 +194,6 @@ export default class LineGraph extends Component {
     });
   }
 
-  rand(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-
   render() {
     let $target;
     const { selectedCategory } = getState(analyticsState);
@@ -202,21 +204,10 @@ export default class LineGraph extends Component {
     }
     // 보여줘야 하는 상황이라면
     else {
-      const tmpData = [
-        { month: 8, total: this.rand(0, 100) * 10000 },
-        { month: 9, total: this.rand(0, 100) * 10000 },
-        { month: 10, total: this.rand(0, 100) * 10000 },
-        { month: 11, total: this.rand(0, 100) * 10000 },
-        { month: 12, total: this.rand(0, 100) * 10000 },
-        { month: 1, total: this.rand(0, 100) * 10000 },
-        { month: 2, total: this.rand(0, 100) * 10000 },
-        { month: 3, total: this.rand(0, 100) * 10000 },
-        { month: 4, total: this.rand(0, 100) * 10000 },
-        { month: 5, total: this.rand(0, 100) * 10000 },
-        { month: 6, total: this.rand(0, 100) * 10000 },
-        { month: 7, total: this.rand(0, 100) * 10000 },
-      ];
-      const data = makeFullDataArray({ data: tmpData, month: 7 });
+      const { year, month } = getState(dateState);
+      const { sum } = getState(analyticsTrxListState);
+      const sumData = sum[selectedCategory];
+      const data = makeFullDataArray({ data: sumData, month, year });
 
       const [lowerBoundary, upperBoundary] = makeBoundary({ data, gapUnit: 6 });
       const pointsCoord = getCoordinates({

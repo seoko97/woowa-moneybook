@@ -15,6 +15,7 @@ class HistoryList extends Component {
     this.setModalState = setState(isOpenModalState);
     this.historyList = historyList;
     this.checkedDirection = checkedDirection;
+    this.isAnalytics = location.pathname === "/analytics";
 
     this.render();
     this.setEvent();
@@ -23,6 +24,9 @@ class HistoryList extends Component {
   }
 
   setEvent() {
+    if (this.isAnalytics) {
+      return;
+    }
     this.addEvent("click", ".list__box--ul__item", this.onClickHistoryItem.bind(this));
   }
 

@@ -14,4 +14,9 @@ detailRouter.get(
   asyncHandler(analyticsController.getEachCategoryExpenditure)
 );
 
+detailRouter.get(
+  "/year",
+  asyncHandler(analyticsController.getYearHistoriesAboutCategory)
+);
+
 module.exports = detailRouter;

@@ -31,6 +31,17 @@ class AnalyticsController {
     });
     res.status(200).json(result);
   };
+
+  getYearHistoriesAboutCategory = async (req, res) => {
+    const { userId, category, year, month } = req.query;
+    const result = await this.#analyticsService.getYearHistoriesAboutCategory({
+      userId: Number(userId),
+      category,
+      year: Number(year),
+      month: Number(month),
+    });
+    res.status(200).json(result);
+  };
 }
 const analyticsController = new AnalyticsController(analyticsService);
 

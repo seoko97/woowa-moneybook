@@ -11,6 +11,7 @@
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     padding: 32px 42px;
+    min-height: 560px;
 }
 
 .doughnut-container {
@@ -28,10 +29,7 @@
 
 .doughnut--part {
     transition: transform 0.3s;
-}
-
-.doughnut--part:hover {
-    transform: scale(1.2);
+    cursor: pointer;
 }
 
 .category-list {
@@ -51,6 +49,7 @@
     align-items: center;
     width: 100%;
     padding: 16px;
+    cursor: pointer;
 }
 
 .category-list--li:not(:last-of-type) {
@@ -72,4 +71,19 @@
     font-weight: 700;
     flex: 2;
     text-align: right;
+}
+
+.empty {
+    text-align: center;
+}
+
+.empty--title {
+    font-family: "Do Hyeon", sans-serif;
+    font-weight: 500;
+    font-size: 200px;
+}
+
+.empty--subtitle {
+    font-weight: 700;
+    font-size: 30px;
 }

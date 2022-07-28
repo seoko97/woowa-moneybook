@@ -10,6 +10,7 @@ class HistoryListBox extends Component {
     super();
 
     this.data = data;
+    this.isAnalytics = location.pathname === "/analytics";
 
     this.render();
     this.setEvent();
@@ -37,12 +38,18 @@ class HistoryListBox extends Component {
             parsingStringDate(trxDate),
             h("span", { class: "etc" }, weekDay)
           ),
-          h(
-            "div",
-            { class: "box--header__direction etc" },
-            sum_in ? h("span", { class: "direction_in" }, `수입 ${sum_in.toLocaleString()}`) : "",
-            sum_out ? h("span", { class: "direction_out" }, `지출 ${sum_out.toLocaleString()}`) : ""
-          )
+          this.isAnalytics
+            ? ""
+            : h(
+                "div",
+                { class: "box--header__direction etc" },
+                sum_in
+                  ? h("span", { class: "direction_in" }, `수입 ${sum_in.toLocaleString()}`)
+                  : "",
+                sum_out
+                  ? h("span", { class: "direction_out" }, `지출 ${sum_out.toLocaleString()}`)
+                  : ""
+              )
         ),
 
         h(

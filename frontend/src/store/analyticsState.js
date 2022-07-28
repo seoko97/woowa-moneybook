@@ -1,12 +1,29 @@
 import { initState } from "../core/store";
-import { MONTH_UNIT } from "../constants/lineGraph";
+import {
+  ANALYTICS_INITIAL_STATE,
+  ANALYTICS_RANKING_INITIAL_STATE,
+  ANALYTICS_TRX_DATE_STATE,
+  ANALYTICS_TRX_LIST_INITIAL_STATE,
+} from "../constants/analytics";
 
-export const analyticsState = initState({
+const analyticsState = initState({
   key: "analyticsState",
-  defaultValue: {
-    selectedCategory: null,
-    selectedYear: null,
-    selectedMonth: null,
-    monthUnit: MONTH_UNIT,
-  },
+  defaultValue: { ...ANALYTICS_INITIAL_STATE },
 });
+
+const analyticsRankingState = initState({
+  key: "analyticsRankingState",
+  defaultValue: { ...ANALYTICS_RANKING_INITIAL_STATE },
+});
+
+const analyticsTrxListState = initState({
+  key: "analyticsTrxListState",
+  defaultValue: { ...ANALYTICS_TRX_LIST_INITIAL_STATE },
+});
+
+const analyticsTrxDateState = initState({
+  key: "analyticsTrxDateState",
+  defaultValue: { ...ANALYTICS_TRX_DATE_STATE },
+});
+
+export { analyticsState, analyticsRankingState, analyticsTrxListState, analyticsTrxDateState };
