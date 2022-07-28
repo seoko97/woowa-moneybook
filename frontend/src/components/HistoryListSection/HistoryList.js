@@ -11,9 +11,10 @@ class HistoryList extends Component {
   constructor({ historyList, checkedDirection }) {
     super();
 
+    this.historyList = historyList;
+
     this.setHistoryState = setState(historyState);
     this.setModalState = setState(isOpenModalState);
-    this.historyList = historyList;
     this.checkedDirection = checkedDirection;
     this.isAnalytics = location.pathname === "/analytics";
 

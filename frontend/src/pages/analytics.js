@@ -56,6 +56,7 @@ class AnalyticsPage extends Component {
     const date = getState(dateState);
     const { eachCategoryExpenditure: analyticsList } = await requestGetCategoryRanking(date);
 
+    // a페이지 data 로딩시작 - a페이지에서 b페이지로 이동 - a페이지 로딩 끝 render - 페이지가 이동되었기 떄문에 $target 없음 - 에러
     this.setAnalyticsRankingState({ isLoading: false, analyticsList });
     this.render();
   }

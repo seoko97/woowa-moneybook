@@ -1,6 +1,4 @@
 .header {
-  position: sticky;
-  top: -108px;
   width: 100%;
   font-family: "Do Hyeon", sans-serif;
   background-color: var(--primary1);
@@ -9,6 +7,17 @@
   align-items: center;
   justify-content: center;
   z-index: 8;
+}
+
+.header.history {
+  position: sticky;
+  top: -108px;
+}
+
+.header.calendar,
+.header.analytics {
+  position: relative;
+  top: 0;
 }
 
 .header > .template {

@@ -4,6 +4,10 @@
   min-height: 500px;
 }
 
+.main--section > .empty {
+  margin-top: 120px;
+}
+
 .main--section--header {
   width: 100%;
   display: flex;

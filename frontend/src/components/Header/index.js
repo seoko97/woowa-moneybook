@@ -5,6 +5,7 @@ import DateIndicator from "./DateIndicator";
 import Navigation from "./Navigation";
 import { createElement, h } from "../../utils/domHandler";
 import "./header.css";
+import { HEADER_CLASS } from "../../constants/category";
 
 export default class Header extends Component {
   constructor() {
@@ -35,10 +36,13 @@ export default class Header extends Component {
   }
 
   render() {
+    const pathname = location.pathname;
+    const headerClass = HEADER_CLASS[pathname] ?? "404";
+
     this.$target = createElement(
       h(
         "header",
-        { class: "header" },
+        { class: `header ${headerClass}` },
         h(
           "div",
           { class: "template" },

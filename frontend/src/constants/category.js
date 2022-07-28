@@ -15,6 +15,12 @@ const CATEGORY_COLORS = {
   기타수입: "#e2b765",
 };
 
+const HEADER_CLASS = {
+  "/": "history",
+  "/calendar": "calendar",
+  "/analytics": "analytics",
+};
+
 const PAGE_INFO = [
   { href: "/", $icon: HistoryIcon },
   { href: "/calendar", $icon: CalendarIcon },
@@ -24,4 +30,4 @@ const PAGE_INFO = [
 const CATEGORY_BY_OUT = ["생활", "식비", "교통", "쇼핑/뷰티", "의료/건강", "문화/여가", "미분류"];
 const CATEGORY_BY_IN = ["월급", "용돈", "기타수입"];
 
-export { CATEGORY_COLORS, PAGE_INFO, CATEGORY_BY_IN, CATEGORY_BY_OUT };
+export { CATEGORY_COLORS, PAGE_INFO, CATEGORY_BY_IN, CATEGORY_BY_OUT, HEADER_CLASS };

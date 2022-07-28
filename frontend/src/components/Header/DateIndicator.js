@@ -6,6 +6,8 @@ import { dateState } from "../../store/dateState";
 import { getState, setState, subscribe, unsubscribe } from "../../core/store";
 import { createElement, h } from "../../utils/domHandler";
 import { changeDate } from "../../utils/dateHandler";
+import { historyState } from "../../store/historyState";
+import { HISTORY_INITIAL_STATE } from "../../constants/history";
 
 export default class DateIndicator extends Component {
   constructor() {
@@ -16,6 +18,7 @@ export default class DateIndicator extends Component {
     subscribe(dateState, this.component, this.render.bind(this));
 
     this.setState = setState(dateState);
+    this.setHistoryState = setState(historyState);
 
     this.render();
     this.setEvent();
@@ -29,6 +32,12 @@ export default class DateIndicator extends Component {
 
   setEvent() {
     this.addEvent("click", "button", (e) => {
+      const history = getState(historyState);
+
+      if (history.id) {
+        this.setHistoryState(HISTORY_INITIAL_STATE);
+      }
+
       const $button = e.target.closest("button");
       const date = getState(dateState);
 

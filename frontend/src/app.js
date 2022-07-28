@@ -6,6 +6,8 @@ import Header from "./components/Header";
 
 import { createCustomEvent } from "./utils/customEventHandler";
 import Router from "./routes";
+import Modal from "./components/Modal";
+import _404Page from "./pages/_error";
 
 class App {
   $app;
@@ -25,7 +27,7 @@ class App {
       { path: "/", view: HistoryPage },
       { path: "/calendar", view: CalendarPage },
       { path: "/analytics", view: AnalyticsPage },
-      { path: "/404", view: HistoryPage },
+      { path: "/404", view: _404Page },
     ];
 
     this.router = new Router({ routes });
@@ -37,9 +39,11 @@ class App {
 
     const $Page = this.router.getView();
     const $Header = new Header();
+    const $Modal = new Modal();
 
     this.$app.append($Header);
     this.$app.append($Page);
+    this.$app.append($Modal);
   }
 }
 

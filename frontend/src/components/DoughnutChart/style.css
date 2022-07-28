@@ -1,89 +1,74 @@
 .doughnut-box {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin-bottom: 60px;
-    z-index: 9;
-    background-color: var(--white);
-    border: 1px solid #c1c5c5;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 4px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 32px 42px;
-    min-height: 560px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 60px;
+  z-index: 9;
+  background-color: var(--white);
+  border: 1px solid #c1c5c5;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 32px 42px;
+  min-height: 560px;
 }
 
 .doughnut-container {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .doughnut {
-    width: 300px;
-    height: 300px;
-    transform: rotate(-90deg);
+  width: 300px;
+  height: 300px;
+  transform: rotate(-90deg);
 }
 
 .doughnut--part {
-    transition: transform 0.3s;
-    cursor: pointer;
+  transition: transform 0.3s;
+  cursor: pointer;
 }
 
 .category-list {
-    flex: 1;
-    width: 132px;
+  flex: 1;
+  width: 132px;
 }
 
 .category-list--title {
-    font-weight: 500;
-    margin: 5px 0 15px;
-    padding-left: 16px;
+  font-weight: 500;
+  margin: 5px 0 15px;
+  padding-left: 16px;
 }
 
 .category-list--li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 16px;
-    cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 16px;
+  cursor: pointer;
 }
 
 .category-list--li:not(:last-of-type) {
-    border-bottom: solid 1px var(--gray-300);
+  border-bottom: solid 1px var(--gray-300);
 }
 
 .category-li--label {
-    flex: 1;
+  flex: 1;
 }
 
 .category-li--percent {
-    font-weight: 400;
-    padding-left: 20px;
-    flex: 2;
-    text-align: left;
+  font-weight: 400;
+  padding-left: 20px;
+  flex: 2;
+  text-align: left;
 }
 
 .category-li--amount {
-    font-weight: 700;
-    flex: 2;
-    text-align: right;
-}
-
-.empty {
-    text-align: center;
-}
-
-.empty--title {
-    font-family: "Do Hyeon", sans-serif;
-    font-weight: 500;
-    font-size: 200px;
-}
-
-.empty--subtitle {
-    font-weight: 700;
-    font-size: 30px;
+  font-weight: 700;
+  flex: 2;
+  text-align: right;
 }

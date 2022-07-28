@@ -92,9 +92,9 @@ class HistoryItemModal extends Component {
         h(
           "div",
           { class: "inner__button-list" },
-          h("button", { class: `delete action-button`, type: "submit", name: "delete" }, "삭제"),
+          h("button", { class: `delete action-button`, name: "delete" }, "삭제"),
           !this.isAsked
-            ? h("button", { class: `update action-button`, type: "submit", name: "update" }, "수정")
+            ? h("button", { class: `update action-button`, name: "update" }, "수정")
             : ""
         )
       ),
@@ -106,7 +106,7 @@ class HistoryItemModal extends Component {
   render() {
     const $children = this.getChildren();
 
-    const $target = createElement(h("form", { class: "modal__inner history" }, $children));
+    const $target = createElement(h("div", { class: "modal__inner history" }, $children));
 
     if (!this.$target) {
       this.$target = $target;

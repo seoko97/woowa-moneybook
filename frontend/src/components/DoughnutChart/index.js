@@ -6,6 +6,7 @@ import "./style.css";
 import CategoryRankingList from "./CategoryRankingList";
 import { getState, subscribe } from "../../core/store";
 import { analyticsRankingState } from "../../store/analyticsState";
+import DecoEmpty from "../DecoEmpty";
 import Spinner from "../Spinner";
 
 export default class DoughnutChartBox extends Component {
@@ -27,14 +28,7 @@ export default class DoughnutChartBox extends Component {
     if (isLoading) {
       return new Spinner();
     } else if (analyticsList.length === 0) {
-      return [
-        h(
-          "div",
-          { class: "empty" },
-          h("h1", { class: "empty--title" }, "휑"),
-          h("h2", { class: "empty--subtitle" }, "가계부가 텅~")
-        ),
-      ];
+      return new DecoEmpty({ title: "휑.", description: "가게부가 텅~" });
     } else {
       return [new DoughnutChart(), new CategoryRankingList()];
     }
