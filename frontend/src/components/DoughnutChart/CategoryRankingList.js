@@ -35,6 +35,8 @@ export default class CategoryRankingList extends Component {
 
   setEvent() {
     this.addEvent("click", ".category-list", this.onMouseClick);
+    this.addEvent("mouseover", ".category-list", this.onMouseHover);
+    this.addEvent("mouseout", ".category-list", this.onMouseOut);
   }
 
   async onMouseClick(e) {
@@ -43,25 +45,69 @@ export default class CategoryRankingList extends Component {
     if (!$li) {
       return;
     }
-
     for (const li of $li.parentNode.children) {
       li.style.backgroundColor = null;
     }
-    const category = $li.id;
-    $li.style.backgroundColor = `${CATEGORY_COLORS[category]}30`;
 
+    const { selectedCategory } = getState(analyticsState);
+    const category = $li.dataset.category;
+    if (selectedCategory !== category) {
+      $li.style.backgroundColor = `${CATEGORY_COLORS[category]}30`;
+    }
+    const needChange = selectedCategory !== category;
     // this.setState로 할 경우 에러발생. 왜?
-    const { analyticsTrxList } = getState(analyticsTrxListState);
+    const { analyticsTrxList, sum } = getState(analyticsTrxListState);
     if (!analyticsTrxList[category]) {
       const { year, month } = getState(dateState);
       const { trxList } = await requestGetCategoryYear({ year, month, category });
-      const [sum, curAnalyticsTrxList] = groupByMonth(trxList);
+      const [curSum, curAnalyticsTrxList] = groupByMonth(trxList);
       const newAnalyticsTrxList = { ...analyticsTrxList, [category]: curAnalyticsTrxList };
-      setState(analyticsTrxListState)({ sum, analyticsTrxList: newAnalyticsTrxList });
+      const newSum = { ...sum, [category]: curSum };
+      setState(analyticsTrxListState)({ sum: newSum, analyticsTrxList: newAnalyticsTrxList });
     }
-    const newState = getState(analyticsState);
-    newState.selectedCategory = category;
-    setState(analyticsState)(newState);
+    if (needChange) {
+      const newState = getState(analyticsState);
+      newState.selectedCategory = category;
+      setState(analyticsState)(newState);
+      const location = document.querySelector(".line-graph--container")?.offsetTop;
+      if (location) {
+        window.scrollTo({ top: location, behavior: "smooth" });
+      }
+    }
+  }
+
+  onMouseHover(e) {
+    const { target } = e;
+    const $li = target.closest(".category-list--li");
+    if (!$li) {
+      return;
+    }
+    const category = $li.dataset.category;
+    const { selectedCategory } = getState(analyticsState);
+    const doughnutPart = document.querySelector(`[data-category='${category}']`);
+    if (doughnutPart) {
+      doughnutPart.style.transform = "scale(1.1)";
+    }
+    if (selectedCategory !== category) {
+      $li.style.backgroundColor = `${CATEGORY_COLORS[category]}30`;
+    }
+  }
+
+  onMouseOut(e) {
+    const { target } = e;
+    const $li = target.closest(".category-list--li");
+    if (!$li) {
+      return;
+    }
+    const category = $li.dataset.category;
+    const { selectedCategory } = getState(analyticsState);
+    const doughnutPart = document.querySelector(`[data-category='${category}']`);
+    if (doughnutPart) {
+      doughnutPart.style.transform = "scale(1)";
+    }
+    if (selectedCategory !== category) {
+      $li.style.backgroundColor = null;
+    }
   }
 
   makeCategoryList(data) {
@@ -69,7 +115,7 @@ export default class CategoryRankingList extends Component {
     return data.map(({ total, category: name }, i) => {
       return h(
         "li",
-        { class: "category-list--li", id: name },
+        { class: "category-list--li", "data-category": name },
         h("div", { class: "category-li--label" }, new CategoryTag({ name })),
         h("p", { class: "category-li--percent" }, `${Math.round(totalPercent[i] * 100)}%`),
         h("p", { class: "category-li--amount" }, total.toLocaleString())
