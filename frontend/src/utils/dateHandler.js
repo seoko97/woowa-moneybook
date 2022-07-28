@@ -102,4 +102,5 @@ export {
   parsingStringDate,
   changeParsedDateByYM,
   groupByMonth,
+  makeYearMonthToStr,
 };
