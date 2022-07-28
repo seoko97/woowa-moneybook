@@ -71,19 +71,23 @@ export default class DoughnutChart extends Component {
 
   async onClickPart(e) {
     const { target } = e;
-    const $li = target.closest(".doughnut--part");
-    if (!$li) {
+    const $part = target.closest(".doughnut--part");
+    if (!$part) {
       return;
     }
-    for (const li of $li.parentNode.children) {
-      li.style.backgroundColor = null;
+    const category = $part.dataset.category;
+    for (const li of document.querySelector(".category-list").children) {
+      if (li.dataset.category === category) {
+        $part.style.backgroundColor = `${CATEGORY_COLORS[category]}30`;
+      } else {
+        li.style.backgroundColor = null;
+      }
     }
 
     const { selectedCategory } = getState(analyticsState);
-    const category = $li.dataset.category;
-    if (selectedCategory !== category) {
-      $li.style.backgroundColor = `${CATEGORY_COLORS[category]}30`;
-    }
+    // if (selectedCategory !== category) {
+    //   $part.style.backgroundColor = `${CATEGORY_COLORS[category]}30`;
+    // }
     const needChange = selectedCategory !== category;
     // this.setState로 할 경우 에러발생. 왜?
     const { analyticsTrxList, sum } = getState(analyticsTrxListState);
