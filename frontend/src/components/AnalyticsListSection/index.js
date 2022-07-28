@@ -3,9 +3,9 @@ import { getState, subscribe } from "../../core/store";
 import { createElement, h } from "../../utils/domHandler";
 import Spinner from "../Spinner";
 import HistoryList from "../HistoryListSection/HistoryList";
-import { mappingHistoryByDate } from "../../utils/dateHandler";
+import { makeYearMonthToStr, mappingHistoryByDate } from "../../utils/dateHandler";
 import "../../styles/history.css";
-import { analyticsTrxListState } from "../../store/analyticsState";
+import { analyticsState, analyticsTrxListState } from "../../store/analyticsState";
 import { DIRECTION_INITIAL_STATE } from "../../constants/direction";
 
 class AnalyticsListSection extends Component {
@@ -15,18 +15,24 @@ class AnalyticsListSection extends Component {
     this.render();
     this.setEvent();
 
-    subscribe(analyticsTrxListState, "AnalyticsListSection", this.render.bind(this));
+    subscribe(analyticsState, "AnalyticsListSection", this.render.bind(this));
     return this.$target;
   }
 
   getChildrenByIsLoading() {
     const { isLoading, analyticsTrxList } = getState(analyticsTrxListState);
-
-    const mappedAnalyticsList = mappingHistoryByDate(analyticsTrxList);
+    const { selectedCategory, selectedYear, selectedMonth } = getState(analyticsState);
+    let list;
+    if (analyticsTrxList && analyticsTrxList[selectedCategory]) {
+      list = analyticsTrxList[selectedCategory][makeYearMonthToStr(selectedYear, selectedMonth)];
+    }
 
     if (isLoading) {
       return new Spinner();
+    } else if (!list) {
+      return new h("div", null);
     } else {
+      const mappedAnalyticsList = mappingHistoryByDate(list);
       return new HistoryList({
         historyList: mappedAnalyticsList,
         checkedDirection: DIRECTION_INITIAL_STATE,
