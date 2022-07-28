@@ -2,6 +2,7 @@ import { initState } from "../core/store";
 import {
   ANALYTICS_INITIAL_STATE,
   ANALYTICS_RANKING_INITIAL_STATE,
+  ANALYTICS_TRX_DATE_STATE,
   ANALYTICS_TRX_LIST_INITIAL_STATE,
 } from "../constants/analytics";
 
@@ -20,4 +21,9 @@ const analyticsTrxListState = initState({
   defaultValue: { ...ANALYTICS_TRX_LIST_INITIAL_STATE },
 });
 
-export { analyticsState, analyticsRankingState, analyticsTrxListState };
+const analyticsTrxDateState = initState({
+  key: "analyticsTrxDateState",
+  defaultValue: { ...ANALYTICS_TRX_DATE_STATE },
+});
+
+export { analyticsState, analyticsRankingState, analyticsTrxListState, analyticsTrxDateState };
