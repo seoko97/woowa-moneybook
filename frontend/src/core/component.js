@@ -16,6 +16,11 @@ export default class Component {
 
   reRender($newTarget) {
     const $parentNode = this.$target.parentNode;
+
+    if (!$parentNode) {
+      return;
+    }
+
     $parentNode.replaceChild($newTarget, this.$target);
     this.$target = $newTarget;
     this.setEvent();

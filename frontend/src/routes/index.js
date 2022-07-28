@@ -23,9 +23,9 @@ export default class Router {
     const match = potentialMatches.find((potentialMatch) => potentialMatch.isMatch);
 
     if (!match) {
-      const _404Page = potentialMatches.at(-1).route.view();
+      const _404Page = potentialMatches.at(-1).route.view;
 
-      return _404Page;
+      return new _404Page();
     }
 
     return new match.route.view();

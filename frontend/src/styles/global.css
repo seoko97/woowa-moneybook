@@ -1,7 +1,7 @@
 :root {
   --width: 900px;
 
-  --black: #1e2222;
+  --black: #393939;
   --white: #fcfcfc;
 
   --gray-100: #626666;
@@ -34,6 +34,10 @@
   --shadow-sidebar: 0px 0px 4px rgba(204, 204, 204, 0.5), 0px 2px 4px rgba(0, 0, 0, 0.25);
 
   font-family: "Noto Sans KR", sans-serif;
+}
+
+* {
+  user-select: none;
 }
 
 body,
@@ -120,4 +124,37 @@ svg > path {
 
 .main.calender {
   z-index: 10;
+}
+
+.empty {
+  font-family: "Do Hyeon", sans-serif;
+  text-align: center;
+  color: var(--black);
+}
+
+.empty--title {
+  font-weight: 500;
+  font-size: 200px;
+}
+
+.empty--subtitle {
+  font-weight: 500;
+  font-size: 30px;
+}
+
+.main.error {
+  font-family: "Do Hyeon", sans-serif;
+  top: 0;
+}
+
+.main.error > div {
+  margin-top: 160px;
+}
+
+.main.error a {
+  display: block;
+  margin-top: 20px;
+  text-decoration: underline;
+  text-align: center;
+  font-size: 20px;
 }

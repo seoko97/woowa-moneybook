@@ -14,7 +14,6 @@ import { HISTORY_INITIAL_STATE } from "../../constants/history";
 
 import { createElement, h } from "../../utils/domHandler";
 import PaymentList from "../DropDown/PaymentList";
-import Modal from "../Modal";
 import { checkFormValidation } from "../../utils/checkFormValidation";
 import { requestCreateHistory, requestUpdateHistory } from "../../apis/history";
 import { changeParsedDateByYMD } from "../../utils/dateHandler";
@@ -75,7 +74,9 @@ class HistoryInputForm extends Component {
     const { year, month } = getState(dateState);
     const itemYM = changeParsedDateByYMD(newHistory.trxDate);
 
-    if (itemYM.year !== year && itemYM.month !== month) {
+    const checkDate = itemYM.year !== year || itemYM.month !== month;
+
+    if (!id && checkDate) {
       this.setHistoryState(HISTORY_INITIAL_STATE);
       return;
     }
@@ -85,7 +86,10 @@ class HistoryInputForm extends Component {
       (_history) => _history.id !== parseInt(id ?? -1)
     );
 
-    newHistoryList.unshift(newHistory);
+    if (!checkDate) {
+      newHistoryList.unshift(newHistory);
+    }
+
     newHistoryList.sort((c, b) => {
       if (c.trxDate > b.trxDate) return -1;
       else if (b.trxDate > c.trxDate) return 1;
@@ -210,7 +214,6 @@ class HistoryInputForm extends Component {
             $icon: CloseIcon,
           })
         : "",
-      new Modal(),
     ];
     return $children;
   }

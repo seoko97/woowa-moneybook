@@ -8,6 +8,7 @@ import HistoryList from "./HistoryList";
 import HistoryListHeader from "./HistoryListHeader";
 import { getHistoryListByDirection } from "../../utils/getHistoryListByDirection";
 import { mappingHistoryByDate } from "../../utils/dateHandler";
+import DecoEmpty from "../DecoEmpty";
 import "./history.css";
 class HistoryListSection extends Component {
   constructor() {
@@ -31,6 +32,8 @@ class HistoryListSection extends Component {
 
     if (isLoading) {
       return new Spinner();
+    } else if (historyList.length === 0) {
+      return new DecoEmpty({ title: "텅.", description: "가게부가 휑~" });
     } else {
       return [
         new HistoryListHeader({
