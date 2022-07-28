@@ -12,7 +12,14 @@ import {
   STROKE_WIDTH,
   DASHARRAY_2ND_VALUE_FOR_ANI,
 } from "../../constants/doughnutChart";
-import { analyticsRankingState, analyticsState } from "../../store/analyticsState";
+import {
+  analyticsRankingState,
+  analyticsState,
+  analyticsTrxListState,
+} from "../../store/analyticsState";
+import { dateState } from "../../store/dateState";
+import { requestGetCategoryYear } from "../../apis/analytics";
+import { groupByMonth } from "../../utils/dateHandler";
 
 export default class DoughnutChart extends Component {
   constructor() {
@@ -28,27 +35,76 @@ export default class DoughnutChart extends Component {
 
   setEvent() {
     this.addEvent("click", "svg", this.onClickPart);
+    this.addEvent("mouseover", "svg", this.onMouseHover);
+    this.addEvent("mouseout", "svg", this.onMouseout);
   }
 
-  onClickPart = (e) => {
+  onMouseHover(e) {
     const { target } = e;
     const $part = target.closest(".doughnut--part");
     if (!$part) {
       return;
     }
-    const curState = getState(analyticsState);
-    if (curState.selectedCategory === $part.id) {
+    const category = $part.dataset.category;
+    const { selectedCategory } = getState(analyticsState);
+    const $li = document.querySelector(`[class='category-list--li'][data-category='${category}']`);
+    if ($li && selectedCategory !== category) {
+      $li.style.backgroundColor = `${CATEGORY_COLORS[category]}30`;
+    }
+    $part.style.transform = "scale(1.1)";
+  }
+
+  onMouseout(e) {
+    const { target } = e;
+    const $part = target.closest(".doughnut--part");
+    if (!$part) {
       return;
     }
-    const newState = { ...curState };
-    newState.selectedCategory = $part.id;
-    this.setAnalyticsState(newState);
-
-    const location = document.querySelector(".line-graph--container")?.offsetTop;
-    if (location) {
-      window.scrollTo({ top: location, behavior: "smooth" });
+    const category = $part.dataset.category;
+    const { selectedCategory } = getState(analyticsState);
+    const $li = document.querySelector(`[class='category-list--li'][data-category='${category}']`);
+    if ($li && selectedCategory !== category) {
+      $li.style.backgroundColor = null;
     }
-  };
+    $part.style.transform = "scale(1)";
+  }
+
+  async onClickPart(e) {
+    const { target } = e;
+    const $li = target.closest(".doughnut--part");
+    if (!$li) {
+      return;
+    }
+    for (const li of $li.parentNode.children) {
+      li.style.backgroundColor = null;
+    }
+
+    const { selectedCategory } = getState(analyticsState);
+    const category = $li.dataset.category;
+    if (selectedCategory !== category) {
+      $li.style.backgroundColor = `${CATEGORY_COLORS[category]}30`;
+    }
+    const needChange = selectedCategory !== category;
+    // this.setState로 할 경우 에러발생. 왜?
+    const { analyticsTrxList, sum } = getState(analyticsTrxListState);
+    if (!analyticsTrxList[category]) {
+      const { year, month } = getState(dateState);
+      const { trxList } = await requestGetCategoryYear({ year, month, category });
+      const [curSum, curAnalyticsTrxList] = groupByMonth(trxList);
+      const newAnalyticsTrxList = { ...analyticsTrxList, [category]: curAnalyticsTrxList };
+      const newSum = { ...sum, [category]: curSum };
+      setState(analyticsTrxListState)({ sum: newSum, analyticsTrxList: newAnalyticsTrxList });
+    }
+    if (needChange) {
+      const newState = getState(analyticsState);
+      newState.selectedCategory = category;
+      setState(analyticsState)(newState);
+      const location = document.querySelector(".line-graph--container")?.offsetTop;
+      if (location) {
+        window.scrollTo({ top: location, behavior: "smooth" });
+      }
+    }
+  }
 
   makeParts({ data, totalPercent, paths }) {
     let accDuration = 0;
