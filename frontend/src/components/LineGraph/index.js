@@ -35,7 +35,8 @@ import {
   HORIZONTAL_LINE_UNIT,
 } from "../../constants/lineGraph";
 import { getState, subscribe } from "../../core/store";
-import { analyticsState } from "../../store/analyticsState";
+import { analyticsState, analyticsTrxListState } from "../../store/analyticsState";
+import { dateState } from "../../store/dateState";
 
 export default class LineGraph extends Component {
   constructor() {
@@ -189,10 +190,6 @@ export default class LineGraph extends Component {
     });
   }
 
-  rand(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-
   render() {
     let $target;
     const { selectedCategory } = getState(analyticsState);
@@ -203,21 +200,10 @@ export default class LineGraph extends Component {
     }
     // 보여줘야 하는 상황이라면
     else {
-      const tmpData = [
-        { month: 8, total: this.rand(0, 100) * 10000 },
-        { month: 9, total: this.rand(0, 100) * 10000 },
-        { month: 10, total: this.rand(0, 100) * 10000 },
-        { month: 11, total: this.rand(0, 100) * 10000 },
-        { month: 12, total: this.rand(0, 100) * 10000 },
-        { month: 1, total: this.rand(0, 100) * 10000 },
-        { month: 2, total: this.rand(0, 100) * 10000 },
-        { month: 3, total: this.rand(0, 100) * 10000 },
-        { month: 4, total: this.rand(0, 100) * 10000 },
-        { month: 5, total: this.rand(0, 100) * 10000 },
-        { month: 6, total: this.rand(0, 100) * 10000 },
-        { month: 7, total: this.rand(0, 100) * 10000 },
-      ];
-      const data = makeFullDataArray({ data: tmpData, month: 7 });
+      const { month } = getState(dateState);
+      const { sum } = getState(analyticsTrxListState);
+      const sumData = sum[selectedCategory];
+      const data = makeFullDataArray({ data: sumData, month });
 
       const [lowerBoundary, upperBoundary] = makeBoundary({ data, gapUnit: 6 });
       const pointsCoord = getCoordinates({
