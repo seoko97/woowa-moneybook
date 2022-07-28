@@ -126,7 +126,8 @@ export default class LineGraph extends Component {
   }
 
   makeTexts({ data, textPos, pointsCoord }) {
-    return data.map(({ total }, i) => {
+    const { selectedYear, selectedMonth, selectedCategory } = getState(analyticsState);
+    return data.map(({ year, month, total }, i) => {
       const [anchor, dy] = textPos[i];
       return h(
         "text",
@@ -136,7 +137,10 @@ export default class LineGraph extends Component {
           "text-anchor": anchor,
           "font-size": `${VALUE_TEXT_SIZE}`,
           "font-weight": `${VALUE_TEXT_WEIGHT}`,
-          fill: VALUE_TEXT_COLOR,
+          fill:
+            year === selectedYear && month === selectedMonth
+              ? CATEGORY_COLORS[selectedCategory]
+              : VALUE_TEXT_COLOR,
           dy: dy,
         },
         `${total.toLocaleString()}`
@@ -200,10 +204,10 @@ export default class LineGraph extends Component {
     }
     // 보여줘야 하는 상황이라면
     else {
-      const { month } = getState(dateState);
+      const { year, month } = getState(dateState);
       const { sum } = getState(analyticsTrxListState);
       const sumData = sum[selectedCategory];
-      const data = makeFullDataArray({ data: sumData, month });
+      const data = makeFullDataArray({ data: sumData, month, year });
 
       const [lowerBoundary, upperBoundary] = makeBoundary({ data, gapUnit: 6 });
       const pointsCoord = getCoordinates({
