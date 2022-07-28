@@ -5,7 +5,6 @@ import Svg from "../../core/svg";
 import { dateState } from "../../store/dateState";
 import { getState, setState, subscribe, unsubscribe } from "../../core/store";
 import { createElement, h } from "../../utils/domHandler";
-import { pathState } from "../../store/eventState";
 import { changeDate } from "../../utils/dateHandler";
 
 export default class DateIndicator extends Component {
@@ -15,7 +14,6 @@ export default class DateIndicator extends Component {
     this.component = "DateIndicator";
 
     subscribe(dateState, this.component, this.render.bind(this));
-    subscribe(pathState, this.component, this.removeEvent.bind(this));
 
     this.setState = setState(dateState);
 
@@ -27,7 +25,6 @@ export default class DateIndicator extends Component {
 
   removeEvent() {
     unsubscribe(dateState, this.component);
-    unsubscribe(pathState, this.component);
   }
 
   setEvent() {

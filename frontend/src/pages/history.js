@@ -3,7 +3,6 @@ import HistoryInputForm from "../components/HistoryInputForm";
 import HistoryListSection from "../components/HistoryListSection";
 import { createElement, h } from "../utils/domHandler";
 import { requestGetHistories } from "../apis/history";
-import "../styles/main.css";
 import { getState, setState, subscribe } from "../core/store";
 import { dateState } from "../store/dateState";
 import { historyListState } from "../store/historyState";

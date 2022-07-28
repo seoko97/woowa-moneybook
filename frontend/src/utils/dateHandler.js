@@ -16,10 +16,10 @@ const parsingStringDate = (date) => {
   return `${parseInt(newData[1])}월 ${parseInt(newData[2])}일`;
 };
 
-const changeParsedDateByYM = (parsedDate) => {
+const changeParsedDateByYMD = (parsedDate) => {
   const date = new Date(parsedDate);
 
-  return { year: date.getFullYear(), month: date.getMonth() + 1 };
+  return { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };
 };
 
 const getWeekDay = (date) => {
@@ -48,6 +48,34 @@ const mappingHistoryByDate = (list) => {
   }, []);
 };
 
+const getSumByDate = (list) => {
+  const baseObj = {
+    date: "",
+    _in: 0,
+    _out: 0,
+  };
+
+  return list.reduce((acc, item, i) => {
+    const { trxDate, direction, amount } = item;
+    if (!baseObj.date || baseObj.date !== trxDate) {
+      if (baseObj.date) acc.push({ ...baseObj });
+      baseObj.date = trxDate;
+      baseObj._in = 0;
+      baseObj._out = 0;
+    }
+
+    if (direction === "in") {
+      baseObj._in += amount;
+    } else {
+      baseObj._out += amount;
+    }
+
+    if (list.length - 1 === i) acc.push({ ...baseObj });
+
+    return acc;
+  }, []);
+};
+
 const changeDate = ({ month, year }) => {
   if (month > 12) {
     month = 1;
@@ -66,5 +94,7 @@ export {
   getWeekDay,
   mappingHistoryByDate,
   parsingStringDate,
-  changeParsedDateByYM,
+  changeParsedDateByYMD,
+  checkDate,
+  getSumByDate,
 };

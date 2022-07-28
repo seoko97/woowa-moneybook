@@ -1,4 +1,6 @@
 :root {
+  --width: 900px;
+
   --black: #1e2222;
   --white: #fcfcfc;
 
@@ -41,7 +43,7 @@ body,
 }
 
 .template {
-  width: 900px;
+  width: var(--width);
 }
 
 svg > path {
@@ -105,4 +107,17 @@ svg > path {
   justify-content: center;
 }
 
+.main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: -32px;
+  font-family: "Noto Sans KR";
+  margin-bottom: 60px;
+}
 
+.main.calender {
+  z-index: 10;
+}

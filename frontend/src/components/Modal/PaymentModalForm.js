@@ -3,7 +3,6 @@ import { getState, setState } from "../../core/store";
 import { isOpenModalState } from "../../store/isOpenModalState";
 import { paymentListState } from "../../store/paymentState";
 import { createElement, h } from "../../utils/domHandler";
-import "../../styles/modal.css";
 import { historyState } from "../../store/historyState";
 import { requestCreatePayment, requestDeletePayment } from "../../apis/payment";
 import { MODAL_INITIAL_STATE } from "../../constants/modal";

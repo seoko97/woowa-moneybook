@@ -1,6 +1,6 @@
 import DropDown from ".";
 import { getState, setState } from "../../core/store";
-import { CATEGORY_BY_IN, CATEGORY_BY_OUT } from "../../dummy";
+import { CATEGORY_BY_IN, CATEGORY_BY_OUT } from "../../constants/category";
 import { historyState } from "../../store/historyState";
 import { createElement, h } from "../../utils/domHandler";
 
