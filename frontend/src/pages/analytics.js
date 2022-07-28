@@ -5,8 +5,15 @@ import "../styles/analytics.css";
 import DoughnutChartBox from "../components/DoughnutChart";
 import { getState, setState, subscribe } from "../core/store";
 import { dateState } from "../store/dateState";
-import { analyticsRankingState, analyticsState } from "../store/analyticsState";
-import { ANALYTICS_RANKING_INITIAL_STATE } from "../constants/analytics";
+import {
+  analyticsRankingState,
+  analyticsState,
+  analyticsTrxListState,
+} from "../store/analyticsState";
+import {
+  ANALYTICS_RANKING_INITIAL_STATE,
+  ANALYTICS_TRX_LIST_INITIAL_STATE,
+} from "../constants/analytics";
 import { requestGetCategoryRanking } from "../apis/analytics";
 import AnalyticsListSection from "../components/AnalyticsListSection";
 
@@ -17,6 +24,7 @@ class AnalyticsPage extends Component {
     this.render();
     this.setAnalyticsRankingState = setState(analyticsRankingState);
     this.setAnalyticsState = setState(analyticsState);
+    this.setAnalyticsTrxListState = setState(analyticsTrxListState);
     subscribe(dateState, "AnalyticsPage", this.useDebounceByGetData.bind(this));
 
     this.useDebounceByGetData();
@@ -29,6 +37,7 @@ class AnalyticsPage extends Component {
     const newAnalyticsState = { selectedCategory: null, selectedMonth: month, selectedYear: year };
     this.setAnalyticsState(newAnalyticsState);
     this.setAnalyticsRankingState(ANALYTICS_RANKING_INITIAL_STATE);
+    this.setAnalyticsTrxListState(ANALYTICS_TRX_LIST_INITIAL_STATE);
     const { isLoading } = getState(analyticsRankingState);
 
     if (!isLoading) {
