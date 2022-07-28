@@ -45,7 +45,6 @@ export default class DoughnutChart extends Component {
     this.setAnalyticsState(newState);
 
     const location = document.querySelector(".line-graph--container")?.offsetTop;
-    console.log(location);
     if (location) {
       window.scrollTo({ top: location, behavior: "smooth" });
     }
@@ -71,7 +70,7 @@ export default class DoughnutChart extends Component {
         "path",
         {
           class: "doughnut--part",
-          id: `${category}`,
+          "data-category": `${category}`,
           d: paths[i],
           fill: "transparent",
           stroke: CATEGORY_COLORS[category],
