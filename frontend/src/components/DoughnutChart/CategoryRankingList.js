@@ -2,16 +2,23 @@ import "./style.css";
 import Component from "../../core/component";
 import { createElement, h } from "../../utils/domHandler";
 import "./style.css";
-import { getState } from "../../core/store";
+import { getState, setState } from "../../core/store";
 import { getTotalAmount, getTotalPercent } from "../../utils/doughnutGraphUtils";
 import CategoryTag from "../CategoryTag";
-import { analyticsRankingState } from "../../store/analyticsState";
+import {
+  analyticsRankingState,
+  analyticsState,
+  analyticsTrxListState,
+} from "../../store/analyticsState";
 import { dateState } from "../../store/dateState";
 import { CATEGORY_COLORS } from "../../constants/category";
+import { groupByMonth } from "../../utils/dateHandler";
+import { requestGetCategoryYear } from "../../apis/analytics";
 
 export default class CategoryRankingList extends Component {
   constructor() {
     super();
+
     this.render();
     this.setEvent();
     return this.$target;
@@ -30,7 +37,7 @@ export default class CategoryRankingList extends Component {
     this.addEvent("click", ".category-list", this.onMouseClick);
   }
 
-  onMouseClick(e) {
+  async onMouseClick(e) {
     const { target } = e;
     const $li = target.closest(".category-list--li");
     if (!$li) {
@@ -42,6 +49,19 @@ export default class CategoryRankingList extends Component {
     }
     const category = $li.id;
     $li.style.backgroundColor = `${CATEGORY_COLORS[category]}30`;
+
+    // this.setState로 할 경우 에러발생. 왜?
+    const { analyticsTrxList } = getState(analyticsTrxListState);
+    if (!analyticsTrxList[category]) {
+      const { year, month } = getState(dateState);
+      const { trxList } = await requestGetCategoryYear({ year, month, category });
+      const [sum, curAnalyticsTrxList] = groupByMonth(trxList);
+      const newAnalyticsTrxList = { ...analyticsTrxList, [category]: curAnalyticsTrxList };
+      setState(analyticsTrxListState)({ sum, analyticsTrxList: newAnalyticsTrxList });
+    }
+    const newState = getState(analyticsState);
+    newState.selectedCategory = category;
+    setState(analyticsState)(newState);
   }
 
   makeCategoryList(data) {
