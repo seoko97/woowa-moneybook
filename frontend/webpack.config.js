@@ -1,17 +1,29 @@
+const webpack = require("webpack");
 const path = require("path");
+const dotenv = require("dotenv");
+
 const TerserPlugin = require("terser-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
+dotenv.config();
+
 const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = {
+  devtool: "source-map",
   mode: isProduction ? "production" : "development",
-  entry: "./src/index.js",
+  entry: {
+    index: {
+      import: "./src/index.js",
+      dependOn: "shared",
+    },
+    shared: "lodash",
+  },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: isProduction ? "[fullhash].bundle.js" : "bundle.js",
+    filename: "[fullhash].[name].js",
     clean: true,
     publicPath: "/",
   },
@@ -54,10 +66,14 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: isProduction ? "[fullhash].css" : "[name].css",
     }),
+    new webpack.DefinePlugin({
+      "process.env": JSON.stringify(process.env),
+    }),
   ],
   optimization: {
     minimize: isProduction,
     minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
+    runtimeChunk: "single",
   },
   devServer: {
     static: {
