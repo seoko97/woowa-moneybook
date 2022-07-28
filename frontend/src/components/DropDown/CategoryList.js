@@ -52,11 +52,7 @@ class CategoryList extends DropDown {
       )
     );
 
-    if (!this.$target) {
-      this.$target = $target;
-    } else {
-      this.reRender($target);
-    }
+    this.$target = $target;
   }
 }
 
