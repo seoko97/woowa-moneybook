@@ -1,0 +1,22 @@
+name: attach
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  attach:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: fifsky executing remote ssh commands using key
+        uses: fifsky/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          command: |
+            ls -al
+            echo 실행
