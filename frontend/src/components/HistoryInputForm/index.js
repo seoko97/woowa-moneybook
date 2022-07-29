@@ -55,17 +55,10 @@ class HistoryInputForm extends Component {
     if (!isValid) {
       return;
     }
-
     const bodyData = {
       ...data,
       paymentId: payment.id,
     };
-
-    const isSame = this.checkSameData(id, payment, bodyData);
-
-    if (isSame) {
-      return;
-    }
 
     const { newHistory } = await (id
       ? requestUpdateHistory({ id, ...bodyData })
