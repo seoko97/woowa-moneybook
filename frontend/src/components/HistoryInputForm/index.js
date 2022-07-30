@@ -121,7 +121,7 @@ class HistoryInputForm extends Component {
     const value =
       nodeName === "amount" ? parseInt(e.target.value.replaceAll(",", "")) : e.target.value;
 
-    this.updateState(nodeName, value);
+    this.updateHistoryState(nodeName, value);
   }
 
   onChangeInput(e) {
@@ -140,11 +140,11 @@ class HistoryInputForm extends Component {
 
       e.target.value = parseInt(newValue).toLocaleString("ko-KR");
     } else if (nodeName === "trxDate") {
-      this.updateState(nodeName, e.target.value);
+      this.updateHistoryState(nodeName, e.target.value);
     }
   }
 
-  updateState(stateName, value) {
+  updateHistoryState(stateName, value) {
     const newState = { ...this.state };
 
     if (newState[stateName] === undefined) {

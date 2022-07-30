@@ -32,18 +32,20 @@ class HistoryListSection extends Component {
 
     if (isLoading) {
       return new Spinner();
-    } else if (historyList.length === 0) {
-      return new DecoEmpty({ title: "텅.", description: "가게부가 휑~" });
-    } else {
-      return [
-        new HistoryListHeader({
-          historyList,
-          totalLength: historyListByDirection.length,
-          checkedDirection,
-        }),
-        new HistoryList({ historyList: mappedHistoryList, checkedDirection }),
-      ];
     }
+
+    if (historyList.length === 0) {
+      return new DecoEmpty({ title: "텅.", description: "가게부가 휑~" });
+    }
+
+    return [
+      new HistoryListHeader({
+        historyList,
+        totalLength: historyListByDirection.length,
+        checkedDirection,
+      }),
+      new HistoryList({ historyList: mappedHistoryList, checkedDirection }),
+    ];
   }
 
   render() {
