@@ -1,0 +1,32 @@
+name: attach
+
+on:
+   push:
+      branches: [main]
+
+jobs:
+   attach:
+      runs-on: ubuntu-latest
+      steps:
+         - uses: actions/checkout@v2
+         - name: fifsky executing remote ssh commands using key
+           uses: fifsky/ssh-action@master
+           with:
+              host: ${{ secrets.HOST }}
+              user: ${{ secrets.USER }}
+              key: ${{ secrets.SSH_KEY }}
+              args: '-tt'
+              command: |
+                 echo "실행"
+                 cd ./web-moneybook-10
+                 git pull
+                 git checkout main
+                 cd ./frontend
+                 npm i
+                 npm run build:prod
+                 cd ..
+                 cd ./backend
+                 pm2 kill
+                 npm i
+                 npm run start:pm2
+                 pm2 list

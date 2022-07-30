@@ -1,0 +1,160 @@
+:root {
+  --width: 900px;
+
+  --black: #393939;
+  --white: #fcfcfc;
+
+  --gray-100: #626666;
+  --gray-200: #8d9393;
+  --gray-300: #c1c5c5;
+  --gray-400: #ccd3d4;
+  --gray-500: #f5f5f5;
+
+  --primary1: #2ac1bc;
+  --primary2: #a0e1e0;
+  --primary3: #219a95;
+
+  --color-error: #f45452;
+
+  --category0: #6ed5eb;
+  --category1: #4cb8b8;
+  --category2: #94d3cc;
+  --category3: #4ca1de;
+  --category4: #d092e2;
+  --category5: #817dce;
+  --category6: #4a6cc3;
+  --category7: #b9d58c;
+  --category8: #e6d267;
+  --category9: #e2b765;
+
+  --z-index-sidebar: 500;
+  --z-index-modal: 1000;
+
+  --shadow-todo: 0px 1px 30px rgba(224, 224, 224, 0.3);
+  --shadow-sidebar: 0px 0px 4px rgba(204, 204, 204, 0.5), 0px 2px 4px rgba(0, 0, 0, 0.25);
+
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+* {
+  user-select: none;
+}
+
+body,
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+.template {
+  width: var(--width);
+}
+
+svg > path {
+  transition: stroke 0.3s;
+}
+
+.button {
+  border: 1px solid var(--primary1);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.button:not(:disabled):hover {
+  opacity: 0.9;
+}
+
+.button:disabled {
+  cursor: default;
+}
+
+.button.valid {
+  background-color: var(--primary1);
+}
+
+.button.valid svg path {
+  stroke: var(--white);
+}
+
+.button svg {
+  width: 50%;
+}
+
+.button svg > path {
+  stroke: var(--primary1);
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+}
+
+.overlay.active {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: -32px;
+  font-family: "Noto Sans KR";
+  margin-bottom: 60px;
+}
+
+.main.calender {
+  z-index: 10;
+}
+
+.empty {
+  font-family: "Do Hyeon", sans-serif;
+  text-align: center;
+  color: var(--black);
+}
+
+.empty--title {
+  font-weight: 500;
+  font-size: 200px;
+}
+
+.empty--subtitle {
+  font-weight: 500;
+  font-size: 30px;
+}
+
+.main.error {
+  font-family: "Do Hyeon", sans-serif;
+  top: 0;
+}
+
+.main.error > div {
+  margin-top: 160px;
+}
+
+.main.error a {
+  display: block;
+  margin-top: 20px;
+  text-decoration: underline;
+  text-align: center;
+  font-size: 20px;
+}
