@@ -57,21 +57,19 @@ class Calendar extends Component {
 
     if (isLoading) {
       return new Spinner();
-    } else {
-      const { calendarData, total } = this.getTotalAmountByDate();
-      const currentDate = changeDateByString(new Date());
-
-      return [
-        h(
-          "div",
-          { class: "calendar" },
-          calendarData.map(
-            (item) => new CalendarItem({ item, isCurrent: currentDate === item.date })
-          )
-        ),
-        new CalendarFooter({ total }),
-      ];
     }
+
+    const { calendarData, total } = this.getTotalAmountByDate();
+    const currentDate = changeDateByString(new Date());
+
+    return [
+      h(
+        "div",
+        { class: "calendar" },
+        calendarData.map((item) => new CalendarItem({ item, isCurrent: currentDate === item.date }))
+      ),
+      new CalendarFooter({ total }),
+    ];
   }
 
   render() {
