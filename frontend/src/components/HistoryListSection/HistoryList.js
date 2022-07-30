@@ -6,6 +6,7 @@ import { paymentListState } from "../../store/paymentState";
 import { isOpenModalState } from "../../store/isOpenModalState";
 import { createElement, h } from "../../utils/domHandler";
 import { getState, setState } from "../../core/store";
+import { selectedHistoryState } from "../../store/selectedHistoryState";
 
 class HistoryList extends Component {
   constructor({ historyList, checkedDirection }) {
@@ -15,6 +16,8 @@ class HistoryList extends Component {
 
     this.setHistoryState = setState(historyState);
     this.setModalState = setState(isOpenModalState);
+    this.setSelectedHistoryState = setState(selectedHistoryState);
+
     this.checkedDirection = checkedDirection;
     this.isAnalytics = location.pathname === "/analytics";
 
@@ -52,6 +55,7 @@ class HistoryList extends Component {
 
     newHistoryItem.payment = payment;
 
+    this.setSelectedHistoryState(newHistoryItem.id);
     this.setModalState({
       isOpen: true,
       data: { history: newHistoryItem },
