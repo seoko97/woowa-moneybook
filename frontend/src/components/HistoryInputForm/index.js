@@ -18,6 +18,7 @@ import { checkFormValidation } from "../../utils/checkFormValidation";
 import { requestCreateHistory, requestUpdateHistory } from "../../apis/history";
 import { changeParsedDateByYMD } from "../../utils/dateHandler";
 import { checkValidByDataToData } from "../../utils/checkValidByDataToData";
+import { selectedHistoryState } from "../../store/selectedHistoryState";
 import "./form.css";
 
 class HistoryInputForm extends Component {
@@ -27,6 +28,7 @@ class HistoryInputForm extends Component {
     this.historyListState = getState(historyListState);
     this.setHistoryState = setState(historyState);
     this.setHistoryListState = setState(historyListState);
+    this.setSelectedHistoryState = setState(selectedHistoryState);
     subscribe(historyState, "HistoryInputForm", this.render.bind(this));
 
     this.render();
@@ -44,6 +46,7 @@ class HistoryInputForm extends Component {
 
   onClickCloseButton() {
     this.setHistoryState(HISTORY_INITIAL_STATE);
+    this.setSelectedHistoryState(null);
   }
 
   async onSubmit(e) {
@@ -63,6 +66,10 @@ class HistoryInputForm extends Component {
     const { newHistory } = await (id
       ? requestUpdateHistory({ id, ...bodyData })
       : requestCreateHistory(bodyData));
+
+    if (!newHistory) {
+      return;
+    }
 
     const { year, month } = getState(dateState);
     const itemYM = changeParsedDateByYMD(newHistory.trxDate);
@@ -89,6 +96,9 @@ class HistoryInputForm extends Component {
       return 0;
     });
 
+    if (id) {
+      this.setSelectedHistoryState(null);
+    }
     this.setHistoryListState({ ..._historyListState, historyList: newHistoryList });
     this.setHistoryState(HISTORY_INITIAL_STATE);
   }
