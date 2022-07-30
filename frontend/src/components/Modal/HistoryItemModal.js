@@ -1,5 +1,5 @@
 import Component from "../../core/component";
-import { getState, setState } from "../../core/store";
+import { getState, setState, subscribe } from "../../core/store";
 
 import { MODAL_INITIAL_STATE } from "../../constants/modal";
 import { createElement, h } from "../../utils/domHandler";
@@ -8,6 +8,7 @@ import { requestDeleteHistory } from "../../apis/history";
 import { historyListState, historyState } from "../../store/historyState";
 import { isOpenModalState } from "../../store/isOpenModalState";
 import { HISTORY_INITIAL_STATE } from "../../constants/history";
+import { selectedHistoryState } from "../../store/selectedHistoryState";
 
 class HistoryItemModal extends Component {
   isAsked = false;
@@ -22,6 +23,9 @@ class HistoryItemModal extends Component {
     this.setModalState = setState(isOpenModalState);
     this.setHistoryListState = setState(historyListState);
     this.setHistoryState = setState(historyState);
+    this.setSelectedHistoryState = setState(selectedHistoryState);
+
+    subscribe(isOpenModalState, "HistoryItemModal", this.checkIsOpenModal.bind(this));
 
     this.render();
     this.setEvent();
@@ -29,6 +33,15 @@ class HistoryItemModal extends Component {
     return this.$target;
   }
 
+  checkIsOpenModal() {
+    const { isOpen } = getState(isOpenModalState);
+    const { data } = this.modalState;
+    const { id } = getState(historyState);
+
+    if (!isOpen && id !== data.history.id) {
+      this.setSelectedHistoryState(id ?? null);
+    }
+  }
   setEvent() {
     this.addEvent("click", ".action-button", this.onClickActionButton.bind(this));
   }
@@ -77,6 +90,7 @@ class HistoryItemModal extends Component {
     this.isAsked = false;
     this.setHistoryState(HISTORY_INITIAL_STATE);
     this.setModalState(MODAL_INITIAL_STATE);
+    this.setSelectedHistoryState(null);
   }
 
   getChildren() {
