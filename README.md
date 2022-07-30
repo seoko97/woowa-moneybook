@@ -84,3 +84,5 @@ DATABASE_NAME=
 [기획](https://github.com/woowa-techcamp-2022/web-moneybook-10/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B8%B0%ED%9A%8D)
 
 [초기구성](https://github.com/woowa-techcamp-2022/web-moneybook-10/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%B4%88%EA%B8%B0-%EA%B5%AC%EC%84%B1)
+
+[Nginx 설정 및 정적파일 배포](https://github.com/woowa-techcamp-2022/web-moneybook-10/wiki/Nginx-%EC%84%A4%EC%A0%95-%EB%B0%8F-%EC%A0%95%EC%A0%81%ED%8C%8C%EC%9D%BC-%EB%B0%B0%ED%8F%AC)
