@@ -40,7 +40,7 @@ class HistoryInputForm extends Component {
   setEvent() {
     this.addEvent("input", ".main--form", this.onChangeInput.bind(this));
     this.addEvent("focusout", ".form__item__input", this.onFocusOutInput.bind(this));
-    this.addEvent("submit", ".main--form", this.onSubmit.bind(this));
+    this.addEvent("click", ".button.submit", this.onClickSubmitButton.bind(this));
     this.addEvent("click", ".button.close", this.onClickCloseButton.bind(this));
   }
 
@@ -49,7 +49,7 @@ class HistoryInputForm extends Component {
     this.setSelectedHistoryState(null);
   }
 
-  async onSubmit(e) {
+  async onClickSubmitButton(e) {
     e.preventDefault();
     const { id, payment, ...data } = getState(historyState);
 
@@ -203,7 +203,7 @@ class HistoryInputForm extends Component {
       new Button({
         valid: isValid,
         props: {
-          class: `button ${isValid ? "valid" : ""}`,
+          class: `button submit ${isValid ? "valid" : ""}`,
           disabled: !isValid,
           type: "submit",
         },
